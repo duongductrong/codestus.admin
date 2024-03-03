@@ -45,9 +45,9 @@ export interface ListItemProps
   active?: boolean
 }
 
-const __getComponentPayload = (comp: any) => comp?._payload || comp?.type?._payload
+const __getComponentPayload = (comp: any) => comp?._payload || comp?.type?._payload || comp?.type
 const __getComponentDisplayName = (payload: any) =>
-  payload?.value?.[2] || payload?.value?.displayName
+  payload?.value?.[2] || payload?.value?.displayName || payload?.displayName
 
 export const ListItem = forwardRef(
   ({ children, startIcon, endIcon, active, className, as, ...props }, ref) => {
