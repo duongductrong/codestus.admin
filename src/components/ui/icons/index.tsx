@@ -1,6 +1,6 @@
 import { cn } from "@/utils/tailwind"
 import dynamic from "next/dynamic"
-import React, { ComponentProps, memo, useMemo } from "react"
+import React, { ComponentProps, Fragment, memo, useMemo } from "react"
 
 export interface IconsProps extends ComponentProps<"svg"> {
   name: IconName
@@ -8,7 +8,8 @@ export interface IconsProps extends ComponentProps<"svg"> {
 
 const Icons = ({ name, className, ...props }: IconsProps) => {
   const Icon = useMemo(
-    () => dynamic(() => import(`./${name.replace(/\./g, "/")}.svg`), { ssr: true }),
+    () =>
+      name ? dynamic(() => import(`./${name?.replace(/\./g, "/")}.svg`), { ssr: true }) : Fragment,
     [name],
   ) as any
 

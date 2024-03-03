@@ -5,7 +5,7 @@ export interface SidebarItem {
   key: string
   path: string
   title: string
-  icon: IconsProps["name"]
+  icon?: IconsProps["name"]
   children?: SidebarItem[]
 }
 
@@ -17,32 +17,41 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: "Home",
     path: PAGE_ROUTES.HOME,
     icon: "outline.general.home-2",
-    children: [
-      createSidebarItem({
-        key: "dashboard-1",
-        icon: "outline.abstract.abstract-47",
-        path: PAGE_ROUTES.HOME,
-        title: "Dashboard",
-      }),
-      createSidebarItem({
-        key: "revenue-1",
-        icon: "outline.abstract.abstract-48",
-        path: PAGE_ROUTES.HOME,
-        title: "Revenue",
-      }),
-      createSidebarItem({
-        key: "reports-1",
-        icon: "outline.abstract.abstract-40",
-        path: PAGE_ROUTES.HOME,
-        title: "Reports",
-      }),
-    ],
   }),
   createSidebarItem({
-    key: "page-2",
-    title: "Page 2",
+    key: "apps",
+    title: "Apps",
     path: PAGE_ROUTES.HOME,
-    icon: "outline.abstract.abstract-35",
+    icon: "outline.general.diamonds",
+    children: [
+      createSidebarItem({
+        key: "apps-eCommerce",
+        title: "eCommerce",
+        path: PAGE_ROUTES.HOME,
+        children: [
+          createSidebarItem({
+            key: "apps-eCommerce-Products",
+            title: "Products",
+            path: PAGE_ROUTES.HOME,
+          }),
+          createSidebarItem({
+            key: "apps-Category",
+            title: "Categories",
+            path: PAGE_ROUTES.HOME,
+          }),
+        ],
+      }),
+      createSidebarItem({
+        key: "apps-user-management",
+        title: "User management",
+        path: PAGE_ROUTES.HOME,
+      }),
+      createSidebarItem({
+        key: "apps-task-management",
+        title: "Task Management",
+        path: PAGE_ROUTES.HOME,
+      }),
+    ],
   }),
   createSidebarItem({
     key: "Components",

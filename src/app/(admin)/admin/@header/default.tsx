@@ -6,9 +6,9 @@ export interface AdminHeaderProps {}
 const AdminHeader = (props: AdminHeaderProps) => (
   <div
     className={cn(
-      "sticky left-0 top-0",
+      "sticky left-0 top-0 z-10",
       "flex h-app-header-dimension w-full items-center justify-between border-b px-6 py-3",
-      "dark:border-accent-darkness border-accent-lightness bg-app-header-background",
+      "bg-background",
     )}
   >
     <h2 className="text-lg font-semibold">Products</h2>

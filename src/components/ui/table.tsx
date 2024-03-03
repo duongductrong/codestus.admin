@@ -2,12 +2,28 @@ import * as React from "react"
 
 import { cn } from "@/utils/tailwind"
 
-const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
-  ({ className, ...props }, ref) => (
-    <div className="relative w-full overflow-auto">
-      <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
-    </div>
-  ),
+export interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
+  container?: boolean
+  containerProps?: React.ComponentPropsWithoutRef<"div">
+}
+
+const Table = React.forwardRef<React.ElementRef<"table">, TableProps>(
+  ({ className, containerProps, container = false, ...props }, ref) => {
+    const Container = container ? "div" : React.Fragment
+    const internalContainerProps = container
+      ? { className: cn("relative w-full overflow-auto", containerProps?.className) }
+      : {}
+
+    if (!container && containerProps) {
+      throw new Error("You should active 'container' property when you're use 'containerProps'")
+    }
+
+    return (
+      <Container {...containerProps} {...internalContainerProps}>
+        <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
+      </Container>
+    )
+  },
 )
 Table.displayName = "Table"
 
@@ -15,7 +31,7 @@ const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
+  <thead ref={ref} className={cn("text-xs [&_tr]:border-b", className)} {...props} />
 ))
 TableHeader.displayName = "TableHeader"
 
@@ -91,4 +107,4 @@ const TableCaption = React.forwardRef<
 ))
 TableCaption.displayName = "TableCaption"
 
-export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption }
+export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow }

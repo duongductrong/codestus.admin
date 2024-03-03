@@ -33,6 +33,24 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
+import {
+  ContextMenu,
+  ContextMenuCheckboxItem,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
+import { makeData } from "@/components/ui/data-table/makeData"
+import { DatePicker } from "@/components/ui/date-picker"
+import { DateRangePicker } from "@/components/ui/date-range-picker"
 import { IconButton } from "@/components/ui/icon-button"
 import Icons from "@/components/ui/icons"
 import { List, ListItem, ListItemContent, ListItemTrigger } from "@/components/ui/list"
@@ -40,7 +58,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/utils/tailwind"
+import dayjs from "dayjs"
 import React from "react"
+import { DataTableBase } from "@/components/ui/data-table"
 
 const notifications = [
   {
@@ -153,10 +173,11 @@ export default function CardDemo({ className, ...props }: CardProps) {
         <CardHeader>
           <CardTitle>Forms</CardTitle>
         </CardHeader>
-        <CardContent className="flex gap-2 text-sm">
+        <CardContent className="flex flex-wrap gap-2 text-sm">
           <Switch />
           <Checkbox />
-          <Checkbox />
+          <DatePicker />
+          <DateRangePicker from={dayjs().add(-8, "day").toDate()} to={dayjs().toDate()} />
         </CardContent>
       </Card>
       <Card className={cn("w-[380px]", className)}>
@@ -182,11 +203,116 @@ export default function CardDemo({ className, ...props }: CardProps) {
               <button type="button">Open popover</button>
               {/* <Button variant="outline">Open popover</Button> */}
             </PopoverTrigger>
-            <PopoverContent className="w-auto border-0 border-transparent p-0">
+            <PopoverContent className="w-auto p-0">
               <Calendar mode="single" selected={new Date()} />
             </PopoverContent>
           </Popover>
         </CardContent>
+      </Card>
+      <Card className={cn("max-w-[1440px]", className)}>
+        <CardHeader className="mb-4">
+          <CardTitle>Data Table</CardTitle>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center gap-2 text-sm">
+          <DataTableBase
+            data={makeData(5_000)}
+            columns={[
+              {
+                accessorKey: "_id",
+                header: () => <Checkbox />,
+                size: 60,
+                cell: () => <Checkbox />,
+              },
+              {
+                accessorKey: "id",
+                header: "ID",
+                size: 100,
+                cell: ({ getValue }) => `TASK #${getValue<string>()}`,
+              },
+              {
+                accessorKey: "firstName",
+                cell: (info) => info.getValue(),
+                header: "First name",
+              },
+              {
+                accessorFn: (row) => row.lastName,
+                id: "lastName",
+                cell: (info) => info.getValue(),
+                header: () => <span>Last Name</span>,
+              },
+              {
+                accessorKey: "age",
+                header: () => "Age",
+                size: 50,
+              },
+              {
+                accessorKey: "visits",
+                header: () => <span>Visits</span>,
+              },
+              {
+                accessorKey: "status",
+                header: "Status",
+              },
+              {
+                accessorKey: "progress",
+                header: "Profile Progress",
+              },
+              {
+                accessorKey: "createdAt",
+                header: "Created At",
+                cell: (info) => info.getValue<Date>().toLocaleString(),
+                size: 250,
+              },
+            ]}
+          />
+        </CardContent>
+      </Card>
+      <Card className={cn("w-[380px]", className)}>
+        <ContextMenu>
+          <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm">
+            Right click here
+          </ContextMenuTrigger>
+          <ContextMenuContent className="w-64">
+            <ContextMenuItem inset>
+              Back
+              <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuItem inset disabled>
+              Forward
+              <ContextMenuShortcut>⌘]</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuItem inset>
+              Reload
+              <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuSub>
+              <ContextMenuSubTrigger inset>More Tools</ContextMenuSubTrigger>
+              <ContextMenuSubContent className="w-48">
+                <ContextMenuItem>
+                  Save Page As...
+                  <ContextMenuShortcut>⇧⌘S</ContextMenuShortcut>
+                </ContextMenuItem>
+                <ContextMenuItem>Create Shortcut...</ContextMenuItem>
+                <ContextMenuItem>Name Window...</ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem>Developer Tools</ContextMenuItem>
+              </ContextMenuSubContent>
+            </ContextMenuSub>
+            <ContextMenuSeparator />
+            <ContextMenuCheckboxItem checked>
+              Show Bookmarks Bar
+              <ContextMenuShortcut>⌘⇧B</ContextMenuShortcut>
+            </ContextMenuCheckboxItem>
+            <ContextMenuCheckboxItem>Show Full URLs</ContextMenuCheckboxItem>
+            <ContextMenuSeparator />
+            <ContextMenuRadioGroup value="pedro">
+              <ContextMenuLabel inset>People</ContextMenuLabel>
+              <ContextMenuSeparator />
+              <ContextMenuRadioItem value="pedro">Pedro Duarte</ContextMenuRadioItem>
+              <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
+            </ContextMenuRadioGroup>
+          </ContextMenuContent>
+        </ContextMenu>
       </Card>
       <Card className={cn("w-[380px]", className)}>
         <CardHeader>
@@ -287,20 +413,6 @@ export default function CardDemo({ className, ...props }: CardProps) {
           <CardTitle>Badge</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-4">
-          <Badge>Badge</Badge>
-          <Badge>Badge</Badge>
-          <Badge>Badge</Badge>
-
-          <Badge>Badge</Badge>
-          <Badge>Badge</Badge>
-          <Badge>Badge</Badge>
-
-          <Badge>Badge</Badge>
-          <Badge>Badge</Badge>
-          <Badge>Badge</Badge>
-
-          <Badge>Badge</Badge>
-          <Badge>Badge</Badge>
           <Badge>Badge</Badge>
         </CardContent>
       </Card>

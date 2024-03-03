@@ -61,11 +61,7 @@ const AdminSidebar = (props: AdminSidebarProps) => (
                     {children.map((childItem) => {
                       const nestedChildren = childItem.children
                       return (
-                        <ListItem
-                          as={Link}
-                          href={childItem.path}
-                          startIcon={<Icons name={childItem.icon} />}
-                        >
+                        <ListItem as={Link} href={childItem.path}>
                           {nestedChildren?.length ? (
                             <>
                               <ListItemTrigger>{childItem.title}</ListItemTrigger>
