@@ -48,7 +48,7 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
-import { makeData } from "@/components/ui/data-table/makeData"
+import { DataTable } from "@/components/ui/data-table"
 import { DatePicker } from "@/components/ui/date-picker"
 import { DateRangePicker } from "@/components/ui/date-range-picker"
 import { IconButton } from "@/components/ui/icon-button"
@@ -58,9 +58,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/utils/tailwind"
+import { ColumnDef } from "@tanstack/react-table"
 import dayjs from "dayjs"
 import React from "react"
-import { DataTableBase } from "@/components/ui/data-table"
+import { Person, makeData } from "./makeData"
 
 const notifications = [
   {
@@ -81,6 +82,51 @@ type CardProps = React.ComponentProps<typeof Card>
 
 export default function CardDemo({ className, ...props }: CardProps) {
   const [date, setDate] = React.useState<Date | undefined>(new Date())
+
+  const columns: ColumnDef<Person>[] = [
+    {
+      accessorKey: "id",
+      header: "ID",
+      size: 100,
+      cell: ({ getValue }) => <b>{`TASK #${getValue<string>()}`}</b>,
+    },
+    {
+      accessorKey: "firstName",
+      cell: (info) => info.getValue(),
+      header: "First name",
+    },
+    {
+      accessorFn: (row) => row.lastName,
+      id: "lastName",
+      cell: (info) => info.getValue(),
+      header: () => <span>Last Name</span>,
+    },
+    {
+      accessorKey: "age",
+      header: () => "Age",
+      size: 50,
+    },
+    {
+      accessorKey: "visits",
+      header: () => <span>Visits</span>,
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ getValue }) => <Badge variant="outline">{getValue<string>()}</Badge>,
+    },
+    {
+      accessorKey: "progress",
+      header: "Profile Progress",
+    },
+    {
+      accessorKey: "createdAt",
+      header: "Created At",
+      cell: (info) => info.getValue<Date>().toLocaleString(),
+      size: 250,
+    },
+  ]
+
   return (
     <div className="flex flex-row flex-wrap gap-4">
       <Card className={cn("w-[380px]", className)}>
@@ -214,56 +260,12 @@ export default function CardDemo({ className, ...props }: CardProps) {
           <CardTitle>Data Table</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center gap-2 text-sm">
-          <DataTableBase
-            data={makeData(5_000)}
-            columns={[
-              {
-                accessorKey: "_id",
-                header: () => <Checkbox />,
-                size: 60,
-                cell: () => <Checkbox />,
-              },
-              {
-                accessorKey: "id",
-                header: "ID",
-                size: 100,
-                cell: ({ getValue }) => `TASK #${getValue<string>()}`,
-              },
-              {
-                accessorKey: "firstName",
-                cell: (info) => info.getValue(),
-                header: "First name",
-              },
-              {
-                accessorFn: (row) => row.lastName,
-                id: "lastName",
-                cell: (info) => info.getValue(),
-                header: () => <span>Last Name</span>,
-              },
-              {
-                accessorKey: "age",
-                header: () => "Age",
-                size: 50,
-              },
-              {
-                accessorKey: "visits",
-                header: () => <span>Visits</span>,
-              },
-              {
-                accessorKey: "status",
-                header: "Status",
-              },
-              {
-                accessorKey: "progress",
-                header: "Profile Progress",
-              },
-              {
-                accessorKey: "createdAt",
-                header: "Created At",
-                cell: (info) => info.getValue<Date>().toLocaleString(),
-                size: 250,
-              },
-            ]}
+          <DataTable
+            rowId="id"
+            data={makeData(300)}
+            columns={columns}
+            onRowSelectionChange={(s) => console.log(s)}
+            onPaginationChange={(pag) => console.log(pag)}
           />
         </CardContent>
       </Card>

@@ -4714,6 +4714,13 @@ react-dom@^18:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
+react-headless-pagination@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-headless-pagination/-/react-headless-pagination-1.1.5.tgz#e9fbbb3984b3def4180a8dda4ee612e560d929f6"
+  integrity sha512-WLtrF4DckZ89rri1tN0xr6aPlsQU/dSVmnafrsfTRUOS6w0gDgukv0tT3b2EGONeevkBUTLY14KpK7GNeoEoIg==
+  dependencies:
+    clsx "^2.1.0"
+
 react-hook-form@^7.50.1:
   version "7.50.1"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.50.1.tgz#f6aeb17a863327e5a0252de8b35b4fc8990377ed"
