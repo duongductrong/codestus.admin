@@ -1,7 +1,7 @@
 "use client"
 
-import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 import * as React from "react"
+import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 
 import { cn } from "@/utils/tailwind"
 
@@ -56,4 +56,4 @@ const Tooltip = React.forwardRef<React.ElementRef<typeof TooltipContent>, ToolTi
   },
 )
 
-export { Tooltip, TooltipContent, TooltipProvider, TooltipRoot, TooltipTrigger }
+export { TooltipRoot, Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }

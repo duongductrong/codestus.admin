@@ -1,6 +1,7 @@
+"use client"
+
 import { CheckIcon } from "@radix-ui/react-icons"
 
-import { IconButton } from "@/components/icon-button"
 import {
   Accordion,
   AccordionContent,
@@ -22,6 +23,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
 import {
   Card,
   CardContent,
@@ -30,12 +32,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+import { IconButton } from "@/components/ui/icon-button"
 import Icons from "@/components/ui/icons"
-import { List, ListItem, ListItemTrigger, ListItemContent } from "@/components/ui/list"
+import { List, ListItem, ListItemContent, ListItemTrigger } from "@/components/ui/list"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/utils/tailwind"
-import { Switch } from "@/components/ui/switch"
-import { Checkbox } from "@/components/ui/checkbox"
+import React from "react"
 
 const notifications = [
   {
@@ -55,6 +60,7 @@ const notifications = [
 type CardProps = React.ComponentProps<typeof Card>
 
 export default function CardDemo({ className, ...props }: CardProps) {
+  const [date, setDate] = React.useState<Date | undefined>(new Date())
   return (
     <div className="flex flex-row flex-wrap gap-4">
       <Card className={cn("w-[380px]", className)}>
@@ -91,7 +97,7 @@ export default function CardDemo({ className, ...props }: CardProps) {
           </List>
         </CardContent>
         <CardFooter className="py-4">
-          <Button variant="soft" className="w-full">
+          <Button className="w-full">
             <CheckIcon className="mr-2 h-4 w-4" /> Mark all as read
           </Button>
         </CardFooter>
@@ -102,11 +108,11 @@ export default function CardDemo({ className, ...props }: CardProps) {
           <CardDescription>You have 3 unread messages.</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
-          <div className=" flex items-center space-x-4 rounded-md border border-card-border p-4">
+          <div className=" border-card-border flex items-center space-x-4 rounded-md border p-4">
             <Icons name="outline.it-network.message-programming" />
             <div className="flex-1 space-y-1">
               <p className="text-sm font-medium leading-none">Push Notifications</p>
-              <p className="text-sm text-muted-foreground">Send notifications to device.</p>
+              <p className="text-sm-foreground">Send notifications to device.</p>
             </div>
           </div>
           <div>
@@ -119,7 +125,7 @@ export default function CardDemo({ className, ...props }: CardProps) {
                 <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
                 <div className="space-y-1">
                   <p className="text-sm font-medium leading-none">{notification.title}</p>
-                  <p className="text-sm text-muted-foreground">{notification.description}</p>
+                  <p className="text-sm-foreground">{notification.description}</p>
                 </div>
               </div>
             ))}
@@ -135,7 +141,7 @@ export default function CardDemo({ className, ...props }: CardProps) {
         <CardHeader>
           <CardTitle>Muted</CardTitle>
         </CardHeader>
-        <CardContent className="flex gap-2 text-sm text-muted">
+        <CardContent className="flex gap-2 text-sm">
           <h2>Home</h2>
           {">"}
           <h2>Navigation</h2>
@@ -145,19 +151,48 @@ export default function CardDemo({ className, ...props }: CardProps) {
       </Card>
       <Card className={cn("w-[380px]", className)}>
         <CardHeader>
-          <CardTitle>Form field</CardTitle>
+          <CardTitle>Forms</CardTitle>
         </CardHeader>
-        <CardContent className="flex gap-2 text-sm text-muted">
+        <CardContent className="flex gap-2 text-sm">
           <Switch />
-          <Checkbox variant="contained" />
-          <Checkbox variant="outlined" />
+          <Checkbox />
+          <Checkbox />
+        </CardContent>
+      </Card>
+      <Card className={cn("w-[380px]", className)}>
+        <CardHeader className="mb-4">
+          <CardTitle>Calendar</CardTitle>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center gap-2 text-sm">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            className="rounded-md border"
+          />
+        </CardContent>
+      </Card>
+      <Card className={cn("w-[380px]", className)}>
+        <CardHeader className="mb-4">
+          <CardTitle>Popover</CardTitle>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center gap-2 text-sm">
+          <Popover>
+            <PopoverTrigger asChild>
+              <button type="button">Open popover</button>
+              {/* <Button variant="outline">Open popover</Button> */}
+            </PopoverTrigger>
+            <PopoverContent className="w-auto border-0 border-transparent p-0">
+              <Calendar mode="single" selected={new Date()} />
+            </PopoverContent>
+          </Popover>
         </CardContent>
       </Card>
       <Card className={cn("w-[380px]", className)}>
         <CardHeader>
           <CardTitle>Tabs</CardTitle>
         </CardHeader>
-        <CardContent className="flex gap-2 text-sm text-muted">
+        <CardContent className="flex gap-2 text-sm">
           <Tabs defaultValue="account" className="w-[400px]">
             <TabsList>
               <TabsTrigger value="account">Account</TabsTrigger>
@@ -173,7 +208,7 @@ export default function CardDemo({ className, ...props }: CardProps) {
         <CardHeader>
           <CardTitle>Accordion</CardTitle>
         </CardHeader>
-        <CardContent className="flex gap-2 text-base text-muted">
+        <CardContent className="flex gap-2 text-base">
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger>Is it accessible?</AccordionTrigger>
@@ -252,45 +287,21 @@ export default function CardDemo({ className, ...props }: CardProps) {
           <CardTitle>Badge</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-4">
-          <Badge variant="contained" color="default">
-            Badge
-          </Badge>
-          <Badge variant="outlined" color="default">
-            Badge
-          </Badge>
-          <Badge variant="soft" color="default">
-            Badge
-          </Badge>
+          <Badge>Badge</Badge>
+          <Badge>Badge</Badge>
+          <Badge>Badge</Badge>
 
-          <Badge variant="contained" color="destructive">
-            Badge
-          </Badge>
-          <Badge variant="outlined" color="destructive">
-            Badge
-          </Badge>
-          <Badge variant="soft" color="destructive">
-            Badge
-          </Badge>
+          <Badge>Badge</Badge>
+          <Badge>Badge</Badge>
+          <Badge>Badge</Badge>
 
-          <Badge variant="contained" color="secondary">
-            Badge
-          </Badge>
-          <Badge variant="outlined" color="secondary">
-            Badge
-          </Badge>
-          <Badge variant="soft" color="secondary">
-            Badge
-          </Badge>
+          <Badge>Badge</Badge>
+          <Badge>Badge</Badge>
+          <Badge>Badge</Badge>
 
-          <Badge variant="contained" color="success">
-            Badge
-          </Badge>
-          <Badge variant="outlined" color="success">
-            Badge
-          </Badge>
-          <Badge variant="soft" color="success">
-            Badge
-          </Badge>
+          <Badge>Badge</Badge>
+          <Badge>Badge</Badge>
+          <Badge>Badge</Badge>
         </CardContent>
       </Card>
 
@@ -301,7 +312,6 @@ export default function CardDemo({ className, ...props }: CardProps) {
         </CardHeader>
         <CardContent className="flex flex-wrap gap-4 p-6">
           <Button
-            variant="contained"
             color="destructive"
             startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
             endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
@@ -309,7 +319,6 @@ export default function CardDemo({ className, ...props }: CardProps) {
             Contained destructive
           </Button>
           <Button
-            variant="contained"
             color="secondary"
             startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
             endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
@@ -317,14 +326,12 @@ export default function CardDemo({ className, ...props }: CardProps) {
             Contained secondary
           </Button>
           <Button
-            variant="contained"
             startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
             endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
           >
             Contained default
           </Button>
           <Button
-            variant="outlined"
             color="destructive"
             startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
             endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
@@ -332,7 +339,6 @@ export default function CardDemo({ className, ...props }: CardProps) {
             Outlined destructive
           </Button>
           <Button
-            variant="outlined"
             color="secondary"
             startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
             endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
@@ -340,14 +346,12 @@ export default function CardDemo({ className, ...props }: CardProps) {
             Outlined secondary
           </Button>
           <Button
-            variant="outlined"
             startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
             endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
           >
             Outlined default
           </Button>
           <Button
-            variant="text"
             color="destructive"
             startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
             endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
@@ -355,7 +359,6 @@ export default function CardDemo({ className, ...props }: CardProps) {
             text destructive
           </Button>
           <Button
-            variant="text"
             color="secondary"
             startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
             endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
@@ -363,14 +366,12 @@ export default function CardDemo({ className, ...props }: CardProps) {
             text secondary
           </Button>
           <Button
-            variant="text"
             startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
             endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
           >
             text default
           </Button>
           <Button
-            variant="soft"
             color="destructive"
             startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
             endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
@@ -378,7 +379,6 @@ export default function CardDemo({ className, ...props }: CardProps) {
             text destructive
           </Button>
           <Button
-            variant="soft"
             color="secondary"
             startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
             endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
@@ -386,7 +386,6 @@ export default function CardDemo({ className, ...props }: CardProps) {
             text secondary
           </Button>
           <Button
-            variant="soft"
             startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
             endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
           >

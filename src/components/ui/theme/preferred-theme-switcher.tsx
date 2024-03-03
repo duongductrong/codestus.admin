@@ -1,6 +1,6 @@
 "use client"
 
-import { IconButton, IconButtonProps } from "@/components/icon-button"
+import { IconButton, IconButtonProps } from "@/components/ui/icon-button"
 import { useTheme } from "next-themes"
 import { ElementRef, forwardRef } from "react"
 import Icons from "../icons"
