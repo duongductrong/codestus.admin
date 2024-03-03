@@ -1,5 +1,6 @@
-import { BellIcon, CheckIcon } from "@radix-ui/react-icons"
+import { CheckIcon } from "@radix-ui/react-icons"
 
+import { IconButton } from "@/components/icon-button"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -9,9 +10,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { cn } from "@/utils/tailwind"
 import Icons from "@/components/ui/icons"
-import { IconButton } from "@/components/icon-button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { cn } from "@/utils/tailwind"
 
 const notifications = [
   {
@@ -68,8 +69,39 @@ export default function CardDemo({ className, ...props }: CardProps) {
           </Button>
         </CardFooter>
       </Card>
+      <Card className={cn("w-[380px]", className)} {...props}>
+        <CardHeader>
+          <CardTitle>Muted</CardTitle>
+        </CardHeader>
+        <CardContent className="flex gap-2 text-sm text-muted">
+          <h2>Home</h2>
+          {">"}
+          <h2>Navigation</h2>
+          {">"}
+          <h2>Dashboard</h2>
+        </CardContent>
+      </Card>
+      <Card className={cn("w-[380px]", className)} {...props}>
+        <CardHeader>
+          <CardTitle>Tabs</CardTitle>
+        </CardHeader>
+        <CardContent className="flex gap-2 text-sm text-muted">
+          <Tabs defaultValue="account" className="w-[400px]">
+            <TabsList>
+              <TabsTrigger value="account">Account</TabsTrigger>
+              <TabsTrigger value="password">Password</TabsTrigger>
+            </TabsList>
+            <TabsContent value="account">Make changes to your account here.</TabsContent>
+            <TabsContent value="password">Change your password here.</TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
 
       <Card>
+        <CardHeader>
+          <CardTitle>Button</CardTitle>
+          <CardDescription>The general buttons.</CardDescription>
+        </CardHeader>
         <CardContent className="flex flex-wrap gap-4 p-6">
           <Button
             variant="contained"
@@ -135,6 +167,29 @@ export default function CardDemo({ className, ...props }: CardProps) {
           </Button>
           <Button
             variant="text"
+            startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
+            endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
+          >
+            text default
+          </Button>
+          <Button
+            variant="soft"
+            color="destructive"
+            startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
+            endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
+          >
+            text destructive
+          </Button>
+          <Button
+            variant="soft"
+            color="secondary"
+            startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
+            endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
+          >
+            text secondary
+          </Button>
+          <Button
+            variant="soft"
             startIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-19" />}
             endIcon={<Icons className="h-4 w-4" name="duotone.abstract.abstract-20" />}
           >

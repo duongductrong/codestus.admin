@@ -32,10 +32,12 @@ const config = {
         foreground: "hsl(var(--foreground))",
         secondary: {
           DEFAULT: "hsl(var(--twc-secondary))",
+          soft: "hsl(var(--twc-secondary-soft))",
           foreground: "hsl(var(--twc-secondary-foreground))",
         },
         destructive: {
           DEFAULT: "hsl(var(--twc-destructive))",
+          soft: "hsl(var(--twc-destructive-soft))",
           foreground: "hsl(var(--twc-destructive-foreground))",
         },
         popover: {
@@ -44,12 +46,13 @@ const config = {
         },
         primary: {
           DEFAULT: "hsl(var(--twc-primary))",
-          foreground: "var(--twc-white)",
-          active: "var(--twc-primary-active)",
+          soft: "hsl(var(--twc-primary-soft))",
+          foreground: "hsl(var(--twc-primary-foreground))",
+          // active: "var(--twc-primary-active)",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "hsl(var(--twc-muted))",
+          foreground: "hsl(var(--twc-muted-foreground))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",

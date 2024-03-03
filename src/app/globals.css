@@ -10,8 +10,9 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --twc-muted: 224 17% 66%; /* #9aa1b7 */
+    --twc-muted-foreground: 224 16% 54%; /* #78829D */
+    /* --twc-muted-foreground: 240 3.8% 46.1%; */
 
     --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
@@ -70,14 +71,18 @@
     --twc-gray-900: #071437;
     --twc-light: 0 0% 98%; /* #f9f9f9; */
     --twc-primary: 212 100% 55%; /* #1b84ff */
+    --twc-primary-foreground: 0 0% 100%; /* #ffffff */
+    --twc-primary-soft: 213 100% 96%; /* #ebf4ff */
     --twc-secondary: 240 12% 95%; /* #f1f1f4 */
+    --twc-secondary-soft: 0 0% 98%; /* #f9f9f9 */
     --twc-secondary-foreground: 240 5.9% 10%;
+    --twc-destructive: 0 84.2% 60.2%;
+    --twc-destructive-soft: 342 100% 97%; /* #ffeef3 */
+    --twc-destructive-foreground: 0 0% 98%;
     --twc-success: 141 79% 43%; /* #17c653 */
     --twc-info: 259 81% 57%; /* #7239ea */
     --twc-warning: 47 100% 48%; /* #f6c000 */
     --twc-danger: 346 94% 56%; /* #f8285a */
-    --twc-destructive: 0 84.2% 60.2%;
-    --twc-destructive-foreground: 0 0% 98%;
     --twc-dark: #1e2129;
     --twc-darkness: #0f1014;
     --twc-primary-active: #056ee9;
@@ -170,8 +175,9 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --twc-muted: 229 8% 42%; /* #636674 */
+    --twc-muted-foreground: 233 7% 53%; /* #808290 */
+    /* --twc-muted-foreground: 240 5% 64.9%; */
 
     --accent: 240 3.7% 15.9%;
     --accent-foreground: 0 0% 98%;
@@ -205,8 +211,11 @@
     --twc-tertiary-color-rgb: 245, 245, 245;
     --twc-tertiary-bg: #162241;
     --twc-tertiary-bg-rgb: 22, 34, 65;
+    --twc-primary-soft: 212 36% 14%; /* #172331 */
     --twc-secondary: 240 3.7% 15.9%;
+    --twc-secondary-soft: 231 11% 12%; /* #1b1c22 */
     --twc-secondary-foreground: 0 0% 98%;
+    --twc-destructive-soft: 345 20% 16%; /* #302024 */
     /* --twc-destructive: 0 62.8% 30.6%;
     --twc-destructive-foreground: 0 0% 98%; */
     --twc-primary-active: #107eff;

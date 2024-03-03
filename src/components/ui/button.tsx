@@ -14,25 +14,28 @@ const buttonVariants = cva(
     variants: {
       variant: {
         contained: "border border-transparent",
-        outlined: "border shadow-sm",
+        outlined: "border",
+        soft: "border border-transparent",
         text: "border border-transparent",
         icon: "",
       },
       color: {
         default: cn(
-          "shadow",
           "data-[variant=contained]:bg-primary data-[variant=contained]:hover:bg-primary/90 data-[variant=contained]:text-primary-foreground",
           "data-[variant=outlined]:border-primary data-[variant=outlined]:hover:border-primary/90 data-[variant=outlined]:text-primary",
+          "data-[variant=soft]:bg-primary-soft data-[variant=soft]:hover:bg-primary data-[variant=soft]:hover:text-primary-foreground data-[variant=soft]:text-primary",
           "data-[variant=text]:text-primary data-[variant=text]:hover:border-primary",
         ),
         secondary: cn(
-          "data-[variant=contained]:bg-secondary data-[variant=contained]:hover:bg-secondary/80 text-secondary-foreground shadow-sm",
+          "data-[variant=contained]:bg-secondary data-[variant=contained]:hover:bg-secondary/80 text-secondary-foreground",
           "data-[variant=outlined]:border-secondary data-[variant=outlined]:hover:border-secondary/80",
+          "data-[variant=soft]:bg-secondary-soft data-[variant=soft]:hover:bg-secondary data-[variant=soft]:hover:text-secondary-foreground data-[variant=soft]:text-muted-foreground",
           "data-[variant=text]:text-secondary-foreground data-[variant=text]:hover:border-secondary",
         ),
         destructive: cn(
-          "data-[variant=contained]:bg-destructive data-[variant=contained]:hover:bg-destructive/80 text-destructive-foreground shadow-sm",
+          "data-[variant=contained]:bg-destructive data-[variant=contained]:hover:bg-destructive/80 text-destructive-foreground",
           "data-[variant=outlined]:border-destructive data-[variant=outlined]:hover:border-destructive/80 data-[variant=outlined]:text-destructive",
+          "data-[variant=soft]:bg-destructive-soft data-[variant=soft]:hover:bg-destructive data-[variant=soft]:text-destructive hover:data-[variant=soft]:text-destructive-foreground",
           "data-[variant=text]:text-destructive data-[variant=text]:hover:border-destructive",
         ),
 
