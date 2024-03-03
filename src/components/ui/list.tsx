@@ -77,9 +77,9 @@ export const ListItem = forwardRef(
         ) : (
           Children.map(children, (child) => {
             const _c = child as ReactElement
-            const _t = _c.type as FC<any>
+            const _t = _c?.type as FC<any>
 
-            if (_t.name === ListItemTrigger.name) {
+            if (_t?.name === ListItemTrigger.name && _c) {
               return cloneElement(_c, { active, startIcon, endIcon, hasChild })
             }
 
@@ -117,6 +117,7 @@ export interface ListItemTriggerProps
   endIcon?: ReactNode
   hasChild?: boolean
   disableTrigger?: boolean
+  disableDefaultDotIcon?: boolean
 }
 
 export const ListItemTrigger = forwardRef(
@@ -128,8 +129,9 @@ export const ListItemTrigger = forwardRef(
       className,
       active,
       hasChild,
-      disableTrigger,
       asChild,
+      disableTrigger,
+      disableDefaultDotIcon,
       as = "button",
       ...props
     },
@@ -144,7 +146,11 @@ export const ListItemTrigger = forwardRef(
         ref={ref}
         className={cn(listItemTriggerVariants({ active, className }))}
       >
-        {startIcon} {children}
+        {startIcon ||
+          (disableDefaultDotIcon ? null : (
+            <span className="mr-1 h-1 w-1 rounded-full bg-current" />
+          ))}
+        {children}
         {hasChild && !endIcon ? (
           <ChevronDownIcon className={cn(endIconClassName)} />
         ) : endIcon ? (

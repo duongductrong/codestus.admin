@@ -65,20 +65,14 @@ export default function CardDemo({ className, ...props }: CardProps) {
             <ListItem startIcon={<Icons name="outline.general.home-2" />} active>
               <ListItemTrigger>Project</ListItemTrigger>
               <ListItemContent>
-                <ListItem startIcon={<Icons name="outline.general.home-2" />}>Project 1</ListItem>
-                <ListItem startIcon={<Icons name="outline.general.home-2" />}>Project 3</ListItem>
+                <ListItem>Project 1</ListItem>
+                <ListItem>Project 3</ListItem>
                 <ListItem startIcon={<Icons name="outline.general.autobrightness" />}>
                   <ListItemTrigger>Project</ListItemTrigger>
                   <ListItemContent>
-                    <ListItem startIcon={<Icons name="outline.general.home-2" />}>
-                      Project 4
-                    </ListItem>
-                    <ListItem startIcon={<Icons name="outline.general.home-2" />}>
-                      Project 5
-                    </ListItem>
-                    <ListItem startIcon={<Icons name="outline.general.home-2" />}>
-                      Project 6
-                    </ListItem>
+                    <ListItem>Project 4</ListItem>
+                    <ListItem>Project 5</ListItem>
+                    <ListItem>Project 6</ListItem>
                   </ListItemContent>
                 </ListItem>
               </ListItemContent>
