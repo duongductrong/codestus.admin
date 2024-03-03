@@ -14,31 +14,26 @@ import {
 } from "react-headless-pagination"
 import { buttonVariants } from "./button"
 
-export const paginationOffsetIndex = 1
-
 export interface PaginationProps
   extends Omit<IPaginationProps, "edgePageCount" | "middlePagesSiblingCount" | "setCurrentPage">,
-    Partial<Pick<IPaginationProps, "setCurrentPage">> {
-  offsetPage?: number
-}
+    Partial<Pick<IPaginationProps, "setCurrentPage">> {}
 
 export const Pagination = ({
   currentPage,
   className,
   setCurrentPage,
-  offsetPage = 0,
+  totalPages,
   ...props
 }: PaginationProps) => {
-  if (currentPage <= 0) throw new Error("The `currentPage` shouldn't less than 1.")
-
   const handleCurrentPageCHange: IPaginationProps["setCurrentPage"] = (pageIndex) => {
-    if (setCurrentPage) setCurrentPage(pageIndex + offsetPage)
+    if (setCurrentPage) setCurrentPage(pageIndex)
   }
 
   return (
     <PaginationRoot
       {...props}
-      currentPage={Number(currentPage) - offsetPage}
+      currentPage={currentPage}
+      totalPages={totalPages}
       edgePageCount={1}
       middlePagesSiblingCount={1}
       className={cn("flex items-center justify-start gap-2", className)}
@@ -61,7 +56,7 @@ export const Pagination = ({
           activeClassName={buttonVariants({
             variant: "default",
             size: "icon",
-            className: "hover:text-primary-foreground"
+            className: "hover:text-primary-foreground",
           })}
           className={buttonVariants({
             variant: "outline",

@@ -60,8 +60,8 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       spacing: {
-        "app-header-dimension": "70px",
-        "app-sidebar-dimension": "70px",
+        "app-header-dimension": "60px",
+        "app-sidebar-dimension": "60px",
       },
       keyframes: {
         "accordion-down": {

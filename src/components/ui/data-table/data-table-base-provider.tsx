@@ -1,11 +1,11 @@
 "use client"
 
-import { PaginationState, Table } from "@tanstack/react-table"
-import { Dispatch, ReactNode, createContext, useMemo } from "react"
+import { PaginationState, Table } from "@tanstack/react-table";
+import { ReactNode, createContext, useMemo } from "react";
 
 export interface DataTableBaseContextState {
-  pagination: { page: number; pageSize: number; totalRecords: number; totalPages: number }
-  setPagination: Dispatch<PaginationState>
+  pagination: { pageIndex: number; pageSize: number; totalRecords: number; totalPages: number }
+  setPagination: (state: PaginationState) => void
   table: Table<any>
 }
 

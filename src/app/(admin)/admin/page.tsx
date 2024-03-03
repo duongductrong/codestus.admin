@@ -58,10 +58,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/utils/tailwind"
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef, PaginationState, SortingState } from "@tanstack/react-table"
 import dayjs from "dayjs"
-import React from "react"
-import { Person, makeData } from "./makeData"
+import React, { useState } from "react"
+import { Person } from "./makeData"
 
 const notifications = [
   {
@@ -126,6 +126,12 @@ export default function CardDemo({ className, ...props }: CardProps) {
       size: 250,
     },
   ]
+
+  const [paginationState, setPaginationState] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 2,
+  })
+  const [sortingState, setSortingState] = useState<SortingState>([])
 
   return (
     <div className="flex flex-row flex-wrap gap-4">
@@ -250,6 +256,7 @@ export default function CardDemo({ className, ...props }: CardProps) {
               {/* <Button variant="outline">Open popover</Button> */}
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
+              <button type="button">click me</button>
               <Calendar mode="single" selected={new Date()} />
             </PopoverContent>
           </Popover>
@@ -262,10 +269,50 @@ export default function CardDemo({ className, ...props }: CardProps) {
         <CardContent className="flex items-center justify-center gap-2 text-sm">
           <DataTable
             rowId="id"
-            data={makeData(300)}
+            data={[
+              {
+                age: 1,
+                createdAt: new Date().toISOString(),
+                firstName: "1",
+                id: "1",
+                lastName: "1",
+                progress: "1",
+                status: "1",
+                visits: 1,
+              },
+              {
+                age: 3,
+                createdAt: new Date().toISOString(),
+                firstName: "3",
+                id: "3",
+                lastName: "3",
+                progress: "3",
+                status: "3",
+                visits: 3,
+              },
+              {
+                age: 2,
+                createdAt: new Date().toISOString(),
+                firstName: "2",
+                id: "2",
+                lastName: "2",
+                progress: "2",
+                status: "2",
+                visits: 2,
+              },
+            ]}
             columns={columns}
-            onRowSelectionChange={(s) => console.log(s)}
-            onPaginationChange={(pag) => console.log(pag)}
+            pagination={{
+              pageIndex: paginationState.pageIndex,
+              pageSize: paginationState.pageSize,
+              // totalRecords: 3,
+            }}
+            // onPaginationChange={setPaginationState}
+            // rowSelection={{ 1: true }}
+            // onRowSelectionChange={(s) => console.log("row select", s)}
+            // sorting={sortingState}
+            // onSortingChange={setSortingState}
+            // manualSorting
           />
         </CardContent>
       </Card>

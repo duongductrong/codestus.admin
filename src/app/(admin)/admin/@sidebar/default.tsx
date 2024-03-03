@@ -15,16 +15,16 @@ export interface AdminSidebarProps {}
 const AdminSidebar = (props: AdminSidebarProps) => (
   <aside
     className={cn(
-      "fixed left-0 top-0",
-      "bg-app-sidebar-background h-lvh w-app-sidebar-dimension",
-      "border-accent-darkness border-r",
+      "fixed left-0 top-0 z-10",
+      "h-lvh w-app-sidebar-dimension bg-background",
+      "border-r",
       "flex flex-col items-center overflow-hidden",
     )}
   >
     <div
       className={cn(
         "size-app-sidebar-dimension",
-        "border-accent-darkness bg-app-sidebar-background border-b",
+        "border-b bg-background",
         "mb-4 flex shrink-0 items-center justify-center",
       )}
     >
@@ -48,7 +48,7 @@ const AdminSidebar = (props: AdminSidebarProps) => (
               <MaybeTooltip {...maybeTooltipProps}>
                 <IconButton key={key} active={index === 0} size="lg" forceDark asChild>
                   <Link href={path}>
-                    <Icons name={icon} className="h-[22px] w-[22px]" />
+                    {icon ? <Icons name={icon} className="h-[22px] w-[22px]" /> : null}
                   </Link>
                 </IconButton>
               </MaybeTooltip>
@@ -70,7 +70,11 @@ const AdminSidebar = (props: AdminSidebarProps) => (
                                   <ListItem
                                     as={Link}
                                     href={childItem.path}
-                                    startIcon={<Icons name={nestedChildItem.icon} />}
+                                    startIcon={
+                                      nestedChildItem.icon ? (
+                                        <Icons name={nestedChildItem.icon} />
+                                      ) : undefined
+                                    }
                                   >
                                     {nestedChildItem.title}
                                   </ListItem>
