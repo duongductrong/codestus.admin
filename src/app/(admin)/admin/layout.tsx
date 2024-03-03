@@ -8,7 +8,7 @@ const AdminLayout = ({ children, sidebar, header }: AdminLayoutProps) => (
   <PreferredTheme>
     <div className="flex flex-row">
       {sidebar}
-      <div className="flex-1">
+      <div className="flex-1 ml-app-sidebar-dimension">
         {header}
         <main className="p-6">{children}</main>
       </div>

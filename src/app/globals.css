@@ -7,9 +7,6 @@
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-
     --twc-muted: 224 17% 66%; /* #9aa1b7 */
     --twc-muted-foreground: 224 16% 54%; /* #78829D */
     /* --twc-muted-foreground: 240 3.8% 46.1%; */
@@ -44,7 +41,11 @@
 
     --card: var(--twc-body-background);
     --card-foreground: var(--twc-body-color);
-    --card-border: #f1f1f4;
+    --card-border: 240 12% 95%; /* #f1f1f4 */
+
+    --popover: var(--twc-popover-background);
+    --popover-foreground: var(--twc-popover-color);
+    --popover-border: var(--card-border); /* #f1f1f4 */
 
     --twc-blue: #0d6efd;
     --twc-indigo: #6610f2;
@@ -58,19 +59,19 @@
     --twc-cyan: #0dcaf0;
     --twc-black: #000000;
     --twc-white: #ffffff;
-    --twc-gray: #78829d;
+    --twc-gray: 223.8 15.9% 54.3%; /* #78829d */
     --twc-gray-dark: #252f4a;
     --twc-gray-100: #f9f9f9;
     --twc-gray-200: #f1f1f4;
     --twc-gray-300: #dbdfe9;
     --twc-gray-400: #c4cada;
     --twc-gray-500: #99a1b7;
-    --twc-gray-600: #78829d;
+    --twc-gray-600: 223.8 15.9% 54.3%; /* #78829d */
     --twc-gray-700: #4b5675;
     --twc-gray-800: #252f4a;
     --twc-gray-900: #071437;
     --twc-light: 0 0% 98%; /* #f9f9f9; */
-    --twc-primary: 212 100% 55%; /* #1b84ff */
+    --twc-primary: 212.4 100% 55.3%; /* #1B84FF */
     --twc-primary-foreground: 0 0% 100%; /* #ffffff */
     --twc-primary-soft: 213 100% 96%; /* #ebf4ff */
     --twc-secondary: 240 12% 95%; /* #f1f1f4 */
@@ -80,6 +81,8 @@
     --twc-destructive-soft: 342 100% 97%; /* #ffeef3 */
     --twc-destructive-foreground: 0 0% 98%;
     --twc-success: 141 79% 43%; /* #17c653 */
+    --twc-success-soft: 141 100% 94%; /* #DFFFEA */
+    --twc-success-foreground: 0 0 98%;
     --twc-info: 259 81% 57%; /* #7239ea */
     --twc-warning: 47 100% 48%; /* #f6c000 */
     --twc-danger: 346 94% 56%; /* #f8285a */
@@ -125,9 +128,10 @@
     --twc-body-font-size: 1rem;
     --twc-body-font-weight: 400;
     --twc-body-line-height: 1.5;
-    --twc-body-color: #071437;
-    --twc-body-color-rgb: 7, 20, 55;
-    --twc-body-background: #ffffff;
+    --twc-body-color: 223 14% 10%; /* #15171c */
+    --twc-body-background: 0 0% 100%;
+    --twc-popover-color: 230 10% 12%; /* #1c1d22 */
+    --twc-popover-background: 0 0% 100%; /* #ffffff */
     --twc-emphasis-color: #000000;
     --twc-emphasis-color-rgb: 0, 0, 0;
     --twc-secondary-color: rgba(7, 20, 55, 0.75);
@@ -172,9 +176,6 @@
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
 
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
     --twc-muted: 229 8% 42%; /* #636674 */
     --twc-muted-foreground: 233 7% 53%; /* #808290 */
     /* --twc-muted-foreground: 240 5% 64.9%; */
@@ -196,11 +197,14 @@
 
     --card: var(--twc-body-background);
     --card-foreground: var(--twc-body-color);
-    --card-border: #1e2027;
+    --card-border: 227 13% 14%; /* #1e2027 */
+
+    --popover: var(--twc-popover-color);
+    --popover-foreground: var(--twc-popover-background);
+    --popover-border: var(--card-border); /* #1e2027 */
 
     --twc-body-color: #f5f5f5;
-    --twc-body-color-rgb: 245, 245, 245;
-    --twc-body-background: #15171c;
+    --twc-body-background: 223 14% 10%; /* #15171c */
     --twc-emphasis-color: #ffffff;
     --twc-emphasis-color-rgb: 255, 255, 255;
     --twc-secondary-color: rgba(245, 245, 245, 0.75);
@@ -211,10 +215,12 @@
     --twc-tertiary-color-rgb: 245, 245, 245;
     --twc-tertiary-bg: #162241;
     --twc-tertiary-bg-rgb: 22, 34, 65;
+    --twc-primary: 212.3 100% 45.1%; /* #006AE6 */
     --twc-primary-soft: 212 36% 14%; /* #172331 */
     --twc-secondary: 240 3.7% 15.9%;
     --twc-secondary-soft: 231 11% 12%; /* #1b1c22 */
     --twc-secondary-foreground: 0 0% 98%;
+    --twc-success-soft: 229 15% 14%; /* #1F212A */
     --twc-destructive-soft: 345 20% 16%; /* #302024 */
     /* --twc-destructive: 0 62.8% 30.6%;
     --twc-destructive-foreground: 0 0% 98%; */
@@ -268,10 +274,12 @@
 }
 
 @layer base {
-  * {
-    /* @apply border-border; */
-  }
+  /* * { */
+  /* @apply border-border; */
+  /* } */
+  html,
   body {
+    font-size: 16px !important;
     /* @apply bg-background text-foreground; */
   }
 }

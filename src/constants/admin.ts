@@ -22,9 +22,9 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: "outline.abstract.abstract-35",
   },
   {
-    key: "page-3",
-    title: "Page 3",
-    path: PAGE_ROUTES.HOME,
+    key: "Components",
+    title: "Components",
+    path: PAGE_ROUTES.COMPONENTS,
     icon: "outline.abstract.abstract-26",
   },
   {

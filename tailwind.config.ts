@@ -43,12 +43,17 @@ const config = {
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
+          border: "hsl(var(--popover-border))"
         },
         primary: {
           DEFAULT: "hsl(var(--twc-primary))",
           soft: "hsl(var(--twc-primary-soft))",
           foreground: "hsl(var(--twc-primary-foreground))",
-          // active: "var(--twc-primary-active)",
+        },
+        success: {
+          DEFAULT: "hsl(var(--twc-success))",
+          soft: "hsl(var(--twc-success-soft))",
+          foreground: "hsl(var(--twc-success-foreground))",
         },
         muted: {
           DEFAULT: "hsl(var(--twc-muted))",
@@ -77,9 +82,9 @@ const config = {
           background: "var(--icon-btn-background)",
         },
         card: {
-          DEFAULT: "var(--card)",
-          foreground: "var(--card-foreground)",
-          border: "var(--card-border)",
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+          border: "hsl(var(--card-border))",
         },
       },
       borderRadius: {
