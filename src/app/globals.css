@@ -191,7 +191,8 @@
     --icon-btn-foreground: var(--accent-light);
     --icon-btn-background: var(--accent-dark);
 
-    --card: var(--twc-body-background);
+    /* --card: var(--twc-body-background); */
+    --card: var(--twc-darkness);
     --card-foreground: var(--twc-body-color);
     --card-border: 227 13% 14%; /* #1e2027 */
 
@@ -200,7 +201,7 @@
     --popover-border: var(--card-border); /* #1e2027 */
 
     --list: var(--accent-dark);
-    --list-foreground: var(--twc-gray);
+    --list-foreground: 233 7% 53%;
 
     --twc-body-color: #f5f5f5;
     --twc-body-background: 223 14% 10%; /* #15171c */

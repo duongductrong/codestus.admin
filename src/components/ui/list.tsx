@@ -25,8 +25,8 @@ export const listVariants = cva(["flex flex-col gap-1"], {
 export type ListProps = ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> & {}
 
 export const List = forwardRef<ElementRef<typeof AccordionPrimitive.Root>, ListProps>(
-  ({ children, ...props }) => (
-    <AccordionPrimitive.Root {...props} role="list" className={cn(listVariants({}))}>
+  ({ children, ...props }, ref) => (
+    <AccordionPrimitive.Root {...props} ref={ref} role="list" className={cn(listVariants({}))}>
       {children}
     </AccordionPrimitive.Root>
   ),
@@ -45,14 +45,17 @@ export interface ListItemProps
   active?: boolean
 }
 
+const __getComponentPayload = (comp: any) => comp?._payload || comp?.type?._payload
+const __getComponentDisplayName = (payload: any) =>
+  payload?.value?.[2] || payload?.value?.displayName
+
 export const ListItem = forwardRef(
   ({ children, startIcon, endIcon, active, className, as, ...props }, ref) => {
     const value = useId()
-    const hasChild = Children.toArray(children).some((child) => {
-      const _c = child as ReactElement<FC<any>>
-      const _jsxElement = _c.type as FC<any>
-      return _jsxElement?.name === ListItemContent.name
-    })
+    const hasChild = Children.toArray(children).some(
+      (child) =>
+        __getComponentDisplayName(__getComponentPayload(child)) === ListItemContent.displayName,
+    )
 
     return (
       <AccordionPrimitive.Item
@@ -77,13 +80,13 @@ export const ListItem = forwardRef(
         ) : (
           Children.map(children, (child) => {
             const _c = child as ReactElement
-            const _t = _c?.type as FC<any>
+            const _componentName = __getComponentDisplayName(__getComponentPayload(_c))
 
-            if (_t?.name === ListItemTrigger.name && _c) {
+            if (_componentName === ListItemTrigger.displayName) {
               return cloneElement(_c, { active, startIcon, endIcon, hasChild })
             }
 
-            return child
+            return _c
           })
         )}
       </AccordionPrimitive.Item>

@@ -98,6 +98,9 @@ const config = {
         "app-sidebar-dimension": "var(--app-sidebar-dimension)",
         "app-header-dimension": "var(--app-header-dimension)",
       },
+      boxShadow: {
+        DEFAULT: "0px 3px 4px 0px rgba(0, 0, 0, 0.03)",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

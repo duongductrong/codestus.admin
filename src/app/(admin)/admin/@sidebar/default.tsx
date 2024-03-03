@@ -2,9 +2,11 @@ import { IconButton } from "@/components/icon-button"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import Icons from "@/components/ui/icons"
 import { List, ListItem, ListItemContent, ListItemTrigger } from "@/components/ui/list"
+import { ToolTipProps, Tooltip } from "@/components/ui/tooltip"
 import { SIDEBAR_ITEMS } from "@/constants/admin"
 import { cn } from "@/utils/tailwind"
 import Link from "next/link"
+import { Fragment } from "react"
 import SidebarLogo from "./_components/sidebar-logo"
 
 export interface AdminSidebarProps {}
@@ -31,14 +33,24 @@ const AdminSidebar = (props: AdminSidebarProps) => (
     <div className="flex h-full flex-col gap-3 p-2">
       {SIDEBAR_ITEMS.map(({ title, key, icon, path, children }, index) => {
         const hasChildrenItems = !!children?.length
+        const MaybeTooltip = hasChildrenItems ? Fragment : (Tooltip as any)
+        const maybeTooltipProps = hasChildrenItems
+          ? {}
+          : ({
+              content: title,
+              contentProps: { align: "center", side: "right" },
+            } as Omit<ToolTipProps, "children">)
+
         return (
-          <HoverCard key={key} openDelay={0} closeDelay={2}>
+          <HoverCard key={key} openDelay={0}>
             <HoverCardTrigger asChild>
-              <IconButton key={key} active={index === 0} size="lg" forceDark asChild>
-                <Link href={path}>
-                  <Icons name={icon} className="h-[22px] w-[22px]" />
-                </Link>
-              </IconButton>
+              <MaybeTooltip {...maybeTooltipProps}>
+                <IconButton key={key} active={index === 0} size="lg" forceDark asChild>
+                  <Link href={path}>
+                    <Icons name={icon} className="h-[22px] w-[22px]" />
+                  </Link>
+                </IconButton>
+              </MaybeTooltip>
             </HoverCardTrigger>
             {hasChildrenItems ? (
               <HoverCardContent side="right" sideOffset={16} className="mt-2 w-[298px] space-y-3">
@@ -74,10 +86,6 @@ const AdminSidebar = (props: AdminSidebarProps) => (
                         </ListItem>
                       )
                     })}
-
-                    <ListItem startIcon={<Icons name="outline.general.ghost" />}>
-                      Subscription
-                    </ListItem>
                   </List>
                 ) : null}
               </HoverCardContent>

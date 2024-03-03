@@ -34,6 +34,8 @@ import Icons from "@/components/ui/icons"
 import { List, ListItem, ListItemTrigger, ListItemContent } from "@/components/ui/list"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/utils/tailwind"
+import { Switch } from "@/components/ui/switch"
+import { Checkbox } from "@/components/ui/checkbox"
 
 const notifications = [
   {
@@ -139,6 +141,16 @@ export default function CardDemo({ className, ...props }: CardProps) {
           <h2>Navigation</h2>
           {">"}
           <h2>Dashboard</h2>
+        </CardContent>
+      </Card>
+      <Card className={cn("w-[380px]", className)}>
+        <CardHeader>
+          <CardTitle>Form field</CardTitle>
+        </CardHeader>
+        <CardContent className="flex gap-2 text-sm text-muted">
+          <Switch />
+          <Checkbox variant="contained" />
+          <Checkbox variant="outlined" />
         </CardContent>
       </Card>
       <Card className={cn("w-[380px]", className)}>
