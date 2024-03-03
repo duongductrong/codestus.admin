@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 import { cn } from "@/utils/tailwind"
 import dynamic from "next/dynamic"
 import React, { ComponentProps } from "react"

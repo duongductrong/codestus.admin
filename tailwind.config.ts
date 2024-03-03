@@ -43,7 +43,7 @@ const config = {
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
-          border: "hsl(var(--popover-border))"
+          border: "hsl(var(--popover-border))",
         },
         primary: {
           DEFAULT: "hsl(var(--twc-primary))",
@@ -62,10 +62,10 @@ const config = {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
-          darkness: "var(--accent-darkness)",
-          lightness: "var(--accent-lightness)",
-          light: "var(--accent-light)",
-          dark: "var(--accent-dark)",
+          darkness: "hsl(var(--accent-darkness))",
+          lightness: "hsl(var(--accent-lightness))",
+          light: "hsl(var(--accent-light))",
+          dark: "hsl(var(--accent-dark))",
         },
         app: {
           background: "var(--app-background)",
@@ -78,13 +78,17 @@ const config = {
         },
 
         "icon-btn": {
-          foreground: "var(--icon-btn-foreground)",
-          background: "var(--icon-btn-background)",
+          foreground: "hsl(var(--icon-btn-foreground))",
+          background: "hsl(var(--icon-btn-background))",
         },
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
           border: "hsl(var(--card-border))",
+        },
+        list: {
+          background: "hsl(var(--list))",
+          foreground: "hsl(var(--list-foreground))",
         },
       },
       borderRadius: {

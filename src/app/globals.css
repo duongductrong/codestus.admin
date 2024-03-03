@@ -8,11 +8,8 @@
     --foreground: 240 10% 3.9%;
 
     --twc-muted: 224 17% 66%; /* #9aa1b7 */
-    --twc-muted-foreground: 224 16% 54%; /* #78829D */
+    --twc-muted-foreground: var(--twc-gray); /* #78829D */
     /* --twc-muted-foreground: 240 3.8% 46.1%; */
-
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
 
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
@@ -21,11 +18,10 @@
     --radius-base: 0.75rem;
 
     /* Main variables */
-    --primary-light: #f9f9f9;
-    --accent-darkness: #15171c;
-    --accent-lightness: #f1f1f4;
-    --accent-light: #f5f5f5;
-    --accent-dark: #1b1c22;
+    --accent-darkness: 222.9 14.3% 9.6%; /* #15171c */
+    --accent-lightness: 240 12% 95.1%; /* #f1f1f4 */
+    --accent-light: 0 0% 96.1%; /* #f5f5f5 */
+    --accent-dark: 231.4 11.5% 12%;
 
     /* App variables */
     --app-background: #f1f1f4;
@@ -46,6 +42,9 @@
     --popover: var(--twc-popover-background);
     --popover-foreground: var(--twc-popover-color);
     --popover-border: var(--card-border); /* #f1f1f4 */
+
+    --list: var(--accent-lightness);
+    --list-foreground: var(--twc-gray);
 
     --twc-blue: #0d6efd;
     --twc-indigo: #6610f2;
@@ -180,9 +179,6 @@
     --twc-muted-foreground: 233 7% 53%; /* #808290 */
     /* --twc-muted-foreground: 240 5% 64.9%; */
 
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
@@ -202,6 +198,9 @@
     --popover: var(--twc-popover-color);
     --popover-foreground: var(--twc-popover-background);
     --popover-border: var(--card-border); /* #1e2027 */
+
+    --list: var(--accent-dark);
+    --list-foreground: var(--twc-gray);
 
     --twc-body-color: #f5f5f5;
     --twc-body-background: 223 14% 10%; /* #15171c */
