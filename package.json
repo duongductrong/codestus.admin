@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "icons:generate": "npx ts-node/esm ./scripts/generate-icons-ki.ts"
+    "icons:generate": "npx ts-node/esm ./scripts/generate-icons-ki.ts",
+    "prettier": "prettier . --write"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",

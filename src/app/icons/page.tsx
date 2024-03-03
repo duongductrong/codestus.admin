@@ -34,7 +34,9 @@ class Command {
       return `${dir}/${entry}`.replace(this.getDestination(), "")
     })
 
-    const flatResults = results.flat(9).map((_path) => _path.replace("/", ".").replace(/^\.|.svg/, ""))
+    const flatResults = results
+      .flat(9)
+      .map((_path) => _path.replace("/", ".").replace(/^\.|.svg/, ""))
 
     return _.uniq(flatResults)
   }

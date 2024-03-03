@@ -1,5 +1,5 @@
 module.exports = {
-  "extends": [
+  extends: [
     "next/core-web-vitals",
     "airbnb",
     "airbnb-typescript",
@@ -7,7 +7,7 @@ module.exports = {
     "prettier",
     // "plugin:@tanstack/eslint-plugin-query/recommended"
   ],
-  "rules": {
+  rules: {
     "class-methods-use-this": "off",
     // "@ts-expect-error": "off",
 
@@ -37,7 +37,7 @@ module.exports = {
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "react/no-unknown-property": "off",
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+    "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx", ".ts", ".tsx"] }],
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off",
     "react/function-component-definition": "off",
@@ -52,19 +52,19 @@ module.exports = {
       "error",
       "ignorePackages",
       {
-        "js": "never",
-        "jsx": "never",
-        "ts": "never",
-        "tsx": "never"
-      }
-    ]
+        js: "never",
+        jsx: "never",
+        ts: "never",
+        tsx: "never",
+      },
+    ],
   },
-  "parserOptions": {
-    "parser": '@typescript-eslint/parser',
-    "project": "./tsconfig.json",
-    "tsconfigRootDir": __dirname
+  parserOptions: {
+    parser: "@typescript-eslint/parser",
+    project: "./tsconfig.json",
+    tsconfigRootDir: __dirname,
   },
-  "plugins": [
+  plugins: [
     // "@tanstack/query"
-  ]
+  ],
 }
