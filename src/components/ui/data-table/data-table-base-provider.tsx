@@ -1,7 +1,8 @@
 "use client"
 
-import { PaginationState, Table } from "@tanstack/react-table";
-import { ReactNode, createContext, useMemo } from "react";
+import { useDeepCompareMemoize } from "@/hooks/use-deep-compare-memoize"
+import { PaginationState, Table } from "@tanstack/react-table"
+import { ReactNode, createContext, useMemo } from "react"
 
 export interface DataTableBaseContextState {
   pagination: { pageIndex: number; pageSize: number; totalRecords: number; totalPages: number }
@@ -25,7 +26,7 @@ export const DataTableBaseProvider = ({
 }: DataTableBaseProviderProps) => {
   const values = useMemo<DataTableBaseContextState>(
     () => ({ table, pagination, setPagination }),
-    [pagination, table, setPagination],
+    useDeepCompareMemoize([pagination, table, table.getState(), setPagination]),
   )
 
   return <DataTableBaseContext.Provider value={values}>{children}</DataTableBaseContext.Provider>

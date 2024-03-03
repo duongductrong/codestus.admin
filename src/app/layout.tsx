@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "sonner"
+import { GeistSans } from "geist/font/sans"
+import { cn } from "@/utils/tailwind"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -17,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={(inter.className, "bg-app-background antialiased")}>
+      <body className={cn(GeistSans.className, "bg-app-background antialiased")}>
         {children}
         <Toaster />
       </body>

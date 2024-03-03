@@ -21,23 +21,23 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   createSidebarItem({
     key: "apps",
     title: "Apps",
-    path: PAGE_ROUTES.HOME,
+    path: "#",
     icon: "outline.general.diamonds",
     children: [
       createSidebarItem({
-        key: "apps-eCommerce",
-        title: "eCommerce",
+        key: "apps-Blog",
+        title: "Blog",
         path: PAGE_ROUTES.HOME,
         children: [
           createSidebarItem({
-            key: "apps-eCommerce-Products",
-            title: "Products",
-            path: PAGE_ROUTES.HOME,
+            key: "apps-Blog-Posts",
+            title: "Posts",
+            path: PAGE_ROUTES.ADMIN.POST_LIST,
           }),
           createSidebarItem({
             key: "apps-Category",
             title: "Categories",
-            path: PAGE_ROUTES.HOME,
+            path: PAGE_ROUTES.ADMIN.CATEGORY_LIST,
           }),
         ],
       }),

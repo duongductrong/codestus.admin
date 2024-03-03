@@ -4,18 +4,18 @@ import { VariantProps, cva } from "class-variance-authority"
 import React, { ComponentProps, ElementRef, forwardRef } from "react"
 
 export const iconButtonVariants = cva(
-  ["inline-flex items-center justify-center rounded-base", "[&>*]:size-5"],
+  ["inline-flex items-center justify-center rounded-md", "[&>*]:size-5"],
   {
     variants: {
       active: {
-        true: "bg-icon-btn-background text-icon-btn-foreground",
+        true: "bg-muted text-muted-foreground",
       },
       hoverable: {
         true: "hover:bg-icon-btn-background text-icon-btn-foreground",
       },
       size: {
-        default: "size-10",
-        lg: "size-11",
+        default: "size-9",
+        lg: "size-10",
       },
     },
     defaultVariants: {

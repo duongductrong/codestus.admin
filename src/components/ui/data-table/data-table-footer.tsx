@@ -1,7 +1,7 @@
 import { cn } from "@/utils/tailwind"
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
-import { useDataTableBase } from "./use-data-table-base"
 import { Pagination } from "../pagination-z"
+import { useDataTableBase } from "./use-data-table-base"
 
 export interface DataTableFooterProps extends ComponentPropsWithoutRef<"div"> {
   /**
@@ -27,10 +27,10 @@ const DataTableFooter = forwardRef<ElementRef<"div">, DataTableFooterProps>(
 
     return (
       <div ref={ref} {...props} className={cn("mt-4 flex items-center", className)}>
-        <div className="flex items-center">{infoContent}</div>
+        <div className="flex items-center text-sm">{infoContent}</div>
         <Pagination
           currentPage={Number(pagination?.pageIndex)}
-          totalPages={Math.ceil(Number(pagination?.totalRecords) / Number(pagination?.pageSize))}
+          totalPages={pagination.totalPages}
           setCurrentPage={(page) => table?.setPageIndex(page)}
           className="ml-auto"
         />

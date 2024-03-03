@@ -6,17 +6,24 @@
  * See https://tanstack.com/virtual/v3/docs/examples/react/table for a simpler fixed row height example.
  */
 
+import { useDeepCompareMemoize } from "@/hooks/use-deep-compare-memoize"
 import { Nullable } from "@/types/utilities"
 import { cn } from "@/utils/tailwind"
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons"
 import {
   ColumnDef,
+  ColumnFilter,
+  ColumnFiltersState,
   PaginationState,
+  Table as ReactTable,
   Row,
   RowSelectionState,
   SortingState,
   flexRender,
   getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -69,18 +76,28 @@ export interface DataTableBaseSorting {
   manualSorting?: boolean
 }
 
+export interface DataTableBaseFiltering {
+  manualFiltering?: boolean
+  columnFilters?: ColumnFiltersState
+  onColumnFilteringChange?: (state: ColumnFiltersState) => void
+  // onGlobalFilteringChange?: (state: ColumnFiltersState) => void
+}
+
 export interface DataTableBaseProps<TData = any, TColumn = any>
   extends ComponentProps<"table">,
     DataTableBaseSelection<TColumn>,
     DataTableBasePagination,
-    DataTableBaseSorting {
+    DataTableBaseSorting,
+    DataTableBaseFiltering {
   data: Record<keyof TColumn, unknown>[]
 
   columns: ColumnDef<TColumn>[]
 
+  columnSize?: number
+
   debugTable?: boolean
 
-  height?: number
+  maxHeight?: number
 
   header?: ReactNode
 
@@ -100,8 +117,9 @@ export const DataTableBase = <TData, TColumn>({
   footer,
   data = [],
   columns = [],
+  columnSize = 46.5,
   debugTable = false,
-  height = -1,
+  maxHeight = 650,
   pagination: manualPagination = { pageIndex: 0, pageSize: 10 },
   onPaginationChange,
   rowId,
@@ -111,6 +129,10 @@ export const DataTableBase = <TData, TColumn>({
   sorting: manualSorting_ = [],
   manualSorting = false,
   onSortingChange,
+  manualFiltering,
+  columnFilters,
+  onColumnFilteringChange,
+  // onGlobalFilteringChange,
   coloredTableHead,
   emptyText = "There are no data.",
   ...props
@@ -124,10 +146,13 @@ export const DataTableBase = <TData, TColumn>({
 
   const [selfSorting, setSelfSorting] = useState<SortingState>(manualSorting_ || [])
 
+  const [selfColumnFilters, setSelfColumnFilters] = useState<ColumnFiltersState>([])
+
   const isManualPagination = !!manualPagination.totalRecords
   const isManualSorting = manualSorting
+  const isManualFiltering = manualFiltering
 
-  const preColumns = [
+  const rootColumns = [
     {
       accessorKey: "__selection__",
       id: "__selection__",
@@ -149,14 +174,18 @@ export const DataTableBase = <TData, TColumn>({
     ...columns,
   ]
 
+  const rootState = {
+    pagination: isManualPagination ? manualPagination : selfPagination,
+    sorting: isManualSorting ? manualSorting_ : selfSorting,
+    rowSelection: selfRowSelection,
+    columnFilters: selfColumnFilters,
+    // columnFilters: isManualFiltering ? columnFilters : selfColumnFilters,
+  } as ReactTable<any>["initialState"]
+
   const table = useReactTable({
-    columns: preColumns,
+    state: rootState,
+    columns: rootColumns,
     data: data as any[],
-    state: {
-      pagination: isManualPagination ? manualPagination : selfPagination,
-      sorting: isManualSorting ? manualSorting_ : selfSorting,
-      rowSelection: selfRowSelection,
-    },
     getCoreRowModel: getCoreRowModel(),
 
     getSortedRowModel: isManualSorting ? undefined : getSortedRowModel(),
@@ -172,27 +201,58 @@ export const DataTableBase = <TData, TColumn>({
     manualPagination: isManualPagination,
 
     enableRowSelection: rowSelectionEnable || !!rowId,
-    onRowSelectionChange: (updaterOrValue) => setSelfRowSelection(updaterOrValue),
+    onRowSelectionChange: setSelfRowSelection,
     getRowId: (row, index) => (rowId ? row?.[rowId as keyof typeof row] : index) as string,
+
+    getFacetedRowModel: isManualFiltering ? undefined : getFacetedRowModel(),
+    getFacetedUniqueValues: isManualFiltering ? undefined : getFacetedUniqueValues(),
+    getFilteredRowModel: isManualFiltering ? undefined : getFilteredRowModel(),
+    onColumnFiltersChange: setSelfColumnFilters,
+    manualFiltering: isManualFiltering,
 
     debugTable,
   })
 
-  useEffect(() => onRowSelectionChange?.(selfRowSelection), [selfRowSelection])
+  // Row selection
   useEffect(
-    () =>
+    () => {
+      if (selfRowSelection) setSelfRowSelection(selfRowSelection)
+    },
+    useDeepCompareMemoize([rowSelection]),
+  )
+  useEffect(() => onRowSelectionChange?.(selfRowSelection), [selfRowSelection])
+  // Row selection
+
+  // Pagination
+  useEffect(() => {
+    if (!isManualPagination)
       onPaginationChange?.({
         pageIndex: selfPagination.pageIndex,
         pageSize: manualPagination.pageSize,
-      }),
-    [selfPagination],
+      })
+  }, [selfPagination, isManualPagination])
+  // Pagination
+
+  // Sorting
+  useEffect(() => {
+    if (!isManualSorting) onSortingChange?.(selfSorting)
+  }, [selfSorting, isManualSorting])
+  // Sorting
+
+  // column filters
+  useEffect(
+    () => {
+      if (isManualFiltering && columnFilters) setSelfColumnFilters(columnFilters)
+    },
+    useDeepCompareMemoize([columnFilters, isManualFiltering]),
   )
-  useEffect(() => onSortingChange?.(selfSorting), [selfSorting])
+  useEffect(() => onColumnFilteringChange?.(selfColumnFilters), [selfColumnFilters])
+  // column filters
 
   const totalRecords = isManualPagination ? Number(manualPagination.totalRecords) : data.length
   const totalPages = isManualPagination
     ? Math.floor(totalRecords / selfPagination.pageSize)
-    : table.getPageCount()
+    : table?.getPageCount() ?? 0
 
   const pagination = {
     pageIndex: isManualPagination ? manualPagination.pageIndex : selfPagination.pageIndex,
@@ -203,14 +263,13 @@ export const DataTableBase = <TData, TColumn>({
 
   const setPagination = isManualPagination ? onPaginationChange : setSelfPagination
 
-  const tableContainerHeight = !data.length ? 200 : height || selfPagination.pageSize * 50
-
   const { rows } = table.getRowModel()
 
   // The virtualizer needs to know the scrollable container element
   const tableContainerRef = React.useRef<HTMLDivElement>(null)
   const tableRef = React.useRef<ElementRef<typeof Table>>(null)
   const tableHeaderRef = React.useRef<ElementRef<typeof TableHeader>>(null)
+  const tableBodyRef = React.useRef<ElementRef<typeof TableBody>>(null)
 
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
@@ -235,11 +294,18 @@ export const DataTableBase = <TData, TColumn>({
 
   if (!setPagination) throw new Error("The table is missing `setPagination` function.")
 
+  const hasNoData = isManualPagination ? !data.length : !rowVirtualizer.getVirtualItems().length
+  const tableContainerHeight = useMemo(() => {
+    const estimateColumnsHeight = rootState.pagination.pageSize * columnSize
+    return hasNoData ? 200 : estimateColumnsHeight < maxHeight ? -1 : maxHeight
+  }, [hasNoData, maxHeight, rootState.pagination.pageSize, tableBodyRef.current])
+
   return (
     <DataTableBaseProvider table={table} pagination={pagination} setPagination={setPagination}>
-      <div className="relative h-auto w-full">
+      <div className="relative h-auto w-full max-w-full">
         {header}
         <div
+          key={tableContainerHeight}
           ref={tableContainerRef}
           className="relative h-full overflow-auto rounded-md border border-border p-0"
           style={{
@@ -290,6 +356,7 @@ export const DataTableBase = <TData, TColumn>({
               ))}
             </TableHeader>
             <TableBody
+              ref={tableBodyRef}
               style={{
                 // display: "grid",
                 height: `${rowVirtualizer.getTotalSize()}px`, // tells scrollbar how big the table is
@@ -324,12 +391,12 @@ export const DataTableBase = <TData, TColumn>({
                   </TableRow>
                 )
               })}
-              {!data.length ? (
+              {hasNoData ? (
                 <tr aria-colspan={999}>
                   <td
                     className="flex items-center justify-center"
                     colSpan={columns.length + 999}
-                    style={{ height: tableContainerHeight - 50 }}
+                    style={{ height: 200 - 50 }}
                   >
                     {emptyText}
                   </td>
@@ -343,3 +410,8 @@ export const DataTableBase = <TData, TColumn>({
     </DataTableBaseProvider>
   )
 }
+
+const toObject = (values: Record<string, ColumnFilter>, curValue: ColumnFilter) => ({
+  ...values,
+  [curValue.id]: curValue,
+})

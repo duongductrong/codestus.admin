@@ -61,6 +61,14 @@ import { cn } from "@/utils/tailwind"
 import { ColumnDef, PaginationState, SortingState } from "@tanstack/react-table"
 import dayjs from "dayjs"
 import React, { useState } from "react"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Person } from "./makeData"
 
 const notifications = [
@@ -307,6 +315,21 @@ export default function CardDemo({ className, ...props }: CardProps) {
               pageSize: paginationState.pageSize,
               // totalRecords: 3,
             }}
+            header={
+              <div className="mb-4 flex items-center justify-between">
+                <Input placeholder="Search a user" className="max-w-[450px]" />
+                <Select>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="View" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="light">Light</SelectItem>
+                    <SelectItem value="dark">Dark</SelectItem>
+                    <SelectItem value="system">System</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            }
             // onPaginationChange={setPaginationState}
             // rowSelection={{ 1: true }}
             // onRowSelectionChange={(s) => console.log("row select", s)}

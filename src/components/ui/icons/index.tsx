@@ -16,4 +16,4 @@ const Icons = ({ name, className, ...props }: IconsProps) => {
   return <Icon aria-hidden="true" {...props} className={cn("h-5 w-5", className)} />
 }
 
-export default Icons
+export default memo(Icons)

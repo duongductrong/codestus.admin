@@ -24,7 +24,7 @@ const AdminSidebar = (props: AdminSidebarProps) => (
     <div
       className={cn(
         "size-app-sidebar-dimension",
-        "border-b bg-background",
+        "bg-background",
         "mb-4 flex shrink-0 items-center justify-center",
       )}
     >
@@ -46,7 +46,7 @@ const AdminSidebar = (props: AdminSidebarProps) => (
           <HoverCard key={key} openDelay={0}>
             <HoverCardTrigger asChild>
               <MaybeTooltip {...maybeTooltipProps}>
-                <IconButton key={key} active={index === 0} size="lg" forceDark asChild>
+                <IconButton key={key} active={index === 1} size="lg" forceDark asChild>
                   <Link href={path}>
                     {icon ? <Icons name={icon} className="h-[22px] w-[22px]" /> : null}
                   </Link>
@@ -69,7 +69,7 @@ const AdminSidebar = (props: AdminSidebarProps) => (
                                 {nestedChildren.map((nestedChildItem) => (
                                   <ListItem
                                     as={Link}
-                                    href={childItem.path}
+                                    href={nestedChildItem.path}
                                     startIcon={
                                       nestedChildItem.icon ? (
                                         <Icons name={nestedChildItem.icon} />
