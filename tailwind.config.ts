@@ -23,19 +23,29 @@ const config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+        background: {
+          DEFAULT: "hsl(var(--background))",
+          body: {
+            background: "var(--twc-body-background)",
+          },
         },
+        foreground: "hsl(var(--foreground))",
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "hsl(var(--twc-secondary))",
+          foreground: "hsl(var(--twc-secondary-foreground))",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "hsl(var(--twc-destructive))",
+          foreground: "hsl(var(--twc-destructive-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        primary: {
+          DEFAULT: "hsl(var(--twc-primary))",
+          foreground: "var(--twc-white)",
+          active: "var(--twc-primary-active)",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
@@ -44,31 +54,37 @@ const config = {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          darkness: "var(--accent-darkness)",
+          lightness: "var(--accent-lightness)",
+          light: "var(--accent-light)",
+          dark: "var(--accent-dark)",
         },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+        app: {
+          background: "var(--app-background)",
+          sidebar: {
+            background: "var(--app-sidebar-background)",
+          },
+          header: {
+            background: "var(--app-header-background)",
+          },
+        },
+
+        "icon-btn": {
+          foreground: "var(--icon-btn-foreground)",
+          background: "var(--icon-btn-background)",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "var(--card)",
+          foreground: "var(--card-foreground)",
+          border: "var(--card-border)",
         },
-
-        light: "var(--light)",
-        dark: "var(--dark)",
-        "light-inverse": "var(--light-inverse)",
-
-        "icon-btn-foreground": "var(--icon-btn-foreground)",
-
-        "app-background": "var(--app-background)",
-        "app-sidebar-background": "var(--app-sidebar-base-background)",
-        "app-sidebar-border": "var(--app-sidebar-border)",
       },
       borderRadius: {
         base: "var(--radius-base)",
       },
       spacing: {
-        "app-sidebar": "var(--app-sidebar-size)",
+        "app-sidebar-dimension": "var(--app-sidebar-dimension)",
+        "app-header-dimension": "var(--app-header-dimension)",
       },
       keyframes: {
         "accordion-down": {

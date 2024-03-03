@@ -1,35 +1,40 @@
 import { IconButton } from "@/components/icon-button"
-import { cn } from "@/utils/tailwind"
-import HomeIcon from '@/components/ui/icons/outline/general/home-2.svg'
 import Icon from "@/components/ui/icons"
+import { SIDEBAR_ITEMS } from "@/constants/admin"
+import { cn } from "@/utils/tailwind"
+import Link from "next/link"
 import SidebarLogo from "./_components/sidebar-logo"
 
 export interface AdminSidebarProps {}
 
 const AdminSidebar = (props: AdminSidebarProps) => (
-  <div
+  <aside
     className={cn(
-      "w-app-sidebar h-lvh bg-app-sidebar-background",
-      "border-r border-app-sidebar-border",
+      "w-app-sidebar-dimension h-lvh bg-app-sidebar-background",
+      "border-accent-darkness border-r",
       "flex flex-col items-center overflow-hidden",
     )}
   >
     <div
       className={cn(
-        "size-app-sidebar",
-        "border-b border-app-sidebar-border bg-app-sidebar-background",
-        "flex items-center justify-center mb-4",
+        "size-app-sidebar-dimension",
+        "border-accent-darkness border-b bg-app-sidebar-background",
+        "mb-4 flex shrink-0 items-center justify-center",
       )}
     >
       <SidebarLogo />
     </div>
 
-    <div className="h-full p-2">
-      <IconButton active>
-        <Icon name="/outline/general/home-2.svg" className="w-5 h-5" />
-      </IconButton>
+    <div className="flex h-full flex-col gap-3 p-2">
+      {SIDEBAR_ITEMS.map(({ key, icon, path }, index) => (
+        <IconButton key={key} active={index === 0} size="lg" forceDark asChild>
+          <Link href={path}>
+            <Icon name={icon} className="h-[22px] w-[22px]" />
+          </Link>
+        </IconButton>
+      ))}
     </div>
-  </div>
+  </aside>
 )
 
 export default AdminSidebar

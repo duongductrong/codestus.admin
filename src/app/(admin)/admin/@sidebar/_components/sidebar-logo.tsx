@@ -15,6 +15,7 @@ const SidebarLogo = forwardRef<ElementRef<typeof Image>, SidebarLogoProps>(
       width={35}
       height={35}
       alt="123"
+      priority
     />
   ),
 )
