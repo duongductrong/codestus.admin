@@ -1,7 +1,6 @@
-import { forwardRef } from "react"
 import dynamic from "next/dynamic"
-import { DataTableBase, DataTableBaseExposeRef, DataTableBaseProps } from "./data-table-base"
 import { Skeleton } from "../skeleton"
+import { DataTableBase, DataTableBaseProps } from "./data-table-base"
 import { DataTableFooterProps } from "./data-table-footer"
 
 export const DataTableFooter = dynamic(() => import("./data-table-footer"), {

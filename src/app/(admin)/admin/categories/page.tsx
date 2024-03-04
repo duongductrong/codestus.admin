@@ -8,7 +8,7 @@ import {
   DataTableSearcher,
   DataTableStacked,
   DataTableToolbar,
-} from "@/components/ui/data-table/data-table-toolbar"
+} from "@/components/ui/data-table/data-table-filters"
 import {
   Select,
   SelectContent,
@@ -99,7 +99,7 @@ const PostsList = (props: PostsListProps) => {
       header={
         <DataTableToolbar>
           <DataTableStacked>
-            <DataTableSearcher column="firstName" placeholder="Search a first name" />
+            <DataTableSearcher placeholder="Search all columns" isGlobal />
             <DataTableSearcher column="lastName" placeholder="Search a last name" />
 
             <DataTableFacetedFilter

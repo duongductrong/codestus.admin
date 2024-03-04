@@ -14,6 +14,7 @@ import {
   ColumnDef,
   ColumnFilter,
   ColumnFiltersState,
+  FiltersTableState,
   PaginationState,
   Table as ReactTable,
   Row,
@@ -21,6 +22,7 @@ import {
   SortingState,
   flexRender,
   getCoreRowModel,
+  getFacetedMinMaxValues,
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
@@ -80,7 +82,8 @@ export interface DataTableBaseFiltering {
   manualFiltering?: boolean
   columnFilters?: ColumnFiltersState
   onColumnFilteringChange?: (state: ColumnFiltersState) => void
-  // onGlobalFilteringChange?: (state: ColumnFiltersState) => void
+  globalFilter?: FiltersTableState["globalFilter"]
+  onGlobalFilteringChange?: (state: FiltersTableState["globalFilter"]) => void
 }
 
 export interface DataTableBaseProps<TData = any, TColumn = any>
@@ -130,9 +133,10 @@ export const DataTableBase = <TData, TColumn>({
   manualSorting = false,
   onSortingChange,
   manualFiltering,
-  columnFilters,
+  columnFilters = [],
   onColumnFilteringChange,
-  // onGlobalFilteringChange,
+  globalFilter,
+  onGlobalFilteringChange,
   coloredTableHead,
   emptyText = "There are no data.",
   ...props
@@ -146,7 +150,9 @@ export const DataTableBase = <TData, TColumn>({
 
   const [selfSorting, setSelfSorting] = useState<SortingState>(manualSorting_ || [])
 
-  const [selfColumnFilters, setSelfColumnFilters] = useState<ColumnFiltersState>([])
+  const [selfColumnFilters, setSelfColumnFilters] = useState<ColumnFiltersState>(columnFilters)
+
+  const [selfGlobalFilter, setSelfGlobalFilter] = useState<string>(globalFilter)
 
   const isManualPagination = !!manualPagination.totalRecords
   const isManualSorting = manualSorting
@@ -179,7 +185,7 @@ export const DataTableBase = <TData, TColumn>({
     sorting: isManualSorting ? manualSorting_ : selfSorting,
     rowSelection: selfRowSelection,
     columnFilters: selfColumnFilters,
-    // columnFilters: isManualFiltering ? columnFilters : selfColumnFilters,
+    globalFilter: selfGlobalFilter,
   } as ReactTable<any>["initialState"]
 
   const table = useReactTable({
@@ -206,8 +212,10 @@ export const DataTableBase = <TData, TColumn>({
 
     getFacetedRowModel: isManualFiltering ? undefined : getFacetedRowModel(),
     getFacetedUniqueValues: isManualFiltering ? undefined : getFacetedUniqueValues(),
+    getFacetedMinMaxValues: isManualFiltering ? undefined : getFacetedMinMaxValues(),
     getFilteredRowModel: isManualFiltering ? undefined : getFilteredRowModel(),
     onColumnFiltersChange: setSelfColumnFilters,
+    onGlobalFilterChange: setSelfGlobalFilter,
     manualFiltering: isManualFiltering,
 
     debugTable,
@@ -248,6 +256,16 @@ export const DataTableBase = <TData, TColumn>({
   )
   useEffect(() => onColumnFilteringChange?.(selfColumnFilters), [selfColumnFilters])
   // column filters
+
+  // global filters
+  useEffect(
+    () => {
+      if (isManualFiltering && globalFilter) setSelfGlobalFilter?.(globalFilter)
+    },
+    useDeepCompareMemoize([globalFilter, isManualFiltering]),
+  )
+  useEffect(() => onGlobalFilteringChange?.(selfGlobalFilter), [selfGlobalFilter])
+  // global filters
 
   const totalRecords = isManualPagination ? Number(manualPagination.totalRecords) : data.length
   const totalPages = isManualPagination
@@ -410,8 +428,3 @@ export const DataTableBase = <TData, TColumn>({
     </DataTableBaseProvider>
   )
 }
-
-const toObject = (values: Record<string, ColumnFilter>, curValue: ColumnFilter) => ({
-  ...values,
-  [curValue.id]: curValue,
-})

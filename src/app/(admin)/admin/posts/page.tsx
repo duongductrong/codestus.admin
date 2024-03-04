@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge"
 import { DataTable } from "@/components/ui/data-table"
-import { DataTableSearcher, DataTableToolbar } from "@/components/ui/data-table/data-table-toolbar"
+import { DataTableSearcher, DataTableToolbar } from "@/components/ui/data-table/data-table-filters"
 import { Input } from "@/components/ui/input"
 import {
   Select,
