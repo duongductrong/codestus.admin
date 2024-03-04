@@ -2,6 +2,7 @@
 
 import { Badge } from "@/components/ui/badge"
 import { DataTable } from "@/components/ui/data-table"
+import { DataTableDateRangeFilter } from "@/components/ui/data-table/components/data-table-date-range-filter"
 import {
   DataTableFacetedFilter,
   DataTableResetFilter,
@@ -9,14 +10,8 @@ import {
   DataTableStacked,
   DataTableToolbar,
 } from "@/components/ui/data-table/data-table-filters"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { ColumnDef, ColumnFiltersState } from "@tanstack/react-table"
+import { addDays } from "date-fns/addDays"
 import { useMemo, useState } from "react"
 
 export interface PostsListProps {}
@@ -63,6 +58,7 @@ const PostsList = (props: PostsListProps) => {
     {
       accessorKey: "createdAt",
       header: "Created At",
+      filterFn: "isWithinDateRange",
       cell: (info) => info.getValue<Date>().toLocaleString(),
       size: 250,
     },
@@ -110,19 +106,12 @@ const PostsList = (props: PostsListProps) => {
                 { label: "100", value: "100" },
               ]}
             />
+            <DataTableDateRangeFilter
+              column="createdAt"
+              from={addDays(new Date(), -10).toISOString()}
+              to={addDays(new Date(), 0).toISOString()}
+            />
             <DataTableResetFilter />
-          </DataTableStacked>
-          <DataTableStacked>
-            <Select>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="View" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="light">Light</SelectItem>
-                <SelectItem value="dark">Dark</SelectItem>
-                <SelectItem value="system">System</SelectItem>
-              </SelectContent>
-            </Select>
           </DataTableStacked>
         </DataTableToolbar>
       }

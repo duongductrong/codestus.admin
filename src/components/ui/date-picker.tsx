@@ -1,10 +1,10 @@
-import React, { ElementRef, forwardRef, useImperativeHandle, useState } from "react"
 import { cn } from "@/utils/tailwind"
 import { CalendarIcon } from "@radix-ui/react-icons"
-import { format as _format } from "date-fns"
-import { Popover, PopoverContent, PopoverTrigger } from "./popover"
-import { Calendar } from "./calendar"
+import { format as _format } from "date-fns/format"
+import { forwardRef, useImperativeHandle, useState } from "react"
 import { Button } from "./button"
+import { Calendar } from "./calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "./popover"
 
 export interface DatePickerExposeRef {}
 

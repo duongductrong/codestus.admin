@@ -5,7 +5,11 @@ export interface DataTableToolbarProps extends ComponentPropsWithoutRef<"div"> {
 
 export const DataTableToolbar = forwardRef<ElementRef<"div">, DataTableToolbarProps>(
   ({ children, className, ...props }, ref) => (
-    <div {...props} ref={ref} className={cn("mb-4 flex items-center justify-between", className)}>
+    <div
+      {...props}
+      ref={ref}
+      className={cn("mb-4 flex flex-wrap items-center justify-between gap-2", className)}
+    >
       {children}
     </div>
   ),

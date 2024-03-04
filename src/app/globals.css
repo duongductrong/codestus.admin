@@ -40,10 +40,12 @@
     --background: 240 10% 4%;
     --foreground: 0 0% 98%;
 
-    --card: 228 14% 7%;
+    /* --card: 228 14% 7%; */
+    --card: 240 10% 4%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 228 14% 7%;
+    /* --popover: 228 14% 7%; */
+    --popover: 240 10% 4%;
     --popover-foreground: 0 0% 98%;
 
     --primary: 0 0% 98%;

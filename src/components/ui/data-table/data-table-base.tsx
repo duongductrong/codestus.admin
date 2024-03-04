@@ -12,8 +12,8 @@ import { cn } from "@/utils/tailwind"
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons"
 import {
   ColumnDef,
-  ColumnFilter,
   ColumnFiltersState,
+  FilterFn,
   FiltersTableState,
   PaginationState,
   Table as ReactTable,
@@ -44,6 +44,14 @@ import React, {
 import { Checkbox } from "../checkbox"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../table"
 import { DataTableBaseProvider } from "./data-table-base-provider"
+import { isWithinDateRange } from "./filter-fns"
+
+declare module "@tanstack/table-core" {
+  interface FilterFns {
+    isWithinDateRange: FilterFn<unknown>
+  }
+  interface FilterMeta {}
+}
 
 export interface DataTableBaseExposeRef {
   table: Nullable<ElementRef<typeof Table>>
@@ -191,7 +199,10 @@ export const DataTableBase = <TData, TColumn>({
   const table = useReactTable({
     state: rootState,
     columns: rootColumns,
-    data: data as any[],
+    data,
+    filterFns: {
+      isWithinDateRange,
+    },
     getCoreRowModel: getCoreRowModel(),
 
     getSortedRowModel: isManualSorting ? undefined : getSortedRowModel(),
@@ -270,7 +281,7 @@ export const DataTableBase = <TData, TColumn>({
   const totalRecords = isManualPagination ? Number(manualPagination.totalRecords) : data.length
   const totalPages = isManualPagination
     ? Math.floor(totalRecords / selfPagination.pageSize)
-    : table?.getPageCount() ?? 0
+    : table?.getPageCount?.() ?? 0
 
   const pagination = {
     pageIndex: isManualPagination ? manualPagination.pageIndex : selfPagination.pageIndex,
