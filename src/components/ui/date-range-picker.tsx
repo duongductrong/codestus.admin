@@ -23,6 +23,7 @@ export interface DateRangePickerProps
   numberOfMonths?: number
   inputClassName?: string
   displayFormat?: string
+  previewFormat?: string
 
   immediately?: boolean
 
@@ -41,6 +42,7 @@ export const DateRangePicker = React.forwardRef<DateRangePickerExposeRef, DateRa
       className,
       inputClassName,
       displayFormat = "LLL dd, y",
+      previewFormat = "yyyy/MM/dd",
       placeholder = "Select a date range",
       numberOfMonths = 2,
       immediately = false,
@@ -119,7 +121,14 @@ export const DateRangePicker = React.forwardRef<DateRangePickerExposeRef, DateRa
             />
 
             {!immediately ? (
-              <div className="flex flex-wrap justify-end gap-2 p-3 text-right">
+              <div className="flex flex-wrap items-center justify-end gap-2 border-t p-3">
+                {dateKeeper?.from && dateKeeper.to ? (
+                  <p className="text-xs">
+                    {dateKeeper?.from ? format(toDate(dateKeeper?.from as Date), previewFormat) : null}
+                    {" - "}
+                    {dateKeeper?.to ? format(toDate(dateKeeper?.to as Date), previewFormat) : null}
+                  </p>
+                ) : null}
                 <PopoverClose>
                   <Button size={cancelSize} variant="outline">
                     {cancelText}
