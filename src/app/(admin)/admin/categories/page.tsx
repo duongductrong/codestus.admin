@@ -106,11 +106,7 @@ const PostsList = (props: PostsListProps) => {
                 { label: "100", value: "100" },
               ]}
             />
-            <DataTableDateRangeFilter
-              column="createdAt"
-              from={addDays(new Date(), -10).toISOString()}
-              to={addDays(new Date(), 0).toISOString()}
-            />
+            <DataTableDateRangeFilter column="createdAt" />
             <DataTableResetFilter />
           </DataTableStacked>
         </DataTableToolbar>

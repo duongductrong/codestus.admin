@@ -6,23 +6,33 @@ import { toDate } from "date-fns/toDate"
 import * as React from "react"
 import { DateRange } from "react-day-picker"
 
-import { Button } from "@/components/ui/button"
+import { Button, ButtonProps } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/utils/tailwind"
+import { PopoverClose } from "@radix-ui/react-popover"
+import { addMilliseconds } from "date-fns/addMilliseconds"
+import { addMinutes } from "date-fns/addMinutes"
+import { addSeconds } from "date-fns/addSeconds"
 
 export interface DateRangePickerExposeRef {}
 
 export interface DateRangePickerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
-  from: string | Date
-  to: string | Date
   placeholder?: string
   numberOfMonths?: number
   inputClassName?: string
   displayFormat?: string
 
+  immediately?: boolean
+
+  value?: DateRange
   onChange?: (state: DateRange) => void
+
+  cancelText?: string
+  cancelSize?: ButtonProps["size"]
+  saveText?: string
+  saveSize?: ButtonProps["size"]
 }
 
 export const DateRangePicker = React.forwardRef<DateRangePickerExposeRef, DateRangePickerProps>(
@@ -30,26 +40,44 @@ export const DateRangePicker = React.forwardRef<DateRangePickerExposeRef, DateRa
     {
       className,
       inputClassName,
-      from,
-      to,
       displayFormat = "LLL dd, y",
-      placeholder = "Select a date",
+      placeholder = "Select a date range",
       numberOfMonths = 2,
+      immediately = false,
+      value,
+      cancelText = "Cancel",
+      cancelSize = "sm",
+      saveText = "Save changes",
+      saveSize = "sm",
       onChange,
       ...props
     },
     ref,
   ) => {
-    const [date, setDate] = React.useState<DateRange | undefined>({
-      from: toDate(from),
-      to: toDate(to),
-    })
+    const initialValues = {
+      from: value?.from
+        ? addMilliseconds(addSeconds(addMinutes(toDate(value.from), 0), 0), 0)
+        : undefined,
+      to: value?.to
+        ? addMilliseconds(addSeconds(addMinutes(toDate(value.to), 0), 0), 0)
+        : undefined,
+    }
 
-    React.useEffect(() => {
-      if (date) {
-        onChange?.(date)
-      }
-    }, [date])
+    const [dateKeeper, setDateKeeper] = React.useState<DateRange | undefined>(initialValues)
+    const [date, setDate] = React.useState<DateRange | undefined>(initialValues)
+
+    const setDateRangeChange = (dateRangeState: DateRange) => {
+      setDate(dateRangeState)
+      onChange?.(dateRangeState)
+    }
+
+    const resetDateRangeByValue = () => {
+      setDateKeeper(value)
+      setDate(value)
+    }
+
+    // Reset controlled state by prop
+    React.useEffect(resetDateRangeByValue, [(value?.from, value?.to)])
 
     React.useImperativeHandle(ref, () => ({}))
 
@@ -60,7 +88,7 @@ export const DateRangePicker = React.forwardRef<DateRangePickerExposeRef, DateRa
             <Button
               variant="outline"
               className={cn(
-                "w-[300px] justify-start text-left font-normal",
+                "w-fit min-w-[100px] justify-start text-left font-normal",
                 !date && "text-muted-foreground",
                 inputClassName,
               )}
@@ -85,10 +113,28 @@ export const DateRangePicker = React.forwardRef<DateRangePickerExposeRef, DateRa
               initialFocus
               mode="range"
               defaultMonth={date?.from}
-              selected={date}
-              onSelect={setDate}
+              selected={immediately ? date : dateKeeper}
+              onSelect={immediately ? setDate : setDateKeeper}
               numberOfMonths={numberOfMonths}
             />
+
+            {!immediately ? (
+              <div className="flex flex-wrap justify-end gap-2 p-3 text-right">
+                <PopoverClose>
+                  <Button size={cancelSize} variant="outline">
+                    {cancelText}
+                  </Button>
+                </PopoverClose>
+                <PopoverClose>
+                  <Button
+                    size={saveSize}
+                    onClick={() => setDateRangeChange(dateKeeper as DateRange)}
+                  >
+                    {saveText}
+                  </Button>
+                </PopoverClose>
+              </div>
+            ) : null}
           </PopoverContent>
         </Popover>
       </div>
