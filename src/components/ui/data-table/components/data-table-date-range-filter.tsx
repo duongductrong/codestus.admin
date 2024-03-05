@@ -9,6 +9,7 @@ export interface DataTableDateRangeFilterProps extends DateRangePickerProps {
 export const DataTableDateRangeFilter = ({
   className,
   column: columnName,
+  inputClassName,
   ...props
 }: DataTableDateRangeFilterProps) => {
   const { table } = useDataTableBase()
@@ -19,7 +20,7 @@ export const DataTableDateRangeFilter = ({
   return (
     <DateRangePicker
       {...props}
-      inputClassName="border-dashed"
+      inputClassName={cn("border-dashed", inputClassName)}
       className={cn(className)}
       value={{ from: value?.[0], to: value?.[1] }}
       onChange={({ from, to }) => column?.setFilterValue([from, to])}

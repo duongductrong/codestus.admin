@@ -8,7 +8,7 @@ export const DataTableToolbar = forwardRef<ElementRef<"div">, DataTableToolbarPr
     <div
       {...props}
       ref={ref}
-      className={cn("mb-4 flex flex-wrap items-center justify-between gap-2", className)}
+      className={cn("mb-4 flex w-full flex-wrap items-center justify-between gap-2", className)}
     >
       {children}
     </div>

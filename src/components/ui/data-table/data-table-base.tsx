@@ -100,7 +100,7 @@ export interface DataTableBaseProps<TData = any, TColumn = any>
     DataTableBasePagination,
     DataTableBaseSorting,
     DataTableBaseFiltering {
-  data: Record<keyof TColumn, unknown>[]
+  data: any[]
 
   columns: ColumnDef<TColumn>[]
 

@@ -1,10 +1,16 @@
 import { cn } from "@/utils/tailwind"
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
 
-export interface DataTableStackedProps extends ComponentPropsWithoutRef<"div"> {}
+export interface DataTableStackedProps extends ComponentPropsWithoutRef<"div"> {
+  fullWidth?: boolean
+}
 
 export const DataTableStacked = forwardRef<ElementRef<"div">, DataTableStackedProps>(
-  ({ className, ...props }, ref) => (
-    <div {...props} ref={ref} className={cn("flex items-center gap-2", className)} />
+  ({ className, fullWidth, ...props }, ref) => (
+    <div
+      {...props}
+      ref={ref}
+      className={cn("flex items-center gap-2", fullWidth ? "w-full" : null, className)}
+    />
   ),
 )
