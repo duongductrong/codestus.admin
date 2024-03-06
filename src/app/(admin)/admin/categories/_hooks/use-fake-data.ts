@@ -17,7 +17,7 @@ export const useFakeData = () =>
         .fill(1)
         .map<Category>((_, index) => ({
           id: faker.database.mongodbObjectId(),
-          name: faker.person.jobType(),
+          name: faker.lorem.words(2),
           slug: faker.person.zodiacSign(),
           description: faker.person.jobDescriptor(),
           createdAt: new Date().toISOString(),

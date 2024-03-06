@@ -129,7 +129,7 @@ export const DataTableBase = <TData, TColumn>({
   data = [],
   columns = [],
   columnSize = 46.5,
-  debugTable = false,
+  debugTable = true,
   maxHeight = 650,
   pagination: manualPagination = { pageIndex: 0, pageSize: 10 },
   onPaginationChange,

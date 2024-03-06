@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/utils/tailwind"
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
 import { Pagination } from "../pagination-z"

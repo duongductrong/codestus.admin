@@ -5,9 +5,12 @@ import { DataTableDateRangeFilter } from "@/components/ui/data-table/components/
 import {
   DataTableResetFilter,
   DataTableSearcher,
+  DataTableSelectionImpact,
   DataTableStacked,
   DataTableToolbar,
 } from "@/components/ui/data-table/data-table-filters"
+import { Button } from "@/components/ui/button"
+import { usePrompt } from "@/components/ui/use-prompt"
 import { useColumns } from "./_hooks/use-columns"
 import { useFakeData } from "./_hooks/use-fake-data"
 
@@ -16,6 +19,7 @@ export interface PostsListProps {}
 const PostsList = (props: PostsListProps) => {
   const columns = useColumns()
   const data = useFakeData()
+  const prompt = usePrompt()
 
   return (
     <DataTable
@@ -31,6 +35,22 @@ const PostsList = (props: PostsListProps) => {
         <DataTableToolbar>
           <DataTableStacked fullWidth>
             <DataTableSearcher placeholder="Search all columns" isGlobal />
+            <DataTableSelectionImpact>
+              <Button
+                variant="secondary"
+                onClick={() =>
+                  prompt({
+                    title: "Are you absolutely sure?",
+                    description:
+                      "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
+                  }).then((isConfirmed) => {
+                    console.log(isConfirmed)
+                  })
+                }
+              >
+                Bulk delete
+              </Button>
+            </DataTableSelectionImpact>
             <DataTableDateRangeFilter
               column="createdAt"
               className="ml-auto"

@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/utils/tailwind"
 import { DateRangePicker, DateRangePickerProps } from "../../date-range-picker"
 import { useDataTableBase } from "../use-data-table-base"

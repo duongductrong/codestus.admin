@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/utils/tailwind"
 import { ComponentProps, ComponentPropsWithoutRef, ElementRef, forwardRef, useMemo } from "react"
 import { Input } from "../../input"

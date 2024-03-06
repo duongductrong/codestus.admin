@@ -1,3 +1,5 @@
+"use client"
+
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { Button } from "../../button"
 import { useDataTableBase } from "../use-data-table-base"
