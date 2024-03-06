@@ -1,5 +1,6 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/ui/data-table"
 import { DataTableDateRangeFilter } from "@/components/ui/data-table/components/data-table-date-range-filter"
 import {
@@ -9,7 +10,6 @@ import {
   DataTableStacked,
   DataTableToolbar,
 } from "@/components/ui/data-table/data-table-filters"
-import { Button } from "@/components/ui/button"
 import { usePrompt } from "@/components/ui/use-prompt"
 import { useColumns } from "./_hooks/use-columns"
 import { useFakeData } from "./_hooks/use-fake-data"
@@ -49,6 +49,20 @@ const PostsList = (props: PostsListProps) => {
                 }
               >
                 Bulk delete
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() =>
+                  prompt({
+                    title: "Are you absolutely sure?",
+                    description:
+                      "This action cannot be undone. This will permanently update your account data from our servers.",
+                  }).then((isConfirmed) => {
+                    console.log(isConfirmed)
+                  })
+                }
+              >
+                Bulk update
               </Button>
             </DataTableSelectionImpact>
             <DataTableDateRangeFilter

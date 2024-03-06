@@ -1,7 +1,6 @@
 "use client"
 
-import { ReactNode } from "react"
-import { usePromptInternalActions, usePromptStore } from "."
+import { createExternalStore, useExternalStore } from "@/hooks/use-external-store"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,14 +12,31 @@ import {
   AlertDialogTitle,
 } from "../alert-dialog"
 
+export interface PromptState {
+  title: string
+  description?: string
+  cancelText?: string
+  confirmText?: string
 
-export interface PrompterProps {
-  children?: ReactNode
+  open?: boolean
+  confirm?: (state: boolean) => void
 }
 
-export const Prompter = ({ children }: PrompterProps) => {
-  const promptState = usePromptStore()
-  const promptActions = usePromptInternalActions()
+export const initialPromptState: PromptState = {
+  title: "",
+  description: "",
+  cancelText: "Cancel",
+  confirmText: "Confirm",
+
+  open: false,
+}
+
+export interface PrompterProps {}
+
+export const promptStore = createExternalStore<PromptState>(initialPromptState)
+
+export const Prompter = (props: PrompterProps) => {
+  const promptState = useExternalStore(promptStore, (state) => state)
 
   return (
     <AlertDialog open={promptState.open}>
@@ -30,10 +46,10 @@ export const Prompter = ({ children }: PrompterProps) => {
           <AlertDialogDescription>{promptState.description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={promptActions.close}>
+          <AlertDialogCancel onClick={() => promptState?.confirm?.(false)}>
             {promptState.cancelText ?? "Cancel"}
           </AlertDialogCancel>
-          <AlertDialogAction onClick={promptActions.ok}>
+          <AlertDialogAction onClick={() => promptState?.confirm?.(true)}>
             {promptState.confirmText ?? "Continue"}
           </AlertDialogAction>
         </AlertDialogFooter>

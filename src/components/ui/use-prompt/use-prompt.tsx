@@ -1,80 +1,22 @@
 "use client"
 
-import { useSyncExternalStore } from "react"
+import { useRef } from "react"
+import { PromptState, initialPromptState, promptStore } from "."
 
-export interface PromptState {
-  title: string
-  description?: string
-  cancelText?: string
-  confirmText?: string
-  open?: boolean
-}
+export const usePrompt = () => {
+  const ref = useRef<any>(null)
 
-export type PromptFunction = (confirm: boolean) => void
+  const promptFn = (data: Omit<PromptState, "open" | "confirm">) =>
+    new Promise<boolean>((resolve) => {
+      promptStore.setState((state) => ({
+        ...data,
+        open: true,
+        confirm: async (isConfirmed) => {
+          promptStore.setState(() => initialPromptState)
+          resolve(isConfirmed)
+        },
+      }))
+    })
 
-const initialPromptState = {
-  title: "",
-  description: "",
-  cancelText: "Cancel",
-  confirmText: "Confirm",
-  open: false,
-}
-
-let promptState: PromptState = initialPromptState
-let memoryListeners: any[] = []
-let feedbackFn: PromptFunction | null = null
-
-export const emitChange = () => {
-  memoryListeners.forEach((listener) => {
-    listener()
-  })
-}
-
-export const subscribe = (listener: unknown) => () => {
-  memoryListeners = [...memoryListeners, listener]
-
-  return () => {
-    memoryListeners = memoryListeners.filter((l) => l !== listener)
-  }
-}
-
-export const getSnapshot = () => promptState
-
-export const getSnapshotServer = () => promptState
-
-export const usePrompt = () => (state: Omit<PromptState, "open">) =>
-  new Promise((resolve) => {
-    promptState = {
-      ...initialPromptState,
-      ...state,
-      open: true,
-    }
-
-    emitChange()
-
-    feedbackFn = (confirm) => {
-      promptState = {
-        ...initialPromptState,
-        open: false,
-      }
-
-      emitChange()
-      resolve(confirm)
-    }
-  })
-
-export const usePromptInternalActions = () => {
-  const close = () => feedbackFn?.(false)
-  const ok = () => feedbackFn?.(true)
-
-  return {
-    close,
-    ok,
-  }
-}
-
-export const usePromptStore = () => {
-  const promptStore = useSyncExternalStore(subscribe, getSnapshot, getSnapshotServer)
-
-  return promptStore
+  return promptFn
 }
