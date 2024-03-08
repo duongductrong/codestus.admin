@@ -11,6 +11,7 @@ import {
   DataTableToolbar,
 } from "@/components/ui/data-table/data-table-filters"
 import { usePrompt } from "@/components/ui/use-prompt"
+import { GeneralModalTrigger } from "@/components/customs/custom-modals/general-modal/client"
 import { useColumns } from "./_hooks/use-columns"
 import { useFakeData } from "./_hooks/use-fake-data"
 
@@ -50,20 +51,16 @@ const PostsList = (props: PostsListProps) => {
               >
                 Bulk delete
               </Button>
-              <Button
-                variant="secondary"
-                onClick={() =>
-                  prompt({
-                    title: "Are you absolutely sure?",
-                    description:
-                      "This action cannot be undone. This will permanently update your account data from our servers.",
-                  }).then((isConfirmed) => {
-                    console.log(isConfirmed)
-                  })
-                }
+              <GeneralModalTrigger
+                loader="TemplateForm"
+                details={{
+                  title: "Create category",
+                  size: "md",
+                  description: "Create the category for your posts.",
+                }}
               >
-                Bulk update
-              </Button>
+                <Button variant="secondary">Modal</Button>
+              </GeneralModalTrigger>
             </DataTableSelectionImpact>
             <DataTableDateRangeFilter
               column="createdAt"

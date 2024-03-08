@@ -1,3 +1,5 @@
+import GeneralModaler from "@/components/customs/custom-modals/general-modal"
+import PreferredTheme from "@/components/ui/theme/preferred-theme"
 import { Prompter } from "@/components/ui/use-prompt"
 import { cn } from "@/utils/tailwind"
 import { GeistSans } from "geist/font/sans"
@@ -21,9 +23,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(GeistSans.className, "bg-app-background antialiased")}>
-        {children}
-        <Prompter />
-        <Toaster />
+        <PreferredTheme>
+          {children}
+          <Prompter />
+          <Toaster />
+          <GeneralModaler />
+        </PreferredTheme>
       </body>
     </html>
   )
