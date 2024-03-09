@@ -44,10 +44,7 @@ export class SignalInterceptor implements NestInterceptor {
     const status =
       exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR
 
-    const signalException = exception?.getResponse?.() as SignalPipeException
-    const result = signalException?.signalValidationPipe
-      ? signalException.errors
-      : exception?.cause ?? exception?.getResponse?.()
+    const result = exception.cause || exception?.getResponse()
 
     return response.status(status).json({
       result,
@@ -56,7 +53,7 @@ export class SignalInterceptor implements NestInterceptor {
       path: request.url,
       meta: {},
       timestamp: new Date().toISOString(),
-      message: exception.message,
+      message: exception.message ?? "Error",
       stack: isDebugging ? exception.stack : undefined,
       name: isDebugging ? exception.name : undefined,
     })

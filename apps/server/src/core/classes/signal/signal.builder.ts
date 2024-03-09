@@ -1,3 +1,4 @@
+import { HttpException, NotFoundException } from "@nestjs/common"
 import { Signal } from "./signal"
 import { SignalMeta } from "./signal.interface"
 
@@ -27,6 +28,13 @@ export class SignalBuilder<TData = unknown> {
     return this
   }
 
+  throwException(exception: HttpException) {
+    throw new HttpException(exception.getResponse(), exception.getStatus(), {
+      cause: exception.cause,
+      description: exception.name,
+    })
+  }
+
   build() {
     if (!this.signal.message || !this.signal.data)
       throw new Error("Missing Signal properties included in (message, data).")
@@ -34,7 +42,7 @@ export class SignalBuilder<TData = unknown> {
     return {
       data: this.signal.getData(),
       message: this.signal.getMessage(),
-      pagination: this.signal.getMeta(),
+      meta: this.signal.getMeta(),
     }
   }
 }

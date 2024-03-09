@@ -5,22 +5,31 @@ import { IUser } from "../interfaces"
 
 @Entity({ name: "users" })
 export class UserEntity extends BaseEntity implements IUser {
-  @PrimaryGeneratedColumn("uuid")
-  id: string
+  @PrimaryGeneratedColumn("increment", { name: "userId", type: "bigint", unsigned: true })
+  id: number
 
-  @Column({ nullable: true })
-  firstName?: string
+  @Column({ name: "name", nullable: true })
+  name?: string
 
-  @Column({ nullable: true })
-  lastName?: string
-
-  @Column({ unique: true })
+  @Column({ name: "email" })
   email: string
 
-  @Column({ nullable: true })
+  @Column({ name: "email_verified_at", nullable: true })
   emailVerifiedAt?: Date
 
-  @Column()
+  @Column({ name: "remember_token", nullable: true })
+  rememberToken?: string
+
+  @Column({ name: "provider", nullable: true })
+  provider?: string
+
+  @Column({ name: "provider_id", nullable: true })
+  providerId?: string
+
+  @Column({ name: "avatar", nullable: true })
+  avatar?: string
+
+  @Column({ name: "password" })
   @Exclude()
   password: string
 }

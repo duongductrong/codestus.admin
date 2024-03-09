@@ -4,16 +4,11 @@ import { IsEmail, IsOptional, IsString, IsStrongPassword } from "class-validator
 import { UserEntity } from "../entities/user.entity"
 import { IUser } from "../interfaces"
 
-export class CreateUserDto implements Pick<IUser, "firstName" | "lastName" | "email" | "password"> {
+export class CreateUserDto implements Pick<IUser, "name" | "email" | "password" | "avatar"> {
   @IsString()
   @IsOptional()
   @ApiProperty()
-  firstName?: string
-
-  @IsString()
-  @IsOptional()
-  @ApiProperty()
-  lastName?: string
+  name?: string
 
   @IsString()
   @IsEmail()
@@ -25,4 +20,8 @@ export class CreateUserDto implements Pick<IUser, "firstName" | "lastName" | "em
   @IsStrongPassword()
   @ApiProperty()
   password: string
+
+  @IsString()
+  @ApiProperty()
+  avatar?: string | undefined
 }

@@ -37,52 +37,52 @@ import { UserService } from "./user.service"
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get()
-  @ApiOkResponse({ description: "The resources were returned successfully" })
-  @ApiForbiddenResponse({ description: "Unauthorized Request" })
-  async findAll(@I18n() i18n: I18nContext<I18nTranslations>) {
-    try {
-      const users = await this.userService.findAll()
-      return SignalBuilder.create()
-        .setData(users)
-        .setMessage("Ok")
-        .setMeta({ page: 1, size: 2, total: 3 })
-        .build()
-    } catch (error) {
-      throw new InternalServerErrorException(error.message, { cause: error.stack })
-    }
-  }
+  // @Get()
+  // @ApiOkResponse({ description: "The resources were returned successfully" })
+  // @ApiForbiddenResponse({ description: "Unauthorized Request" })
+  // async findAll(@I18n() i18n: I18nContext<I18nTranslations>) {
+  //   try {
+  //     const users = await this.userService.findAll()
+  //     return SignalBuilder.create()
+  //       .setData(users)
+  //       .setMessage("Ok")
+  //       .setMeta({ page: 1, size: 2, total: 3 })
+  //       .build()
+  //   } catch (error) {
+  //     throw new InternalServerErrorException(error.message, { cause: error.stack })
+  //   }
+  // }
 
-  @Post()
-  @ApiOkResponse({ type: SignalResponseDto(CreateUserResponseDto) })
-  @ApiBody({ type: CreateUserDto })
-  async create(@Body() createUserDto: CreateUserDto) {
-    try {
-      const user = await this.userService.create(createUserDto)
-      return SignalBuilder.create().setData(user).setMessage("Ok").build()
-    } catch (error) {
-      throw new InternalServerErrorException(error.message, { cause: error.stack })
-    }
-  }
+  // @Post()
+  // @ApiOkResponse({ type: SignalResponseDto(CreateUserResponseDto) })
+  // @ApiBody({ type: CreateUserDto })
+  // async create(@Body() createUserDto: CreateUserDto) {
+  //   try {
+  //     const user = await this.userService.create(createUserDto)
+  //     return SignalBuilder.create().setData(user).setMessage("Ok").build()
+  //   } catch (error) {
+  //     throw new InternalServerErrorException(error.message, { cause: error.stack })
+  //   }
+  // }
 
-  @Put(":id/verify")
-  @ApiOkResponse({ type: SignalResponseDto(VerifyUserResponseDto) })
-  @ApiBadRequestResponse({ type: SignalErrorDto(OmitType(UserEntity, ["password"])) })
-  async verify(@Param("id") emailOrId: string) {
-    const user = await this.userService.findOne(emailOrId)
+  // @Put(":id/verify")
+  // @ApiOkResponse({ type: SignalResponseDto(VerifyUserResponseDto) })
+  // @ApiBadRequestResponse({ type: SignalErrorDto(OmitType(UserEntity, ["password"])) })
+  // async verify(@Param("id") emailOrId: string) {
+  //   const user = await this.userService.findOne(emailOrId)
 
-    if (!user) throw new NotFoundException("Not found", { cause: {} })
-    if (user.emailVerifiedAt) {
-      throw new BadRequestException("The email has been verified", {
-        cause: omit(user, ["password"]),
-      })
-    }
+  //   if (!user) throw new NotFoundException("Not found", { cause: {} })
+  //   if (user.emailVerifiedAt) {
+  //     throw new BadRequestException("The email has been verified", {
+  //       cause: omit(user, ["password"]),
+  //     })
+  //   }
 
-    try {
-      const verified = await this.userService.verify(emailOrId)
-      return SignalBuilder.create().setData(verified).setMessage("Ok").build()
-    } catch (error) {
-      throw new InternalServerErrorException(error.message, { cause: error.stacks })
-    }
-  }
+  //   try {
+  //     const verified = await this.userService.verify(emailOrId)
+  //     return SignalBuilder.create().setData(verified).setMessage("Ok").build()
+  //   } catch (error) {
+  //     throw new InternalServerErrorException(error.message, { cause: error.stacks })
+  //   }
+  // }
 }
