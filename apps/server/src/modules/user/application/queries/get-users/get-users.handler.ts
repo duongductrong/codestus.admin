@@ -1,9 +1,10 @@
+import { Inject } from "@nestjs/common"
 import { IQuery, IQueryHandler, QueryHandler } from "@nestjs/cqrs"
-import { InjectRepository } from "@nestjs/typeorm"
 import { BasePaginationQuery, PaginationParams } from "@server/core/query.base"
 import { UserEntity } from "@server/modules/user/infras/entities/user.entity"
-import { UserRepository } from "@server/modules/user/infras/repositories/user.repository"
-import { FindOptionsOrder, FindOptionsOrderValue, Repository } from "typeorm"
+import { UserRepositoryPort } from "@server/modules/user/infras/repositories/user.repository.port"
+import { USER_REPOSITORY } from "@server/modules/user/user.di-tokens"
+import { FindOptionsOrder, FindOptionsOrderValue } from "typeorm"
 
 export class GetUsersQuery extends BasePaginationQuery implements IQuery {
   constructor(props: PaginationParams<GetUsersQuery>) {
@@ -15,7 +16,7 @@ export class GetUsersResult extends Array<UserEntity> {}
 
 @QueryHandler(GetUsersQuery)
 export class GetUsersHandler implements IQueryHandler<GetUsersQuery, UserEntity[]> {
-  constructor(private readonly userRepository: UserRepository) {}
+  @Inject(USER_REPOSITORY) private readonly userRepository: UserRepositoryPort
 
   async execute(query: GetUsersQuery): Promise<GetUsersResult> {
     const { orderBy } = query

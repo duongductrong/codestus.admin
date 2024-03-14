@@ -19,14 +19,10 @@ export class LoginHttpController {
   @ApiNotFoundResponse({ type: SignalErrorDto() })
   @HttpCode(HttpStatus.OK)
   async run(@Body() credentials: LoginRequestDto) {
-    try {
-      const result = await this.commandBus.execute<LoginCommand, LoginResult>(
-        new LoginCommand({ identifier: credentials.identifier, password: credentials.password }),
-      )
+    const result = await this.commandBus.execute<LoginCommand, LoginResult>(
+      new LoginCommand({ identifier: credentials.identifier, password: credentials.password }),
+    )
 
-      return SignalBuilder.create().setData(result).setMessage("Login successful").build()
-    } catch (error) {
-      return SignalBuilder.create().throwException(error)
-    }
+    return SignalBuilder.create().setData(result).setMessage("Login successful").build()
   }
 }

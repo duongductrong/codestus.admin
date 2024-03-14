@@ -1,6 +1,6 @@
-import { ClassSerializerInterceptor, Module } from "@nestjs/common"
+import { Module } from "@nestjs/common"
 import { ConfigModule, ConfigService } from "@nestjs/config"
-import { APP_INTERCEPTOR } from "@nestjs/core"
+import { JwtModule } from "@nestjs/jwt"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from "nestjs-i18n"
 import { join } from "path"
@@ -28,6 +28,11 @@ import { UserModule } from "./modules/user/user.module"
       isGlobal: true,
       cache: true,
       load: [appConfig, databaseConfig, hashConfig, resourceConfig],
+    }),
+    JwtModule.register({
+      global: true,
+      secret: "SECRET_KEY",
+      signOptions: { expiresIn: "3h" },
     }),
     I18nModule.forRootAsync({
       useFactory(configService: ConfigService) {

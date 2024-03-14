@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common"
 import { CommandHandler, ICommand, ICommandHandler } from "@nestjs/cqrs"
-import { HashService } from "@server/core/services/hash/hash.service"
 import { UserFactory } from "@server/modules/user/domain/user.factory"
 import { UserRepository } from "@server/modules/user/infras/repositories/user.repository"
+import { USER_FACTORY, USER_REPOSITORY } from "@server/modules/user/user.di-tokens"
 import { omit } from "lodash"
 import { UserEntity } from "../../../infras/entities/user.entity"
 
@@ -32,16 +32,13 @@ export class CreateUserResult extends UserEntity {
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand, CreateUserResult> {
-  @Inject(HashService) private readonly hashService: HashService
+  @Inject(USER_REPOSITORY) private readonly userRepository: UserRepository
 
-  @Inject(UserRepository) private readonly userRepository: UserRepository
-
-  @Inject(UserFactory) userFactory: UserFactory
+  @Inject(USER_FACTORY) userFactory: UserFactory
 
   async execute(payload: CreateUserCommand): Promise<CreateUserResult> {
     const userDomain = this.userFactory.create({
       ...payload,
-      password: await this.hashService.make(payload.password),
     })
 
     const saved = await this.userRepository.save(userDomain.getProps())

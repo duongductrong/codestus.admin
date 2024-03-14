@@ -8,22 +8,20 @@ import { EventHandlers } from "./application/events"
 import { QueryHandlers } from "./application/queries"
 import { UserFactory } from "./domain/user.factory"
 import { UserEntity } from "./infras/entities/user.entity"
-import { UserService } from "./user.service"
 import { UserRepository } from "./infras/repositories/user.repository"
+import { USER_FACTORY, USER_REPOSITORY } from "./user.di-tokens"
 
 @Module({
   imports: [CqrsModule, TypeOrmModule.forFeature([UserEntity])],
   controllers: HttpControllers,
   providers: [
-    UserService,
     HashService,
-    UserFactory,
-    UserRepository,
-
+    { provide: USER_FACTORY, useClass: UserFactory },
+    { provide: USER_REPOSITORY, useClass: UserRepository },
     ...EventHandlers,
     ...CommandHandlers,
     ...QueryHandlers,
   ],
-  exports: [UserService, HashService],
+  exports: [],
 })
 export class UserModule {}

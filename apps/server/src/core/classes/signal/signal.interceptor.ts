@@ -49,6 +49,10 @@ export class SignalInterceptor implements NestInterceptor {
         ? (exception?.getResponse?.() as any).errors
         : exception?.getResponse?.()
 
+    console.error("{LOGGING}")
+    console.error(exception)
+    console.error("{/LOGGING}")
+
     return response.status(status).json({
       result,
       status: false,

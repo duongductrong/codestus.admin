@@ -3,12 +3,8 @@ import { CommandHandler, ICommand, ICommandHandler } from "@nestjs/cqrs"
 import { JwtService } from "@nestjs/jwt"
 import { GENERAL_MESSAGES } from "@server/core/message.base"
 import { HashService } from "@server/core/services/hash/hash.service"
-import {
-  USER_HASH_SERVICE,
-  USER_JWT_SERVICE,
-  USER_REPOSITORY,
-} from "@server/modules/authenticator/auth.di-tokens"
 import { UserRepositoryPort } from "@server/modules/user/infras/repositories/user.repository.port"
+import { USER_REPOSITORY } from "@server/modules/user/user.di-tokens"
 import * as dayjs from "dayjs"
 
 export class LoginCommand implements ICommand {
@@ -32,9 +28,9 @@ export class LoginResult {
 export class LoginHandler implements ICommandHandler<LoginCommand, LoginResult> {
   @Inject(USER_REPOSITORY) private readonly userRepo: UserRepositoryPort
 
-  @Inject(USER_HASH_SERVICE) private readonly hash: HashService
+  @Inject() private readonly hash: HashService
 
-  @Inject(USER_JWT_SERVICE) private jwtService: JwtService
+  @Inject(JwtService) private readonly jwtService: JwtService
 
   async execute(credentials: LoginCommand): Promise<LoginResult> {
     const user = await this.userRepo.findOne({
