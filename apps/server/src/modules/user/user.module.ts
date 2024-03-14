@@ -2,22 +2,28 @@ import { Module } from "@nestjs/common"
 import { CqrsModule } from "@nestjs/cqrs"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { HashService } from "@server/core/services/hash/hash.service"
-import { CreateUserHandler } from "./application/commands/create-user/create-user.handler"
-import { CreateUserHttpController } from "./application/commands/create-user/create-user.http.controller"
-import { GetUsersCountHandler } from "./application/queries/get-users-count/get-users-count.handler"
-import { GetUsersHandler } from "./application/queries/get-users/get-users.handler"
-import { GetUsersHttpController } from "./application/queries/get-users/get-users.http.controller"
-import { UserEntity } from "./entities/user.entity"
+import { HttpControllers } from "./application"
+import { CommandHandlers } from "./application/commands"
+import { EventHandlers } from "./application/events"
+import { QueryHandlers } from "./application/queries"
+import { UserFactory } from "./domain/user.factory"
+import { UserEntity } from "./infras/entities/user.entity"
 import { UserService } from "./user.service"
-
-const controllers = [GetUsersHttpController, CreateUserHttpController]
-const commandHandlers = [CreateUserHandler]
-const queryHandlers = [GetUsersHandler, GetUsersCountHandler]
+import { UserRepository } from "./infras/repositories/user.repository"
 
 @Module({
   imports: [CqrsModule, TypeOrmModule.forFeature([UserEntity])],
-  controllers,
-  providers: [UserService, HashService, ...commandHandlers, ...queryHandlers],
+  controllers: HttpControllers,
+  providers: [
+    UserService,
+    HashService,
+    UserFactory,
+    UserRepository,
+
+    ...EventHandlers,
+    ...CommandHandlers,
+    ...QueryHandlers,
+  ],
   exports: [UserService, HashService],
 })
 export class UserModule {}

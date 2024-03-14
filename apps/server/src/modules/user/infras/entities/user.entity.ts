@@ -1,10 +1,10 @@
 import { BaseEntity } from "@server/core/entities/base.entity"
 import { Exclude } from "class-transformer"
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
-import { IUser } from "../interfaces"
+import { UserProps } from "../../domain/user"
 
 @Entity({ name: "users" })
-export class UserEntity extends BaseEntity implements IUser {
+export class UserEntity extends BaseEntity implements UserProps {
   @PrimaryGeneratedColumn("increment", { name: "userId", type: "bigint", unsigned: true })
   id: number
 

@@ -28,12 +28,11 @@ import { I18n, I18nContext } from "nestjs-i18n"
 import { CreateUserDto } from "./dtos"
 import { CreateUserResponseDto } from "./dtos/create-user.response.dto"
 import { VerifyUserResponseDto } from "./dtos/verify-user-response.dto"
-import { UserEntity } from "./entities/user.entity"
+import { UserEntity } from "./infras/entities/user.entity"
 import { UserService } from "./user.service"
 
 @ApiTags("User")
 @Controller({ path: "users", version: ["1"] })
-@UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

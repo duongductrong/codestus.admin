@@ -1,4 +1,4 @@
-import { HttpException, NotFoundException } from "@nestjs/common"
+import { HttpException, InternalServerErrorException, NotFoundException } from "@nestjs/common"
 import { Signal } from "./signal"
 import { SignalMeta } from "./signal.interface"
 
@@ -28,11 +28,17 @@ export class SignalBuilder<TData = unknown> {
     return this
   }
 
-  throwException(exception: HttpException) {
-    throw new HttpException(exception.getResponse(), exception.getStatus(), {
-      cause: exception.cause,
-      description: exception.name,
-    })
+  throwException(exception: HttpException | Error) {
+    if (exception instanceof HttpException) {
+      throw new HttpException(exception?.getResponse?.(), exception?.getStatus?.(), {
+        cause: exception.cause,
+        description: exception.name,
+      })
+    }
+
+    if (exception instanceof Error) {
+      throw new InternalServerErrorException(exception.message, { cause: exception.stack })
+    }
   }
 
   build() {

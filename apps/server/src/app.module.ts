@@ -1,15 +1,17 @@
-import { Module } from "@nestjs/common"
+import { ClassSerializerInterceptor, Module } from "@nestjs/common"
 import { ConfigModule, ConfigService } from "@nestjs/config"
+import { APP_INTERCEPTOR } from "@nestjs/core"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from "nestjs-i18n"
 import { join } from "path"
 import { DataSource } from "typeorm"
 import { addTransactionalDataSource } from "typeorm-transactional"
-import { ValidatorModule } from "./core/modules/validator/validator.module"
-import { hashConfig } from "./core/services/hash/hash.config"
 import { AppConfig, app as appConfig } from "./configs/app.config"
 import { database as databaseConfig } from "./configs/database.config"
 import { resource as resourceConfig } from "./configs/resource.config"
+import { ValidatorModule } from "./core/modules/validator/validator.module"
+import { hashConfig } from "./core/services/hash/hash.config"
+import { AuthModule } from "./modules/authenticator/auth.module"
 import { ResourceModule } from "./modules/resource/resource.module"
 import { ResourceService } from "./modules/resource/resource.service"
 import { RoleModule } from "./modules/role/role.module"
@@ -19,6 +21,7 @@ import { UserModule } from "./modules/user/user.module"
   imports: [
     UserModule,
     RoleModule,
+    AuthModule,
     ResourceModule,
     ValidatorModule,
     ConfigModule.forRoot({

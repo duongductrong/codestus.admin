@@ -6,5 +6,12 @@ export const routes = {
 
       root: "/users",
     },
+    auth: {
+      apiTag: "Auth",
+
+      root: "/auth",
+      login: "/auth/login",
+      signUp: "/auth/signup",
+    },
   },
 } as const

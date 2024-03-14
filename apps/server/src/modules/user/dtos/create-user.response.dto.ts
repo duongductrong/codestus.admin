@@ -1,3 +1,3 @@
-import { UserEntity } from "../entities/user.entity"
+import { UserEntity } from "../infras/entities/user.entity"
 
 export class CreateUserResponseDto extends UserEntity {}

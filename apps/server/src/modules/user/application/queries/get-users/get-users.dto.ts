@@ -1,10 +1,7 @@
-import { UserEntity } from "@server/modules/user/entities/user.entity"
-import { GetUsersQuery, GetUsersResult } from "./get-users.handler"
+import { BasePaginationQuery } from "@server/core/query.base"
+import { UserEntity } from "@server/modules/user/infras/entities/user.entity"
+import { GetUsersQuery } from "./get-users.handler"
 
-export class GetUsersRequestDto extends GetUsersQuery {
-  constructor(props: GetUsersQuery) {
-    super(props)
-  }
-}
+export class GetUsersRequestDto extends BasePaginationQuery implements GetUsersQuery {}
 
 export class GetUsersResponseDto extends UserEntity {}

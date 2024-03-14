@@ -1,5 +1,5 @@
-import { VERSION_NEUTRAL, VersioningType } from "@nestjs/common"
-import { NestFactory } from "@nestjs/core"
+import { ClassSerializerInterceptor, VERSION_NEUTRAL, VersioningType } from "@nestjs/common"
+import { NestFactory, Reflector } from "@nestjs/core"
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger"
 import { useContainer } from "class-validator"
 import { initializeTransactionalContext } from "typeorm-transactional"
@@ -14,7 +14,10 @@ async function bootstrap() {
 
   app.setGlobalPrefix("/api")
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: VERSION_NEUTRAL })
-  app.useGlobalInterceptors(new SignalInterceptor())
+  app.useGlobalInterceptors(
+    new SignalInterceptor(),
+    new ClassSerializerInterceptor(app.get(Reflector)),
+  )
   app.useGlobalPipes(SignalPipe.create())
 
   // eslint-disable-next-line react-hooks/rules-of-hooks

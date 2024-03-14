@@ -9,7 +9,6 @@ import {
 import { Request, Response } from "express"
 import { Observable, catchError, map, throwError } from "rxjs"
 import { Signal } from "./signal"
-import { SignalPipeException } from "./signal.pipe"
 
 @Injectable()
 export class SignalInterceptor implements NestInterceptor {
@@ -44,7 +43,11 @@ export class SignalInterceptor implements NestInterceptor {
     const status =
       exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR
 
-    const result = exception.cause || exception?.getResponse()
+    const result = exception.cause
+      ? exception.cause
+      : (exception?.getResponse?.() as any)?.signalValidationPipe
+        ? (exception?.getResponse?.() as any).errors
+        : exception?.getResponse?.()
 
     return response.status(status).json({
       result,

@@ -7,10 +7,11 @@ import {
   ValidatorConstraintInterface,
   registerDecorator,
 } from "class-validator"
-import { EntityManager } from "typeorm"
+import { EntityManager, EntitySchema, ObjectType } from "typeorm"
 
-export interface IsUniqueConstraintOptions {
-  entity: EntityClassOrSchema
+export interface IsUniqueConstraintOptions<E = unknown> {
+  entity: ObjectType<E> | EntitySchema<E> | string
+  field?: keyof E
 }
 
 @ValidatorConstraint({ name: "IsUniqueConstraint", async: true })
@@ -18,13 +19,17 @@ export interface IsUniqueConstraintOptions {
 export class IsUniqueConstraint implements ValidatorConstraintInterface {
   constructor(private readonly entityManager: EntityManager) {}
 
+  private getConstraintsOptions(validationArguments?: ValidationArguments | undefined) {
+    return validationArguments?.constraints?.[0] as IsUniqueConstraintOptions
+  }
+
   async validate(
     value: any,
     validationArguments?: ValidationArguments | undefined,
   ): Promise<boolean> {
-    const options = validationArguments?.constraints?.[0] as IsUniqueConstraintOptions
-    const entityRepository = this.entityManager.getRepository(options.entity)
-    const propertyName = validationArguments?.property || "id"
+    const { entity, field } = this.getConstraintsOptions(validationArguments)
+    const entityRepository = this.entityManager.getRepository(entity)
+    const propertyName = field || validationArguments?.property || "id"
 
     const result = await entityRepository.count({ where: { [propertyName]: value } })
 
@@ -40,7 +45,10 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
  * Checks if the string is a unique.
  * If given value is not a unique value, then it returns false.
  */
-export function IsUnique(options: IsUniqueConstraintOptions, validatorOptions?: ValidationOptions) {
+export function IsUnique<E = unknown>(
+  options: IsUniqueConstraintOptions<E>,
+  validatorOptions?: ValidationOptions,
+) {
   // eslint-disable-next-line func-names, @typescript-eslint/ban-types
   return function (object: Object, propertyName: string) {
     return registerDecorator({

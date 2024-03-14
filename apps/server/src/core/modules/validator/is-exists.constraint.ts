@@ -10,6 +10,7 @@ import { EntityManager, EntitySchema, ObjectType } from "typeorm"
 
 export interface IsExistsConstraintOptions<E = unknown> {
   entity: ObjectType<E> | EntitySchema<E> | string
+  field?: keyof E
 }
 
 @ValidatorConstraint({ name: "IsExistsConstraint", async: true })
@@ -22,8 +23,8 @@ export class IsExistsConstraint implements ValidatorConstraintInterface {
   }
 
   async validate(value: unknown, validationArguments?: ValidationArguments): Promise<boolean> {
-    const { entity } = this.getConstraintOptions(validationArguments)
-    const property = validationArguments?.property || "id"
+    const { entity, field } = this.getConstraintOptions(validationArguments)
+    const property = field || validationArguments?.property || "id"
 
     const entityRepository = this.entityManager.getRepository(entity)
 
