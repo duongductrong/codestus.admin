@@ -28,5 +28,6 @@ export const GENERAL_MESSAGES = {
   INVALID_FILE_FORMAT: "Invalid file format.",
   INVALID_OPERATION: "Invalid operation.",
   EXTERNAL_API_ERROR: "Error while communicating with external API.",
-  SUCCESS: "Operation completed successfully.",
+  OPERATION_SUCCESS: "Operation completed successfully.",
+  QUERY_SUCCESS: "Data retrieved successfully.",
 }

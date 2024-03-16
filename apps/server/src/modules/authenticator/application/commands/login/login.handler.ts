@@ -3,7 +3,7 @@ import { CommandHandler, ICommand, ICommandHandler } from "@nestjs/cqrs"
 import { JwtService } from "@nestjs/jwt"
 import { GENERAL_MESSAGES } from "@server/core/message.base"
 import { HashService } from "@server/core/services/hash/hash.service"
-import { UserRepositoryPort } from "@server/modules/user/infras/repositories/user.repository.port"
+import { UserRepositoryPort } from "@server/modules/user/domain/user.repository.port"
 import { USER_REPOSITORY } from "@server/modules/user/user.di-tokens"
 import * as dayjs from "dayjs"
 
@@ -39,11 +39,13 @@ export class LoginHandler implements ICommandHandler<LoginCommand, LoginResult> 
 
     if (!user) throw new NotFoundException(GENERAL_MESSAGES.NOT_FOUND)
 
-    const isMatchedPwd = await this.hash.check(credentials.password, user?.password)
+    const userProps = user.getProps()
+
+    const isMatchedPwd = await this.hash.check(credentials.password, userProps.password)
 
     if (!isMatchedPwd) throw new BadRequestException(GENERAL_MESSAGES.PASSWORD_MISMATCH)
 
-    const payload = { id: user.id, email: user.email, name: user.name }
+    const payload = { id: userProps.id, email: userProps.email, name: userProps.name }
     const token = await this.jwtService.sign(payload)
 
     return {

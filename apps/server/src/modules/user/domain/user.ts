@@ -1,4 +1,5 @@
 import { AggregateRoot } from "@nestjs/cqrs"
+import { EntityBase } from "@server/core/libs/ddd"
 import { UserCreatedEvent } from "./events/user-created.event"
 
 export interface UserProps {
@@ -23,7 +24,7 @@ export interface User extends Pick<AggregateRoot, "commit" | "autoCommit" | "unc
   created(): void
 }
 
-export class UserClass extends AggregateRoot implements User {
+export class UserClass extends EntityBase<UserProps> implements User {
   private readonly id: number
 
   private readonly email: string

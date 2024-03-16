@@ -41,7 +41,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand, Cre
       ...payload,
     })
 
-    const saved = await this.userRepository.save(userDomain.getProps())
+    const saved = await this.userRepository.save(userDomain)
 
     userDomain.commit()
 

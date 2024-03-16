@@ -22,6 +22,6 @@ export class SignUpHttpController {
       new SignUpCommand({ email: data.email, password: data.password }),
     )
 
-    return SignalBuilder.create().setData(result).setMessage(GENERAL_MESSAGES.SUCCESS).build()
+    return SignalBuilder.create().setData(result).setMessage(GENERAL_MESSAGES.OPERATION_SUCCESS).build()
   }
 }

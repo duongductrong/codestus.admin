@@ -3,10 +3,11 @@ import { IQuery, IQueryHandler, QueryHandler } from "@nestjs/cqrs"
 import { InjectRepository } from "@nestjs/typeorm"
 import { UserEntity } from "@server/modules/user/infras/entities/user.entity"
 import { UserRepository } from "@server/modules/user/infras/repositories/user.repository"
-import { UserRepositoryPort } from "@server/modules/user/infras/repositories/user.repository.port"
+import { UserRepositoryPort } from "@server/modules/user/domain/user.repository.port"
 import { USER_REPOSITORY } from "@server/modules/user/user.di-tokens"
 import { compact } from "lodash"
 import { Repository } from "typeorm"
+import { UserProps } from "@server/modules/user/domain/user"
 
 export class GetUserQuery implements IQuery {
   identifier: string | number
@@ -16,7 +17,33 @@ export class GetUserQuery implements IQuery {
   }
 }
 
-export class GetUserResult extends UserEntity {}
+export class GetUserResult implements UserProps {
+  id: number
+
+  password: string
+
+  email: string
+
+  name?: string
+
+  emailVerifiedAt?: Date
+
+  rememberToken?: string
+
+  provider?: string
+
+  providerId?: string
+
+  avatar?: string
+
+  createdAt?: Date
+
+  updatedAt?: Date
+
+  constructor(props: UserProps) {
+    Object.assign(this, props)
+  }
+}
 
 @QueryHandler(GetUserQuery)
 export class GetUserHandler implements IQueryHandler<GetUserQuery> {
@@ -34,6 +61,6 @@ export class GetUserHandler implements IQueryHandler<GetUserQuery> {
       throw new NotFoundException("The system cannot find the user", { cause: {} })
     }
 
-    return result
+    return new GetUserResult(result.getProps())
   }
 }

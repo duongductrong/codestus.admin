@@ -1,6 +1,5 @@
 import { ArgumentNotProvidedException } from "../exceptions"
 import { Guard } from "../guard"
-import { convertPropsToObject } from "../utils"
 
 /**
  * Domain Primitive is an object that contains only a single value
@@ -41,15 +40,15 @@ export abstract class ValueObject<T> {
   /**
    * Unpack a value object to get its raw properties
    */
-  public unpack(): T {
-    if (this.isDomainPrimitive(this.props)) {
-      return this.props.value
-    }
+  // public unpack(): T {
+  //   if (this.isDomainPrimitive(this.props)) {
+  //     return this.props.value
+  //   }
 
-    const propsCopy = convertPropsToObject(this.props)
+  //   const propsCopy = convertPropsToObject(this.props)
 
-    return Object.freeze(propsCopy)
-  }
+  //   return Object.freeze(propsCopy)
+  // }
 
   private checkIfEmpty(props: ValueObjectProps<T>): void {
     if (Guard.isEmpty(props) || (this.isDomainPrimitive(props) && Guard.isEmpty(props.value))) {

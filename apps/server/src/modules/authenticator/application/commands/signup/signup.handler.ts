@@ -1,9 +1,9 @@
 import { Inject } from "@nestjs/common"
 import { CommandHandler, ICommand, ICommandHandler } from "@nestjs/cqrs"
-import { USER_FACTORY, USER_REPOSITORY } from "@server/modules/user/user.di-tokens"
 import { IUserFactory } from "@server/modules/user/domain/user.factory"
+import { UserRepositoryPort } from "@server/modules/user/domain/user.repository.port"
 import { UserEntity } from "@server/modules/user/infras/entities/user.entity"
-import { UserRepositoryPort } from "@server/modules/user/infras/repositories/user.repository.port"
+import { USER_FACTORY, USER_REPOSITORY } from "@server/modules/user/user.di-tokens"
 import { omit } from "lodash"
 
 export class SignUpCommand implements ICommand {
@@ -34,7 +34,7 @@ export class SignUpHandler implements ICommandHandler<SignUpCommand, SignUpResul
 
     const user = await this.userFactory.create({ email, password })
 
-    const createdUser = await this.userRepo.save(user.getProps())
+    const createdUser = await this.userRepo.save(user)
 
     return new SignUpResult(createdUser)
   }

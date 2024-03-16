@@ -5,6 +5,7 @@ export const routes = {
       apiTag: "User",
 
       root: "/users",
+      update: "/users/:id",
     },
     auth: {
       apiTag: "Auth",
