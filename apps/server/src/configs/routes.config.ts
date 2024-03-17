@@ -6,6 +6,14 @@ export const routes = {
 
       root: "/users",
       update: "/users/:id",
+      delete: "/users/:id",
+    },
+    posts: {
+      apiTag: "Post",
+
+      root: "/posts",
+      update: "/posts/:id",
+      delete: "/posts/:id",
     },
     auth: {
       apiTag: "Auth",

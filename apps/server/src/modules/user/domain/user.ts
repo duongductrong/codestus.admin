@@ -1,12 +1,11 @@
 import { AggregateRoot } from "@nestjs/cqrs"
-import { EntityBase } from "@server/core/libs/ddd"
 import { UserCreatedEvent } from "./events/user-created.event"
 
 export interface UserProps {
   id: number
   password: string
   email: string
-  name?: string
+  name?: string | null
   emailVerifiedAt?: Date
   rememberToken?: string
   provider?: string
@@ -17,14 +16,14 @@ export interface UserProps {
 }
 
 export interface User extends Pick<AggregateRoot, "commit" | "autoCommit" | "uncommit"> {
-  setName(name: string): void
+  setName(name?: string | null): void
   verifiedEmail(): void
   updatePassword(password: string): void
   getProps(): UserProps
   created(): void
 }
 
-export class UserClass extends EntityBase<UserProps> implements User {
+export class UserClass extends AggregateRoot implements User {
   private readonly id: number
 
   private readonly email: string
@@ -64,8 +63,8 @@ export class UserClass extends EntityBase<UserProps> implements User {
     this.apply(new UserCreatedEvent())
   }
 
-  setName(name: string): void {
-    this.name = name
+  setName(name?: string | null): void {
+    this.name = name ?? ""
     this.updatedAt = new Date()
   }
 

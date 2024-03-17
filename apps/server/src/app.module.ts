@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common"
 import { ConfigModule, ConfigService } from "@nestjs/config"
+import { CqrsModule } from "@nestjs/cqrs"
 import { JwtModule } from "@nestjs/jwt"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from "nestjs-i18n"
@@ -12,18 +13,24 @@ import { resource as resourceConfig } from "./configs/resource.config"
 import { ValidatorModule } from "./core/modules/validator/validator.module"
 import { hashConfig } from "./core/services/hash/hash.config"
 import { AuthModule } from "./modules/authenticator/auth.module"
+import { PostModule } from "./modules/post/post.module"
 import { ResourceModule } from "./modules/resource/resource.module"
 import { ResourceService } from "./modules/resource/resource.service"
 import { RoleModule } from "./modules/role/role.module"
+import { TagModule } from "./modules/tag/tag.module"
 import { UserModule } from "./modules/user/user.module"
 
 @Module({
   imports: [
     UserModule,
+    TagModule,
+    PostModule,
     RoleModule,
     AuthModule,
     ResourceModule,
     ValidatorModule,
+
+    CqrsModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,

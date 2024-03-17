@@ -1,14 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-constraint */
 import {
   DeepPartial,
+  DeleteResult,
   EntityManager,
   EntityTarget,
   FindManyOptions,
   FindOneOptions,
+  FindOptionsWhere,
+  ObjectId,
   ObjectLiteral,
   QueryRunner,
   SaveOptions,
+  UpdateResult,
 } from "typeorm"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
+import { Transactional } from "typeorm-transactional"
 import { Mapper } from "./mapper.interface"
 
 export interface IRepository<Model extends ObjectLiteral, Entity extends ObjectLiteral> {
@@ -20,6 +26,33 @@ export interface IRepository<Model extends ObjectLiteral, Entity extends ObjectL
       reload?: boolean
     },
   ): Promise<DeepPartial<Model>[] & Model>
+
+  delete(
+    criteria:
+      | string
+      | number
+      | Date
+      | ObjectId
+      | string[]
+      | number[]
+      | Date[]
+      | ObjectId[]
+      | FindOptionsWhere<Model>,
+  ): Promise<DeleteResult>
+
+  softDelete(
+    criteria:
+      | string
+      | number
+      | Date
+      | ObjectId
+      | string[]
+      | number[]
+      | Date[]
+      | ObjectId[]
+      | FindOptionsWhere<Model>,
+  ): Promise<UpdateResult>
+
   count(options?: FindManyOptions<Model> | undefined): Promise<number>
 }
 
@@ -53,26 +86,52 @@ export class Repository<Model extends ObjectLiteral, Entity extends ObjectLitera
     options?: SaveOptions & { reload?: boolean | undefined },
   ): Promise<DeepPartial<Model>[] & Model> {
     try {
-      this.queryRunner.startTransaction()
-      const processor = this.__repository.save(
-        Array.isArray(entities)
-          ? entities.map((e) => this.__repository.create(e?.getProps() as unknown as Model))
-          : this.__repository.create(entities?.getProps() as any),
-        options,
-      ) as Promise<DeepPartial<Model>[] & Model>
+      const r = (await this.manager.transaction(async (entityManager) => {
+        return entityManager.save(
+          Array.isArray(entities)
+            ? entities.map((e) => this.__repository.create(e?.getProps() as unknown as Model))
+            : this.__repository.create(entities?.getProps() as any),
+          options,
+        )
+      })) as unknown as Promise<DeepPartial<Model>[] & Model>
 
-      const result = await processor
-
-      this.queryRunner.commitTransaction()
-
-      return result
+      return await r
     } catch (error) {
-      this.queryRunner.rollbackTransaction()
       throw new Error(error)
     }
   }
 
   count(options?: FindManyOptions<Model> | undefined): Promise<number> {
     return this.__repository.count(options)
+  }
+
+  delete(
+    criteria:
+      | string
+      | number
+      | Date
+      | ObjectId
+      | string[]
+      | number[]
+      | Date[]
+      | ObjectId[]
+      | FindOptionsWhere<Model>,
+  ): Promise<DeleteResult> {
+    return this.__repository.delete(criteria)
+  }
+
+  softDelete(
+    criteria:
+      | string
+      | number
+      | Date
+      | ObjectId
+      | string[]
+      | number[]
+      | Date[]
+      | ObjectId[]
+      | FindOptionsWhere<Model>,
+  ): Promise<UpdateResult> {
+    return this.__repository.softDelete(criteria)
   }
 }

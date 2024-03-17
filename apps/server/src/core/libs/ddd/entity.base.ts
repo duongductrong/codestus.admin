@@ -1,7 +1,8 @@
 import { AggregateRoot } from "@nestjs/cqrs"
 
-export abstract class EntityBase<EntityProps> extends AggregateRoot {
-  getProps(): EntityProps {
-    return this.getProps()
-  }
+export interface EntityBase<EntityProps>
+  extends Pick<AggregateRoot, "commit" | "autoCommit" | "uncommit"> {
+  getProps(): EntityProps
 }
+
+export abstract class AggregateRootBase extends AggregateRoot {}

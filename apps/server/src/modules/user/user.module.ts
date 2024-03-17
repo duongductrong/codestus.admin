@@ -16,22 +16,25 @@ import { UserEntity } from "./infras/entities/user.entity"
 import { UserRepository } from "./infras/repositories/user.repository"
 import { USER_FACTORY, USER_MAPPER, USER_REPOSITORY } from "./user.di-tokens"
 import { UserMapper } from "./user.mapper"
+import { DeleteUserHttpController } from "./application/commands/delete-user/delete-user.http.controller"
+import { DeleteUserHandler } from "./application/commands/delete-user/delete-user.handler"
 
 export const Factories: Provider[] = [{ provide: USER_FACTORY, useClass: UserFactory }]
 export const Repositories: Provider[] = [{ provide: USER_REPOSITORY, useClass: UserRepository }]
 export const Mappers: Provider[] = [{ provide: USER_MAPPER, useClass: UserMapper }]
 export const Services: Provider[] = [HashService]
 export const EventHandlers = [UserCreatedHandler]
-export const CommandHandlers = [CreateUserHandler, UpdateUserHandler]
+export const CommandHandlers = [CreateUserHandler, UpdateUserHandler, DeleteUserHandler]
 export const QueryHandlers = [GetUsersHandler, GetUsersCountHandler, GetUserHandler]
 export const Controllers = [
   GetUsersHttpController,
   CreateUserHttpController,
   UpdateUserHttpController,
+  DeleteUserHttpController,
 ]
 
 @Module({
-  imports: [CqrsModule, TypeOrmModule.forFeature([UserEntity])],
+  imports: [TypeOrmModule.forFeature([UserEntity])],
   controllers: Controllers,
   providers: [
     ...Services,
