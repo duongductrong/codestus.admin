@@ -22,7 +22,7 @@ export class PostEntity extends BaseEntity implements PostProps {
   @Column({ name: "title", type: "varchar", length: 191 })
   title: string
 
-  @Column({ name: "views", type: "mediumint", unsigned: true })
+  @Column({ name: "views", type: "mediumint", unsigned: true, default: 0 })
   views: number
 
   @Column({ name: "thumbnail", type: "text", nullable: true })
@@ -41,13 +41,18 @@ export class PostEntity extends BaseEntity implements PostProps {
   @Column({ name: "status", type: "tinyint", unsigned: true, default: 1 })
   status: number
 
-  @Column({ name: "publish_at", type: "timestamp" })
+  @Column({
+    name: "publish_at",
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP",
+    nullable: true,
+  })
   publishAt: Date
 
-  @Column({ name: "love", type: "mediumint", unsigned: true })
+  @Column({ name: "love", type: "mediumint", unsigned: true, default: 0 })
   love: number
 
-  @Column({ name: "unlove", type: "mediumint", unsigned: true })
+  @Column({ name: "unlove", type: "mediumint", unsigned: true, default: 0 })
   unlove: number
 
   @ManyToOne(() => UserEntity, (user) => user)

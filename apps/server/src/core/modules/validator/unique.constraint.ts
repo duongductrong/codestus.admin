@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common"
-import { EntityClassOrSchema } from "@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type"
 import {
   ValidationArguments,
   ValidationOptions,
@@ -7,11 +6,20 @@ import {
   ValidatorConstraintInterface,
   registerDecorator,
 } from "class-validator"
-import { EntityManager, EntitySchema, ObjectType } from "typeorm"
+import { set } from "lodash"
+import {
+  EntityManager,
+  EntitySchema,
+  FindOptionsWhere,
+  Not,
+  ObjectLiteral,
+  ObjectType,
+} from "typeorm"
 
 export interface IsUniqueConstraintOptions<E = unknown> {
   entity: ObjectType<E> | EntitySchema<E> | string
   field?: keyof E
+  ignore?: keyof E
 }
 
 @ValidatorConstraint({ name: "IsUniqueConstraint", async: true })
@@ -27,11 +35,20 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
     value: any,
     validationArguments?: ValidationArguments | undefined,
   ): Promise<boolean> {
-    const { entity, field } = this.getConstraintsOptions(validationArguments)
+    const { entity, field, ignore } = this.getConstraintsOptions(validationArguments)
     const entityRepository = this.entityManager.getRepository(entity)
     const propertyName = field || validationArguments?.property || "id"
 
-    const result = await entityRepository.count({ where: { [propertyName]: value } })
+    const where = {
+      [propertyName]: value,
+    } as FindOptionsWhere<ObjectLiteral> | FindOptionsWhere<ObjectLiteral>[]
+
+    if (ignore) {
+      const ignoreValue = validationArguments?.object[ignore]
+      set(where, ignore, Not(ignoreValue))
+    }
+
+    const result = await entityRepository.count({ where })
 
     return result === 0
   }

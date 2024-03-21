@@ -30,4 +30,7 @@ export const GENERAL_MESSAGES = {
   EXTERNAL_API_ERROR: "Error while communicating with external API.",
   OPERATION_SUCCESS: "Operation completed successfully.",
   QUERY_SUCCESS: "Data retrieved successfully.",
+
+  // Customize
+  POST_SLUG_DUPLICATED: "The slug duplicated",
 }

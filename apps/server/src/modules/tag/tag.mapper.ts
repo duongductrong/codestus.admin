@@ -1,8 +1,10 @@
 import { Mapper } from "@server/core/libs/ddd"
-import { TagEntity } from "./infras/entities/tag.entity"
 import { Tag, TagClass } from "./domain/tag"
+import { TagEntity } from "./infras/entities/tag.entity"
 
-export class TagMapper implements Mapper<TagEntity, Tag> {
+export interface ITagMapper extends Mapper<TagEntity, Tag> {}
+
+export class TagMapper implements ITagMapper {
   toEntity(model: TagEntity): Tag {
     return new TagClass(model)
   }

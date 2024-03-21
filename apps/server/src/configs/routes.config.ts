@@ -12,6 +12,8 @@ export const routes = {
       apiTag: "Post",
 
       root: "/posts",
+      create: "/posts",
+      detail: "/posts/:id",
       update: "/posts/:id",
       delete: "/posts/:id",
     },

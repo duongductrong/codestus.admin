@@ -1,6 +1,8 @@
 import { AggregateRoot } from "@nestjs/cqrs"
 import { TagProps } from "@server/modules/tag/domain/tag"
 import { UserProps } from "@server/modules/user/domain/user"
+import { omit } from "lodash"
+import slugify from "slugify"
 
 export interface PostProps {
   id: number
@@ -21,8 +23,8 @@ export interface PostProps {
 }
 
 export interface Post extends Pick<AggregateRoot, "commit" | "autoCommit" | "uncommit"> {
-  setSlug(handle: string): void
   getProps(): PostProps
+  setProps(props: Partial<PostProps>): void
 }
 
 export class PostClass extends AggregateRoot implements Post {
@@ -61,8 +63,26 @@ export class PostClass extends AggregateRoot implements Post {
     Object.assign(this, props)
   }
 
-  setSlug(handle: string) {
-    this.slug = handle
+  setProps(
+    props: Omit<
+      Partial<PostProps>,
+      "user" | "unlove" | "love" | "views" | "updatedAt" | "createdAt"
+    >,
+  ) {
+    const cleanProps = omit<Partial<PostProps>>(props, [
+      "user",
+      "unlove",
+      "love",
+      "views",
+      "updatedAt",
+      "createdAt",
+    ] as (keyof PostProps)[])
+    const _slug = cleanProps?.slug ? slugify(cleanProps.slug) : this.slug
+
+    Object.assign(this, {
+      ...cleanProps,
+      slug: _slug,
+    })
   }
 
   getProps(): PostProps {

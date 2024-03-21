@@ -3,14 +3,17 @@ import { BasePaginationQuery, PaginationParams } from "@server/core/query.base"
 import { TagProps } from "@server/modules/tag/domain/tag"
 import { UserProps } from "@server/modules/user/domain/user"
 import { IsOptional, IsString } from "class-validator"
-import { PostProps } from "../../domain/post"
+import { PostProps } from "../../../domain/post"
 import { GetPostsQuery } from "./get-posts.handler"
 
-export class GetPostsRequestDto extends BasePaginationQuery implements GetPostsQuery {
+export class GetPostsRequestDto
+  extends BasePaginationQuery
+  implements Omit<GetPostsQuery, "relations">
+{
   @IsString()
   @IsOptional()
   @ApiProperty({ description: "Relations (example: user,tags)" })
-  relations: string
+  relations?: string
 
   constructor(props: PaginationParams<GetPostsRequestDto>) {
     super({

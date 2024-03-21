@@ -16,9 +16,9 @@ export class CreatePostsTable1710674659572 implements MigrationInterface {
                 \`description\` text NULL,
                 \`content\` text NULL,
                 \`status\` tinyint UNSIGNED NOT NULL DEFAULT '1',
-                \`publish_at\` timestamp NOT NULL,
-                \`love\` mediumint UNSIGNED NOT NULL,
-                \`unlove\` mediumint UNSIGNED NOT NULL,
+                \`publish_at\` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                \`love\` mediumint UNSIGNED NOT NULL DEFAULT '0',
+                \`unlove\` mediumint UNSIGNED NOT NULL DEFAULT '0',
                 \`userId\` bigint UNSIGNED NULL,
                 UNIQUE INDEX \`posts_slug_unique\` (\`slug\`),
                 UNIQUE INDEX \`IDX_54ddf9075260407dcfdd724857\` (\`slug\`),
@@ -41,6 +41,7 @@ export class CreatePostsTable1710674659572 implements MigrationInterface {
     await queryRunner.query(`
             DROP INDEX \`posts_slug_unique\` ON \`posts\`
         `)
+
     await queryRunner.query(`
             DROP TABLE \`posts\`
         `)

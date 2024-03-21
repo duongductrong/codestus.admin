@@ -3,16 +3,16 @@ import { IQuery, IQueryHandler, QueryHandler } from "@nestjs/cqrs"
 import { BasePaginationQuery, PaginationParams } from "@server/core/query.base"
 import { set } from "lodash"
 import { FindOptionsOrder, FindOptionsRelations } from "typeorm"
-import { PostProps } from "../../domain/post"
-import { PostRepositoryPort } from "../../domain/post.repository.port"
-import { PostEntity } from "../../infras/entities/post.entity"
-import { POST_REPOSITORY } from "../../post.di-tokens"
+import { PostProps } from "../../../domain/post"
+import { PostRepositoryPort } from "../../../domain/post.repository.port"
+import { PostEntity } from "../../../infras/entities/post.entity"
+import { POST_REPOSITORY } from "../../../post.di-tokens"
 
 export class GetPostsQuery extends BasePaginationQuery implements IQuery {
   /**
    * Relations to `user`, `tags`
    */
-  relations: string
+  relations: string[]
 
   constructor(props: PaginationParams<GetPostsQuery>) {
     super({ limit: props.limit, orderBy: props.orderBy, page: props.page })
@@ -35,7 +35,7 @@ export class GetPostsHandler implements IQueryHandler<GetPostsQuery, GetPostsRes
     }
 
     if (command.relations) {
-      command.relations.split(",").forEach((field) => {
+      command.relations?.forEach((field) => {
         const f = field.trim()
         set(relations, f, true)
       })
