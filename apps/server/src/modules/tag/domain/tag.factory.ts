@@ -5,7 +5,7 @@ import { Tag, TagClass, TagProps } from "./tag"
 export class TagFactory {
   @Inject(EventPublisher) eventPublisher: EventPublisher
 
-  create(props: TagProps): Tag {
+  create(props: Omit<TagProps, "id" | "createdAt" | "updatedAt">): Tag {
     const tag = new TagClass({
       ...props,
       createdAt: new Date(),

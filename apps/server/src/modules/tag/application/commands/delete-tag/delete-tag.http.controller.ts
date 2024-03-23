@@ -5,24 +5,25 @@ import { routes } from "@server/configs/routes.config"
 import { SignalResponseDto } from "@server/core/classes/signal/dtos/signal-response.dto"
 import { SignalBuilder } from "@server/core/classes/signal/signal.builder"
 import { GENERAL_MESSAGES } from "@server/core/message.base"
-import { GetPostQuery, GetPostResult } from "../../queries/get-post/get-post.handler"
-import { DeletePostCommand, DeletePostResult } from "./delete-post.handler"
+import { GetTagQuery, GetTagResult } from "../../queries/get-tag/get-tag.handler"
+import { DeleteTagResponseDto } from "./delete-tag.dto"
+import { DeleteTagCommand, DeleteTagResult } from "./delete-tag.handler"
 
-@ApiTags(routes.v1.posts.apiTag)
+@ApiTags(routes.v1.tags.apiTag)
 @Controller({ version: routes.v1.version })
-export class DeletePostHttpController {
+export class DeleteTagHttpController {
   @Inject() private readonly commandBus: CommandBus
 
   @Inject() private readonly queryBus: QueryBus
 
-  @Delete(routes.v1.posts.delete)
-  @ApiOkResponse({ type: SignalResponseDto(DeletePostResult) })
+  @Delete(routes.v1.tags.delete)
+  @ApiOkResponse({ type: SignalResponseDto(DeleteTagResponseDto) })
   @HttpCode(HttpStatus.OK)
   async run(@Param("id") id: number) {
-    const post = await this.queryBus.execute<GetPostQuery, GetPostResult>(new GetPostQuery({ id }))
+    const tag = await this.queryBus.execute<GetTagQuery, GetTagResult>(new GetTagQuery({ id }))
 
-    const result = await this.commandBus.execute<DeletePostCommand, DeletePostResult>(
-      new DeletePostCommand({ id: Number(post.id) }),
+    const result = await this.commandBus.execute<DeleteTagCommand, DeleteTagResult>(
+      new DeleteTagCommand({ id: tag.id }),
     )
 
     return SignalBuilder.create()

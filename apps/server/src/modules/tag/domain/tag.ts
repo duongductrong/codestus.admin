@@ -1,5 +1,7 @@
 import { AggregateRootBase, EntityBase } from "@server/core/libs/ddd"
 import { PostProps } from "@server/modules/post/domain/post"
+import { omit } from "lodash"
+import slugify from "slugify"
 
 export interface TagProps {
   id: number
@@ -11,7 +13,11 @@ export interface TagProps {
   updatedAt?: Date
 }
 
-export interface Tag extends EntityBase<TagProps> {}
+export interface Tag extends EntityBase<TagProps> {
+  setProps(props: Partial<Omit<TagProps, "posts" | "updatedAt" | "createdAt" | "id">>): void
+
+  getProps(): TagProps
+}
 
 export class TagClass extends AggregateRootBase implements Tag {
   private readonly id: number
@@ -27,6 +33,17 @@ export class TagClass extends AggregateRootBase implements Tag {
   constructor(props: Omit<TagProps, "id">) {
     super()
     Object.assign(this, props)
+  }
+
+  setProps(props: Partial<Omit<TagProps, "posts" | "updatedAt" | "createdAt">>) {
+    Object.assign(
+      this,
+      omit({ ...props, slug: slugify(props.slug ?? this.slug) }, [
+        "createdAt",
+        "updatedAt",
+        "posts",
+      ] as (keyof TagProps)[]),
+    )
   }
 
   getProps(): TagProps {

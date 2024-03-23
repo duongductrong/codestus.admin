@@ -1,5 +1,5 @@
 import { IsOptional, IsString } from "class-validator"
-import { GetTagQuery } from "./get-tag.handler"
+import { GetTagQuery, GetTagResult } from "./get-tag.handler"
 
 export class GetTagRequestDto implements Omit<GetTagQuery, "id" | "relations"> {
   @IsString()
@@ -7,4 +7,4 @@ export class GetTagRequestDto implements Omit<GetTagQuery, "id" | "relations"> {
   relations?: string
 }
 
-export class GetTagResponseDto {}
+export class GetTagResponseDto extends GetTagResult {}
