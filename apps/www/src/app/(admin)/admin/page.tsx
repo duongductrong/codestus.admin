@@ -2,6 +2,9 @@
 
 import { CheckIcon } from "@radix-ui/react-icons"
 
+import { ColumnDef, PaginationState, SortingState } from "@tanstack/react-table"
+import dayjs from "dayjs"
+import React, { useState } from "react"
 import {
   Accordion,
   AccordionContent,
@@ -58,9 +61,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "../../../components/ui/
 import { Switch } from "../../../components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs"
 import { cn } from "../../../utils/tailwind"
-import { ColumnDef, PaginationState, SortingState } from "@tanstack/react-table"
-import dayjs from "dayjs"
-import React, { useState } from "react"
 import { Input } from "../../../components/ui/input"
 import {
   Select,
@@ -69,7 +69,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select"
-import { Person } from "./makeData"
 
 const notifications = [
   {

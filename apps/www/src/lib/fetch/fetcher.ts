@@ -1,6 +1,6 @@
-import { flattenObject } from "../../utils/object"
 import Axios, { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios"
 import qs from "querystring"
+import { flattenObject } from "../../utils/object"
 
 export interface FetcherResponse<TData = any, TConfig = any>
   extends AxiosResponse<TData, TConfig> {}
@@ -9,15 +9,26 @@ export interface FetcherError<TData = any, TConfig = any>
   extends AxiosError<FetcherResult<TData>, TConfig> {}
 
 export interface FetcherResult<T = unknown> {
-  data: T
+  // data: T
+  result: T
   message: string
-  code: string
-  pagination?: FetcherPagination
+  // code: string
+  meta?: FetcherMeta
+}
+
+export interface FetcherPaginatedVariables {
+  limit?: number
+  offset?: number
+  page?: number
+  orderBy?: {
+    field: string
+    value: "asc" | "desc" | "ASC" | "DESC"
+  }
 }
 
 export interface FetcherBadRequest extends Record<string, string | string[]> {}
 
-export interface FetcherPagination {
+export interface FetcherMeta {
   page: number
   size: number
   total: number
@@ -28,7 +39,7 @@ interface AxiosHeaders extends AxiosRequestHeaders {
 }
 
 const fetcher = Axios.create({
-  baseURL: process.env.ENDPOINT,
+  baseURL: 'http://localhost:8000/api/v1',
   paramsSerializer: (params) => qs.stringify(flattenObject(params) || {}),
 })
 

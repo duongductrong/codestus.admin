@@ -1,12 +1,13 @@
-import GeneralModaler from "../components/customs/custom-modals/general-modal"
-import PreferredTheme from "../components/ui/theme/preferred-theme"
-import { Prompter } from "../components/ui/use-prompt"
-import { cn } from "../utils/tailwind"
 import { GeistSans } from "geist/font/sans"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { Toaster } from "sonner"
+import GeneralModaler from "../components/customs/custom-modals/general-modal"
+import PreferredTheme from "../components/ui/theme/preferred-theme"
+import { Prompter } from "../components/ui/use-prompt"
+import { cn } from "../utils/tailwind"
 import "./globals.css"
+import { QueryProvider } from "../lib/query/query"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -23,12 +24,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(GeistSans.className, "bg-app-background antialiased")}>
-        <PreferredTheme>
-          {children}
-          <Prompter />
-          <Toaster />
-          <GeneralModaler />
-        </PreferredTheme>
+        <QueryProvider>
+          <PreferredTheme>
+            {children}
+            <Prompter />
+            <Toaster />
+            <GeneralModaler />
+          </PreferredTheme>
+        </QueryProvider>
       </body>
     </html>
   )

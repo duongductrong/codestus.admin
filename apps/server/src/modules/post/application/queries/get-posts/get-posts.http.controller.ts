@@ -6,7 +6,7 @@ import { SignalResponseDto } from "@server/core/classes/signal/dtos/signal-respo
 import { SignalBuilder } from "@server/core/classes/signal/signal.builder"
 import { GENERAL_MESSAGES } from "@server/core/message.base"
 import { arrayFromComma } from "@server/core/utils/array"
-import { GetPostsRequestDto, GetPostsResponseDto } from "./get-posts.dto"
+import { GetPostsRequestDto, GetPostsResultDto } from "./get-posts.dto"
 import { GetPostsQuery, GetPostsResult } from "./get-posts.handler"
 
 @ApiTags(routes.v1.posts.apiTag)
@@ -15,12 +15,20 @@ export class GetPostsHttpController {
   @Inject() private readonly queryBus: QueryBus
 
   @Get(routes.v1.posts.root)
-  @ApiOkResponse({ type: SignalResponseDto([GetPostsResponseDto]) })
+  @ApiOkResponse({ type: SignalResponseDto([GetPostsResultDto]) })
   @HttpCode(HttpStatus.OK)
   async run(@Query() query: GetPostsRequestDto) {
-    const result = await this.queryBus.execute<GetPostsQuery, GetPostsResult>(
+    const { count, data } = await this.queryBus.execute<GetPostsQuery, GetPostsResult>(
       new GetPostsQuery({ ...query, relations: arrayFromComma(query.relations) }),
     )
-    return SignalBuilder.create().setData(result).setMessage(GENERAL_MESSAGES.QUERY_SUCCESS).build()
+    return SignalBuilder.create()
+      .setData(data)
+      .setMessage(GENERAL_MESSAGES.QUERY_SUCCESS)
+      .setMeta({
+        page: 1,
+        size: 1,
+        total: count,
+      })
+      .build()
   }
 }

@@ -1,47 +1,66 @@
 "use client"
 
-import { Badge } from "../../../../components/ui/badge"
-import { DataTable } from "../../../../components/ui/data-table"
-import { DataTableSearcher, DataTableToolbar } from "../../../../components/ui/data-table/data-table-filters"
-import { Input } from "../../../../components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../../components/ui/select"
 import { ColumnDef } from "@tanstack/react-table"
+
+import { Badge } from "@/components/ui/badge"
+import {
+  DataTable,
+  DataTableBasePagination
+} from "@/components/ui/data-table"
+import { DataTableSearcher, DataTableToolbar } from "@/components/ui/data-table/data-table-filters"
+import { useDataTablePagination } from "@/components/ui/data-table/use-data-table-pagination"
+import { useDataTableSorting } from "@/components/ui/data-table/use-data-table-sorting"
+import { Tooltip } from "@/components/ui/tooltip"
+import { useSuspensePosts } from "@/services/post/hooks/use-get-posts"
+import { Post } from "@/services/post/types"
 
 export interface PostsListProps {}
 
 const PostsList = (props: PostsListProps) => {
-  const columns: ColumnDef<any>[] = [
+  const { pageIndex, pageSize, setPageIndex, setPageSize } = useDataTablePagination({
+    pageSize: 10,
+  })
+  const { firstSorting, sorting, setSorting } = useDataTableSorting()
+
+  const {
+    data: { result: data, meta },
+  } = useSuspensePosts({
+    variables: {
+      page: pageIndex,
+      limit: pageSize,
+      orderBy: firstSorting
+        ? { field: firstSorting?.id, value: firstSorting?.desc ? "desc" : "asc" }
+        : undefined,
+    },
+  })
+
+  const columns: ColumnDef<Post>[] = [
     {
       accessorKey: "id",
       header: "ID",
-      size: 250,
+      size: 100,
       cell: ({ getValue }) => <b className="break-all">{`#${getValue<string>()}`}</b>,
     },
     {
-      accessorKey: "firstName",
-      cell: (info) => info.getValue(),
-      header: "First name",
+      accessorKey: "title",
+      cell: (info) => (
+        <Tooltip triggerProps={{ asChild: true }} content={info.getValue<string>()}>
+          <p className="line-clamp-1">{info.getValue<string>()}</p>
+        </Tooltip>
+      ),
+      size: 300,
+      header: "Title",
     },
     {
-      accessorFn: (row) => row.lastName,
-      id: "lastName",
-      cell: (info) => info.getValue(),
-      header: () => <span>Last Name</span>,
+      accessorKey: "description",
+      cell: (info) => <p className="line-clamp-1">{info.getValue<string>()}</p>,
+      size: 300,
+      header: "Description",
     },
     {
-      accessorKey: "age",
-      header: () => "Age",
-      size: 50,
-    },
-    {
-      accessorKey: "visits",
-      header: () => <span>Visits</span>,
+      accessorKey: "views",
+      header: () => "Visits",
+      size: 100,
     },
     {
       accessorKey: "status",
@@ -49,42 +68,44 @@ const PostsList = (props: PostsListProps) => {
       cell: ({ getValue }) => <Badge variant="outline">{getValue<string>()}</Badge>,
     },
     {
-      accessorKey: "progress",
-      header: "Profile Progress",
-    },
-    {
       accessorKey: "createdAt",
       header: "Created At",
       cell: (info) => info.getValue<Date>().toLocaleString(),
       size: 250,
     },
+    {
+      accessorKey: "updatedAt",
+      header: "Updated At",
+      cell: (info) => info.getValue<Date>().toLocaleString(),
+      size: 250,
+    },
   ]
+
+  const handlePaginationChange: DataTableBasePagination["onPaginationChange"] = (state) => {
+    setPageIndex(state.pageIndex)
+    setPageSize(state.pageSize)
+  }
 
   return (
     <DataTable
       rowId="id"
-      data={Array(100)
-        .fill(1)
-        .map((_, index) => ({
-          age: index,
-          createdAt: new Date().toISOString(),
-          firstName: `${index}`,
-          id: `${Math.random()}`,
-          lastName: `${index}`,
-          progress: `${index}`,
-          status: `${index}`,
-          visits: index,
-        }))}
-      columns={columns}
-      pagination={{
-        pageIndex: 0,
-        pageSize: 12,
-      }}
       header={
         <DataTableToolbar>
-          <DataTableSearcher column="firstName" placeholder="search first name" />
+          <DataTableSearcher placeholder="Search..." isGlobal />
         </DataTableToolbar>
       }
+      data={data}
+      columns={columns}
+      pagination={{
+        pageIndex,
+        pageSize,
+        totalRecords: Number(meta?.total),
+      }}
+      onPaginationChange={handlePaginationChange}
+      onSortingChange={setSorting}
+      sorting={sorting}
+      manualSorting
+      manualFiltering
     />
   )
 }

@@ -6,9 +6,6 @@
  * See https://tanstack.com/virtual/v3/docs/examples/react/table for a simpler fixed row height example.
  */
 
-import { useDeepCompareMemoize } from "../../../hooks/use-deep-compare-memoize"
-import { Nullable } from "../../../types/utilities"
-import { cn } from "../../../utils/tailwind"
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons"
 import {
   ColumnDef,
@@ -41,6 +38,9 @@ import React, {
   useMemo,
   useState,
 } from "react"
+import { cn } from "../../../utils/tailwind"
+import { Nullable } from "../../../types/utilities"
+import { useDeepCompareMemoize } from "../../../hooks/use-deep-compare-memoize"
 import { Checkbox } from "../checkbox"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../table"
 import { DataTableBaseProvider } from "./data-table-base-provider"

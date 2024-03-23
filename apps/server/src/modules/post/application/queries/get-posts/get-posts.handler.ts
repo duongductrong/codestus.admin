@@ -20,7 +20,15 @@ export class GetPostsQuery extends BasePaginationQuery implements IQuery {
   }
 }
 
-export class GetPostsResult extends Array<PostProps> {}
+export class GetPostsResult {
+  data: PostProps[]
+
+  count: number
+
+  constructor(props: GetPostsResult) {
+    Object.assign(this, props)
+  }
+}
 
 @QueryHandler(GetPostsQuery)
 export class GetPostsHandler implements IQueryHandler<GetPostsQuery, GetPostsResult> {
@@ -41,13 +49,16 @@ export class GetPostsHandler implements IQueryHandler<GetPostsQuery, GetPostsRes
       })
     }
 
-    const posts = await this.postRepo.find({
-      order,
-      relations,
-      skip: command.offset,
-      take: command.limit,
-    })
+    const [posts, count] = await Promise.all([
+      this.postRepo.find({
+        order,
+        relations,
+        skip: command.offset,
+        take: command.limit,
+      }),
+      this.postRepo.count(),
+    ])
 
-    return posts.map((post) => post.getProps())
+    return { data: posts.map((post) => post.getProps()), count }
   }
 }

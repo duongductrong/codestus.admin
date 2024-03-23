@@ -8,6 +8,8 @@ module.exports = {
     // "plugin:@tanstack/eslint-plugin-query/recommended"
   ],
   rules: {
+    "import/extensions": "off",
+    
     "class-methods-use-this": "off",
     // "@ts-expect-error": "off",
 
@@ -48,16 +50,16 @@ module.exports = {
     "import/no-cycle": "off",
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": "off",
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        js: "never",
-        jsx: "never",
-        ts: "never",
-        tsx: "never",
-      },
-    ],
+    // "import/extensions": [
+    //   "error",
+    //   "ignorePackages",
+    //   {
+    //     js: "never",
+    //     jsx: "never",
+    //     ts: "never",
+    //     tsx: "never",
+    //   },
+    // ],
   },
   parserOptions: {
     parser: "@typescript-eslint/parser",

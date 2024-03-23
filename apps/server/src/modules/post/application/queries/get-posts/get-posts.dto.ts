@@ -26,7 +26,7 @@ export class GetPostsRequestDto
   }
 }
 
-export class GetPostsResponseDto implements PostProps {
+export class GetPostsResultDto implements PostProps {
   id: number
 
   title: string
