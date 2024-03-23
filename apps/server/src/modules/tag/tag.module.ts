@@ -1,6 +1,10 @@
 import { Module, Provider } from "@nestjs/common"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { PostEntity } from "../post/infras/entities/post.entity"
+import { GetTagHandler } from "./application/queries/get-tag/get-tag.handler"
+import { GetTagHttpController } from "./application/queries/get-tag/get-tag.http.controller"
+import { GetTagsHandler } from "./application/queries/get-tags/get-tags.handler"
+import { GetTagsHttpController } from "./application/queries/get-tags/get-tags.http.controller"
 import { TagFactory } from "./domain/tag.factory"
 import { TagEntity } from "./infras/entities/tag.entity"
 import { TagRepository } from "./infras/repositories/tag.repository"
@@ -13,8 +17,8 @@ export const Mappers: Provider[] = [{ provide: TAG_MAPPER, useClass: TagMapper }
 export const Services: Provider[] = []
 export const EventHandlers = []
 export const CommandHandlers = []
-export const QueryHandlers = []
-export const Controllers = []
+export const QueryHandlers = [GetTagsHandler, GetTagHandler]
+export const Controllers = [GetTagsHttpController, GetTagHttpController]
 
 @Module({
   imports: [TypeOrmModule.forFeature([TagEntity, PostEntity])],

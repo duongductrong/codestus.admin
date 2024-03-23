@@ -1,5 +1,7 @@
 export type ICommand<T = any> = T
 
+export type IQuery<T = any> = T
+
 // export type CommandProps<T> = Omit<T, "id" | "metadata"> & Partial<Command>
 
 // type CommandMetadata = {
