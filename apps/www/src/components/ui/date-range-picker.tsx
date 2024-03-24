@@ -13,7 +13,7 @@ import { addSeconds } from "date-fns/addSeconds"
 import { Button, ButtonProps } from "./button"
 import { Calendar } from "./calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "./popover"
-import { cn } from "../../utils/tailwind"
+import { cn } from "../../libs/utils/tailwind"
 
 export interface DateRangePickerExposeRef {}
 

@@ -1,7 +1,7 @@
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
 import React, { ComponentProps, ElementRef, forwardRef } from "react"
-import { cn } from "../../utils/tailwind"
+import { cn } from "../../libs/utils/tailwind"
 
 export const iconButtonVariants = cva(
   ["inline-flex items-center justify-center rounded-md", "[&>*]:size-5"],

@@ -14,7 +14,7 @@ import {
 import { ScrollArea } from "../../../ui/scroll-area"
 import { useElementSize } from "../../../../hooks/use-element-size"
 import { eventDispatcher } from "../../../../hooks/use-event/core"
-import { cn } from "../../../../utils/tailwind"
+import { cn } from "../../../../libs/utils/tailwind"
 import { ChevronLeftIcon, Component1Icon } from "@radix-ui/react-icons"
 import { useCallback, useMemo, useRef } from "react"
 import { GM_EVENT_TYPE } from "./constant"

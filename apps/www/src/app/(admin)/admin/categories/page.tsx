@@ -1,5 +1,7 @@
 "use client"
 
+import { useSuspenseTags } from "@/services/tag/hooks/use-get-tags"
+import { GeneralModalTrigger } from "../../../../components/customs/custom-modals/general-modal/client"
 import { Button } from "../../../../components/ui/button"
 import { DataTable } from "../../../../components/ui/data-table"
 import { DataTableDateRangeFilter } from "../../../../components/ui/data-table/components/data-table-date-range-filter"
@@ -11,21 +13,21 @@ import {
   DataTableToolbar,
 } from "../../../../components/ui/data-table/data-table-filters"
 import { usePrompt } from "../../../../components/ui/use-prompt"
-import { GeneralModalTrigger } from "../../../../components/customs/custom-modals/general-modal/client"
 import { useColumns } from "./_hooks/use-columns"
-import { useFakeData } from "./_hooks/use-fake-data"
 
 export interface PostsListProps {}
 
 const PostsList = (props: PostsListProps) => {
   const columns = useColumns()
-  const data = useFakeData()
   const prompt = usePrompt()
+
+  const { data } = useSuspenseTags()
+  const records = data.result
 
   return (
     <DataTable
       rowId="id"
-      data={data}
+      data={records}
       columns={columns}
       pagination={{
         pageIndex: 0,

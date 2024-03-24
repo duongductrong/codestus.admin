@@ -3,7 +3,7 @@
 
 "use client"
 
-import { cn } from "../../utils/tailwind"
+import { cn } from "../../libs/utils/tailwind"
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
 import {
   IPaginationProps,

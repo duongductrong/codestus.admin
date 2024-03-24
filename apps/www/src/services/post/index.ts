@@ -1,4 +1,4 @@
-import { fetcher } from "../../lib/fetch/fetcher"
+import { fetcher } from "../../libs/fetch/fetcher"
 import { GetPostsResult, GetPostsVariables } from "./types/get-posts"
 
 class PostService {

@@ -1,4 +1,4 @@
-import { FetcherPaginatedVariables, FetcherResult } from "@/lib/fetch/fetcher";
+import { FetcherPaginatedVariables, FetcherResult } from "@/libs/fetch/fetcher";
 import { Post } from "./post";
 
 export interface GetPostsVariables extends FetcherPaginatedVariables {

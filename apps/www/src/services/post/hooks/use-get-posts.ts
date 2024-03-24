@@ -1,6 +1,6 @@
 import { createQuery, createSuspenseQuery } from "react-query-kit"
 import { postService } from ".."
-import { FetcherError } from "../../../lib/fetch/fetcher"
+import { FetcherError } from "../../../libs/fetch/fetcher"
 import { GetPostsResult, GetPostsVariables } from "../types/get-posts"
 
 export interface UsePostsVariables extends GetPostsVariables {}

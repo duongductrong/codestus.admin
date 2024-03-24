@@ -5,9 +5,9 @@ import { Toaster } from "sonner"
 import GeneralModaler from "../components/customs/custom-modals/general-modal"
 import PreferredTheme from "../components/ui/theme/preferred-theme"
 import { Prompter } from "../components/ui/use-prompt"
-import { cn } from "../utils/tailwind"
+import { cn } from "../libs/utils/tailwind"
 import "./globals.css"
-import { QueryProvider } from "../lib/query/query"
+import { QueryProvider } from "../libs/query/query"
 
 const inter = Inter({ subsets: ["latin"] })
 

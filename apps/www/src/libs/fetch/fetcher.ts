@@ -1,6 +1,6 @@
 import Axios, { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios"
 import qs from "querystring"
-import { flattenObject } from "../../utils/object"
+import { flattenObject } from "../utils/object"
 
 export interface FetcherResponse<TData = any, TConfig = any>
   extends AxiosResponse<TData, TConfig> {}

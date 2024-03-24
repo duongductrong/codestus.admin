@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
-import CustomPageSection from "../../../../components/customs/custom-page-section"
-import { LayoutProps } from "../../../../types/utilities"
 import React from "react"
+import CustomPageSection from "@/components/customs/custom-page-section"
+import { LayoutProps } from "@/types/utilities"
 
 export interface PostsLayoutProps extends LayoutProps {}
 

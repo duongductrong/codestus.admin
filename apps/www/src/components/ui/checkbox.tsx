@@ -4,7 +4,7 @@ import * as React from "react"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { CheckIcon, DividerHorizontalIcon } from "@radix-ui/react-icons"
 
-import { cn } from "../../utils/tailwind"
+import { cn } from "../../libs/utils/tailwind"
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,

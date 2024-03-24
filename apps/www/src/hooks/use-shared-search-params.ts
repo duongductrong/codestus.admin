@@ -1,4 +1,4 @@
-import { flattenObject, parseToPrimitiveObject } from "../utils/object"
+import { flattenObject, parseToPrimitiveObject } from "../libs/utils/object"
 import _get from "lodash/get"
 import isNil from "lodash/isNil"
 import omit from "lodash/omit"

@@ -11,6 +11,7 @@ import { DataTableSearcher, DataTableToolbar } from "@/components/ui/data-table/
 import { useDataTablePagination } from "@/components/ui/data-table/use-data-table-pagination"
 import { useDataTableSorting } from "@/components/ui/data-table/use-data-table-sorting"
 import { Tooltip } from "@/components/ui/tooltip"
+import { formatNumber } from "@/libs/utils/number"
 import { useSuspensePosts } from "@/services/post/hooks/use-get-posts"
 import { Post } from "@/services/post/types"
 
@@ -61,6 +62,7 @@ const PostsList = (props: PostsListProps) => {
       accessorKey: "views",
       header: () => "Visits",
       size: 100,
+      cell: (info) => formatNumber(info.getValue<number>())
     },
     {
       accessorKey: "status",

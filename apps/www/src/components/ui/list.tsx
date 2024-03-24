@@ -1,7 +1,5 @@
 "use client"
 
-import { ForwardRefComponent } from "../../types/react-polymorphic"
-import { cn } from "../../utils/tailwind"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { ChevronDownIcon } from "@radix-ui/react-icons"
 import { VariantProps, cva } from "class-variance-authority"
@@ -9,13 +7,14 @@ import {
   Children,
   ComponentPropsWithoutRef,
   ElementRef,
-  FC,
   ReactElement,
   ReactNode,
   cloneElement,
   forwardRef,
   useId,
 } from "react"
+import { cn } from "@/libs/utils/tailwind"
+import { ForwardRefComponent } from "@/types/react-polymorphic"
 
 export const listVariants = cva(["flex flex-col gap-1"], {
   variants: {},
@@ -102,6 +101,7 @@ export const listItemTriggerVariants = cva(
     "w-full rounded-base px-4 py-2.5 text-sm font-medium text-list-foreground hover:text-primary",
     "flex items-center gap-2",
     "data-[state=open]:text-primary [&[data-state=open]>span>svg]:text-primary [&[data-state=open]>svg]:text-primary [&[data-state=open]>.list-item-endIcon]:rotate-180",
+    "data-[state=open]:bg-secondary/50 hover:bg-secondary/80",
   ],
   {
     variants: {
@@ -120,7 +120,7 @@ export interface ListItemTriggerProps
   endIcon?: ReactNode
   hasChild?: boolean
   disableTrigger?: boolean
-  disableDefaultDotIcon?: boolean
+  enableDotIcon?: boolean
 }
 
 export const ListItemTrigger = forwardRef(
@@ -134,7 +134,7 @@ export const ListItemTrigger = forwardRef(
       hasChild,
       asChild,
       disableTrigger,
-      disableDefaultDotIcon,
+      enableDotIcon = false,
       as = "button",
       ...props
     },
@@ -150,9 +150,7 @@ export const ListItemTrigger = forwardRef(
         className={cn(listItemTriggerVariants({ active, className }))}
       >
         {startIcon ||
-          (disableDefaultDotIcon ? null : (
-            <span className="mr-1 h-1 w-1 rounded-full bg-current" />
-          ))}
+          (!enableDotIcon ? null : <span className="mr-1 h-1 w-1 rounded-full bg-current" />)}
         {children}
         {hasChild && !endIcon ? (
           <ChevronDownIcon className={cn(endIconClassName)} />
@@ -168,8 +166,8 @@ ListItemTrigger.displayName = "ListItemTrigger"
 
 export const listItemContentVariants = cva(
   [
-    "ml-2",
     "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden",
+    "data-[state=open]:bg-secondary/50",
   ],
   {
     variants: {},

@@ -38,9 +38,9 @@ import React, {
   useMemo,
   useState,
 } from "react"
-import { cn } from "../../../utils/tailwind"
-import { Nullable } from "../../../types/utilities"
-import { useDeepCompareMemoize } from "../../../hooks/use-deep-compare-memoize"
+import { cn } from "@/libs/utils/tailwind"
+import { Nullable } from "@/types/utilities"
+import { useDeepCompareMemoize } from "@/hooks/use-deep-compare-memoize"
 import { Checkbox } from "../checkbox"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../table"
 import { DataTableBaseProvider } from "./data-table-base-provider"

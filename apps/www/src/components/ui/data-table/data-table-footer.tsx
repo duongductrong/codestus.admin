@@ -1,6 +1,6 @@
 "use client"
 
-import { cn } from "../../../utils/tailwind"
+import { cn } from "../../../libs/utils/tailwind"
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
 import { Pagination } from "../pagination-z"
 import { useDataTableBase } from "./use-data-table-base"

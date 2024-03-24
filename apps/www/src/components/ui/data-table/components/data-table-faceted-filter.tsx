@@ -13,7 +13,7 @@ import {
 } from "../../command"
 import { Popover, PopoverContent, PopoverTrigger } from "../../popover"
 import { Separator } from "../../separator"
-import { cn } from "../../../../utils/tailwind"
+import { cn } from "../../../../libs/utils/tailwind"
 import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons"
 import React, { ReactNode } from "react"
 import { useDataTableBase } from "../use-data-table-base"

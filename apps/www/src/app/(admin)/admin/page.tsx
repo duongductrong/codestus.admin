@@ -60,7 +60,7 @@ import { List, ListItem, ListItemContent, ListItemTrigger } from "../../../compo
 import { Popover, PopoverContent, PopoverTrigger } from "../../../components/ui/popover"
 import { Switch } from "../../../components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs"
-import { cn } from "../../../utils/tailwind"
+import { cn } from "../../../libs/utils/tailwind"
 import { Input } from "../../../components/ui/input"
 import {
   Select,

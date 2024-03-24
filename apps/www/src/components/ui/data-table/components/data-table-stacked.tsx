@@ -1,4 +1,4 @@
-import { cn } from "../../../../utils/tailwind"
+import { cn } from "../../../../libs/utils/tailwind"
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
 
 export interface DataTableStackedProps extends ComponentPropsWithoutRef<"div"> {

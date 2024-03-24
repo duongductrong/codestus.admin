@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import Link from "next/link"
 
 import { buttonVariants } from "../../../components/ui/button"
-import { cn } from "../../../utils/tailwind"
+import { cn } from "../../../libs/utils/tailwind"
 import { LoginForm } from "./_components/login-form"
 
 export const metadata: Metadata = {

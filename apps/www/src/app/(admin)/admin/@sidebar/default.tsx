@@ -1,12 +1,12 @@
+"use client"
+
+/* eslint-disable jsx-a11y/control-has-associated-label */
+import { PanelLeft } from "lucide-react"
 import Link from "next/link"
-import { Fragment } from "react"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "../../../../components/ui/hover-card"
-import { IconButton } from "../../../../components/ui/icon-button"
 import Icons from "../../../../components/ui/icons"
 import { List, ListItem, ListItemContent, ListItemTrigger } from "../../../../components/ui/list"
-import { ToolTipProps, Tooltip } from "../../../../components/ui/tooltip"
 import { SIDEBAR_ITEMS } from "../../../../constants/admin"
-import { cn } from "../../../../utils/tailwind"
+import { cn } from "../../../../libs/utils/tailwind"
 
 import SidebarLogo from "./_components/sidebar-logo"
 
@@ -15,83 +15,71 @@ export interface AdminSidebarProps {}
 const AdminSidebar = (props: AdminSidebarProps) => (
   <aside
     className={cn(
-      "fixed left-0 top-0 z-10",
-      "h-lvh w-app-sidebar-dimension bg-background",
       "border-r",
-      "flex flex-col items-center overflow-hidden",
+      "fixed left-0 top-0 z-20",
+      "w-sidebar-size h-lvh bg-background",
+      "transition-width flex flex-col overflow-hidden duration-300 ease-out",
     )}
   >
-    <div
-      className={cn(
-        "size-app-sidebar-dimension",
-        "bg-background",
-        "mb-4 flex shrink-0 items-center justify-center",
-      )}
-    >
-      <SidebarLogo />
+    <div className={cn("flex items-center gap-3 px-4 py-3 font-bold", "border-b bg-background")}>
+      <span className="flex items-center gap-3 text-sm">
+        <SidebarLogo /> ACME
+      </span>
+      <button
+        type="button"
+        className="ml-auto cursor-pointer"
+        onClick={() => document.documentElement.style.setProperty("--sidebar-size", "60px")}
+      >
+        <PanelLeft className="h-4.5 w-4.5" />
+      </button>
     </div>
 
-    <div className="flex h-full flex-col gap-3 p-2">
+    <div className="flex h-full flex-col px-0 py-3">
       {SIDEBAR_ITEMS.map(({ title, key, icon, path, children }, index) => {
-        const hasChildrenItems = !!children?.length
-        const MaybeTooltip = hasChildrenItems ? Fragment : (Tooltip as any)
-        const maybeTooltipProps = hasChildrenItems
-          ? {}
-          : ({
-              content: title,
-              contentProps: { align: "center", side: "right" },
-            } as Omit<ToolTipProps, "children">)
+        const hasChildrenItems = children?.length
 
         return (
-          <HoverCard key={key} openDelay={0}>
-            <HoverCardTrigger asChild>
-              <MaybeTooltip {...maybeTooltipProps}>
-                <IconButton key={key} active={index === 1} size="lg" forceDark asChild>
-                  <Link href={path}>
-                    {icon ? <Icons name={icon} className="h-[22px] w-[22px]" /> : null}
-                  </Link>
-                </IconButton>
-              </MaybeTooltip>
-            </HoverCardTrigger>
+          <List type="multiple">
             {hasChildrenItems ? (
-              <HoverCardContent side="right" sideOffset={16} className="mt-2 w-[298px] space-y-3">
-                <h2 className="text-base font-medium">{title}</h2>
-                {hasChildrenItems ? (
-                  <List type="multiple">
-                    {children.map((childItem) => {
-                      const nestedChildren = childItem.children
-                      return (
-                        <ListItem as={Link} href={childItem.path}>
-                          {nestedChildren?.length ? (
-                            <>
-                              <ListItemTrigger>{childItem.title}</ListItemTrigger>
-                              <ListItemContent>
-                                {nestedChildren.map((nestedChildItem) => (
-                                  <ListItem
-                                    as={Link}
-                                    href={nestedChildItem.path}
-                                    startIcon={
-                                      nestedChildItem.icon ? (
-                                        <Icons name={nestedChildItem.icon} />
-                                      ) : undefined
-                                    }
-                                  >
-                                    {nestedChildItem.title}
-                                  </ListItem>
-                                ))}
-                              </ListItemContent>
-                            </>
-                          ) : (
-                            childItem.title
-                          )}
-                        </ListItem>
-                      )
-                    })}
-                  </List>
-                ) : null}
-              </HoverCardContent>
-            ) : null}
-          </HoverCard>
+              <ListItem>
+                <ListItemTrigger disabled={!hasChildrenItems}>{title}</ListItemTrigger>
+
+                <ListItemContent>
+                  {children?.map((childItem) => {
+                    const nestedChildren = childItem.children
+                    return nestedChildren?.length ? (
+                      <ListItem>
+                        <ListItemTrigger>{childItem.title}</ListItemTrigger>
+                        <ListItemContent>
+                          {nestedChildren.map((nestedChildItem) => (
+                            <ListItem
+                              as={Link}
+                              href={nestedChildItem.path}
+                              startIcon={
+                                nestedChildItem.icon ? (
+                                  <Icons name={nestedChildItem.icon} />
+                                ) : undefined
+                              }
+                            >
+                              {nestedChildItem.title}
+                            </ListItem>
+                          ))}
+                        </ListItemContent>
+                      </ListItem>
+                    ) : (
+                      <ListItem as={Link} href={childItem.path}>
+                        {childItem.title}
+                      </ListItem>
+                    )
+                  })}
+                </ListItemContent>
+              </ListItem>
+            ) : (
+              <ListItem as={Link} href={path}>
+                {title}
+              </ListItem>
+            )}
+          </List>
         )
       })}
     </div>

@@ -1,4 +1,4 @@
-import { cn } from "../../../utils/tailwind"
+import { cn } from "../../../libs/utils/tailwind"
 import dynamic from "next/dynamic"
 import React, { ComponentProps, Fragment, memo, useMemo } from "react"
 

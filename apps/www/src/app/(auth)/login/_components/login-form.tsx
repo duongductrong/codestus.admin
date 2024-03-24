@@ -6,7 +6,7 @@ import { Button } from "../../../../components/ui/button"
 import { Input } from "../../../../components/ui/input"
 import { Label } from "../../../../components/ui/label"
 
-import { cn } from "../../../../utils/tailwind"
+import { cn } from "../../../../libs/utils/tailwind"
 import { GitHubLogoIcon } from "@radix-ui/react-icons"
 import { Loader2Icon } from "lucide-react"
 import { useRouter } from "next/navigation"

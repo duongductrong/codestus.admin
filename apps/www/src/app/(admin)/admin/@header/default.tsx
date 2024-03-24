@@ -1,5 +1,5 @@
 import { PreferredThemeSwitcher } from "../../../../components/ui/theme"
-import { cn } from "../../../../utils/tailwind"
+import { cn } from "../../../../libs/utils/tailwind"
 import { HeaderUserProfile } from "./_components/header-user-profile"
 
 export interface AdminHeaderProps {}
