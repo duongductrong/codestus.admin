@@ -1,6 +1,6 @@
-import { Skeleton } from "../../../ui/skeleton"
-import dynamic from "next/dynamic"
+import dynamic, { DynamicOptions, Loader } from "next/dynamic"
 import { forwardRef } from "react"
+import { Skeleton } from "@/components/ui/skeleton"
 import { GeneralForwardRef, GeneralModalComponentProps } from "./types"
 
 const loading = () => (
@@ -11,17 +11,30 @@ const loading = () => (
   </div>
 )
 
-const DynamicTemplate = dynamic(() => import("./components/template"), {
-  ssr: true,
-  loading,
-})
+const takeForm = <T,>(options: DynamicOptions<T> | Loader<T>) => {
+  const Component = dynamic(options, {
+    ssr: true,
+    loading,
+  }) as any
 
-const TemplateForm = forwardRef<GeneralForwardRef, GeneralModalComponentProps>((props, ref) => (
-  <DynamicTemplate {...props} outerRef={ref} />
-))
+  return forwardRef<GeneralForwardRef, GeneralModalComponentProps>((props, ref) => (
+    <Component {...props} outerRef={ref} />
+  ))
+}
+
+// const DynamicTemplate = dynamic(() => import("./components/template"), {
+//   ssr: true,
+//   loading,
+// })
+
+// const TemplateForm = forwardRef<GeneralForwardRef, GeneralModalComponentProps>((props, ref) => (
+//   <DynamicTemplate {...props} outerRef={ref} />
+// ))
+
+const TagForm = takeForm(() => import("./components/tag-form"))
 
 export const GENERAL_MODAL_LOADER = {
-  TemplateForm,
+  TagForm,
 } as const
 
-export type GeneralModalLoaderType = typeof GENERAL_MODAL_LOADER
+export type GeneralModalLoaderKeys = typeof GENERAL_MODAL_LOADER

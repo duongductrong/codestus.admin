@@ -17,7 +17,7 @@ const AdminSidebar = (props: AdminSidebarProps) => (
     className={cn(
       "border-r",
       "fixed left-0 top-0 z-20",
-      "w-sidebar-size h-lvh bg-background",
+      "h-lvh w-sidebar-size bg-background",
       "transition-width flex flex-col overflow-hidden duration-300 ease-out",
     )}
   >
@@ -39,7 +39,7 @@ const AdminSidebar = (props: AdminSidebarProps) => (
         const hasChildrenItems = children?.length
 
         return (
-          <List type="multiple">
+          <List key={key} type="multiple">
             {hasChildrenItems ? (
               <ListItem>
                 <ListItemTrigger disabled={!hasChildrenItems}>{title}</ListItemTrigger>

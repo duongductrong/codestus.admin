@@ -2,6 +2,7 @@ import { ApiProperty } from "@nestjs/swagger"
 import { IsUnique } from "@server/core/modules/validator"
 import { TagEntity } from "@server/modules/tag/infras/entities/tag.entity"
 import { IsDefined, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator"
+import { Transform } from "class-transformer"
 import { UpdateTagCommand, UpdateTagResult } from "./update-tag.handler"
 
 export class UpdateTagRequestDto extends UpdateTagCommand {
@@ -9,6 +10,7 @@ export class UpdateTagRequestDto extends UpdateTagCommand {
   @IsNumber()
   @IsDefined()
   @IsNotEmpty()
+  @Transform(({ value }) => Number(value))
   id: number
 
   @ApiProperty()

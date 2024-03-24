@@ -1,4 +1,4 @@
-import { useGeneralModal, GeneralModalType, GeneralModalDetailsType } from "./use-general-modal"
+import { useGeneralModal, GeneralModalState, GeneralModalDetailsState } from "./use-general-modal"
 
-export type { GeneralModalType, GeneralModalDetailsType }
+export type { GeneralModalState, GeneralModalDetailsState }
 export { useGeneralModal }

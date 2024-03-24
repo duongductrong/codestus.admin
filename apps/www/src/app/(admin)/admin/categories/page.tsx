@@ -1,28 +1,62 @@
 "use client"
 
-import { useSuspenseTags } from "@/services/tag/hooks/use-get-tags"
-import { GeneralModalTrigger } from "../../../../components/customs/custom-modals/general-modal/client"
-import { Button } from "../../../../components/ui/button"
-import { DataTable } from "../../../../components/ui/data-table"
-import { DataTableDateRangeFilter } from "../../../../components/ui/data-table/components/data-table-date-range-filter"
+import { toast } from "sonner"
+import {
+  TagFormDefaultValues,
+  TagFormErrorValues,
+  TagFormSuccessValues,
+} from "@/components/customs/custom-modals/general-modal/components/tag-form"
+import { useGeneralModal } from "@/components/customs/custom-modals/general-modal/hooks"
+import { useModalOpenSelector } from "@/components/customs/custom-modals/general-modal/hooks/use-general-modal"
+import { DataTable } from "@/components/ui/data-table"
+import { DataTableDateRangeFilter } from "@/components/ui/data-table/components/data-table-date-range-filter"
 import {
   DataTableResetFilter,
   DataTableSearcher,
-  DataTableSelectionImpact,
   DataTableStacked,
   DataTableToolbar,
-} from "../../../../components/ui/data-table/data-table-filters"
-import { usePrompt } from "../../../../components/ui/use-prompt"
+} from "@/components/ui/data-table/data-table-filters"
+import { useSuspenseTags } from "@/services/tag/hooks/use-get-tags"
+import { useUpdateTag } from "@/services/tag/hooks/use-update-tag"
 import { useColumns } from "./_hooks/use-columns"
 
 export interface PostsListProps {}
 
 const PostsList = (props: PostsListProps) => {
-  const columns = useColumns()
-  const prompt = usePrompt()
+  const openModaler = useGeneralModal(useModalOpenSelector)
 
-  const { data } = useSuspenseTags()
-  const records = data.result
+  const { data: response } = useSuspenseTags()
+
+  const records = response.result
+
+  const { mutateAsync: updateTagFn } = useUpdateTag({
+    onSuccess(data) {
+      toast.success(data.message)
+    },
+  })
+
+  const columns = useColumns({
+    onVisitItem(tag) {
+      openModaler<TagFormDefaultValues, TagFormSuccessValues, TagFormErrorValues>("TagForm", {
+        type: "drawer",
+        title: "Tag",
+        defaultValues: {
+          name: tag.name,
+          slug: tag.slug,
+          description: tag.description,
+        },
+        onSuccess(data) {
+          updateTagFn({
+            id: tag.id,
+            name: data.name,
+            slug: data.slug,
+            description: data.description,
+          })
+        },
+        onError() {},
+      })
+    },
+  })
 
   return (
     <DataTable
@@ -38,7 +72,7 @@ const PostsList = (props: PostsListProps) => {
         <DataTableToolbar>
           <DataTableStacked fullWidth>
             <DataTableSearcher placeholder="Search all columns" isGlobal />
-            <DataTableSelectionImpact>
+            {/* <DataTableSelectionImpact>
               <Button
                 variant="secondary"
                 onClick={() =>
@@ -54,8 +88,9 @@ const PostsList = (props: PostsListProps) => {
                 Bulk delete
               </Button>
               <GeneralModalTrigger
-                loader="TemplateForm"
+                loader="TagForm"
                 details={{
+                  type: "modal",
                   title: "Create category",
                   size: "md",
                   description: "Create the category for your posts.",
@@ -63,7 +98,7 @@ const PostsList = (props: PostsListProps) => {
               >
                 <Button variant="secondary">Modal</Button>
               </GeneralModalTrigger>
-            </DataTableSelectionImpact>
+            </DataTableSelectionImpact> */}
             <DataTableDateRangeFilter
               column="createdAt"
               className="ml-auto"

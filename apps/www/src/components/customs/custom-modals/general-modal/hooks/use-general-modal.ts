@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
-import { ButtonProps } from "../../../../ui/button"
+import { isNil } from "lodash"
 import omit from "lodash/omit"
 import { create } from "zustand"
 import { devtools } from "zustand/middleware"
-import { GeneralModalLoaderType } from "../loaders"
+import { ButtonProps } from "@/components/ui/button"
+import { GeneralModalLoaderKeys } from "../loaders"
 import { GeneralModalVariant } from "../styles"
 
 export type GeneralModalDetailSizeType = GeneralModalVariant["size"]
@@ -16,7 +17,12 @@ export type GeneralModalDetailProps = {
   hideBackArrow?: boolean
 }
 
-export interface GeneralModalDetailsType<TDefaultValues = any> {
+export interface GeneralModalDetailsState<
+  TDefaultValues = any,
+  TSuccessValues = any,
+  TErrorValues = any,
+> {
+  type: "modal" | "drawer"
   primaryKey?: string
   title: string
   description?: string
@@ -24,30 +30,44 @@ export interface GeneralModalDetailsType<TDefaultValues = any> {
   actions?: GeneralModalDetailActionType[]
   generalProps?: GeneralModalDetailProps
   defaultValues?: Partial<TDefaultValues>
+  autoCloseOnSuccess?: boolean
+  autoCloseOnError?: boolean
+
+  onSuccess?: <T = TSuccessValues>(
+    data: TSuccessValues,
+    modaler: Pick<GeneralModalState, "closeCurrentModal" | "closes" | "setLoading">,
+  ) => void
+  onError?: <T = TErrorValues>(
+    data: T,
+    modaler: Pick<GeneralModalState, "closeCurrentModal" | "closes" | "setLoading">,
+  ) => void
+  onCancel?: () => void
 }
 
-export type GeneralModalConfigsType<TConfig = Record<string, unknown>> = TConfig
+export type GeneralModalConfigsState<TConfig = Record<string, unknown>> = TConfig
 
-export interface GeneralModalType {
-  loaders: (keyof GeneralModalLoaderType)[]
-  details: Record<number, GeneralModalDetailsType>
-  configs: Record<number, GeneralModalConfigsType>
+export interface GeneralModalState {
+  loaders: (keyof GeneralModalLoaderKeys)[]
+  details: Record<number, GeneralModalDetailsState>
+  configs: Record<number, GeneralModalConfigsState>
   loadings: Record<number, boolean>
 
-  open: <TDefaultValues = any>(
-    loader: keyof GeneralModalLoaderType,
-    details: GeneralModalDetailsType<TDefaultValues>,
-    configs?: GeneralModalConfigsType,
+  open: <TDefaultValues = any, TSuccessValues = any, TErrorValues = any>(
+    loader: keyof GeneralModalLoaderKeys,
+    details: GeneralModalDetailsState<TDefaultValues, TSuccessValues, TErrorValues>,
+    configs?: GeneralModalConfigsState,
   ) => void
+
   closeCurrentModal: () => void
+
   closes: () => void
 
   setLoading: (index: number, isLoading: boolean) => void
 
-  setConfigs: (index: number, configs: GeneralModalConfigsType) => void
+  setConfigs: (index: number, configs: GeneralModalConfigsState) => void
 }
 
-export const useGeneralModal = create<GeneralModalType>()(
+export const useGeneralModal = create<GeneralModalState>()(
   devtools((set, get) => ({
     loaders: [],
     details: {},
@@ -60,14 +80,18 @@ export const useGeneralModal = create<GeneralModalType>()(
       const nextIndex = loaders.length
 
       const newLoaders = (loaders ?? [])?.concat([loader])
-      const newDetails = { ...loaderDetails, [nextIndex]: details }
-      const newConfigs = { ...loaderConfigs, [nextIndex]: configs }
 
-      // console.log("[Debug] open", loader)
-      // console.log("[Debug] details", details)
-      // console.log("[Debug] loaders", loaders)
-      // console.log("[Debug] newLoaders", newLoaders)
-      // console.log("[Debug] newLoaders", newDetails)
+      const newDetails = {
+        ...loaderDetails,
+        [nextIndex]: {
+          ...details,
+          autoCloseOnSuccess: isNil(details.autoCloseOnSuccess) ? true : details.autoCloseOnSuccess,
+          autoCloseOnError: isNil(details.autoCloseOnError) ? true : details.autoCloseOnError,
+        } as GeneralModalDetailsState,
+      }
+
+      const newConfigs = { ...loaderConfigs, [nextIndex]: configs as GeneralModalConfigsState }
+
       return set((state) => ({
         ...state,
         loaders: newLoaders,
@@ -75,6 +99,7 @@ export const useGeneralModal = create<GeneralModalType>()(
         configs: newConfigs,
       }))
     },
+
     closeCurrentModal: () => {
       const { loaders, loadings, details } = get()
 
@@ -83,10 +108,6 @@ export const useGeneralModal = create<GeneralModalType>()(
       const newLoadings = omit(loadings, [lastIndex]) as Record<string | number, boolean>
       const newDetails = omit(details, [lastIndex])
 
-      // console.log("[Debug] loaders", loaders)
-      // console.log("[Debug] newLoaders", newLoaders)
-      // console.log("[Debug] newLoadings", newLoadings)
-      // console.log("[Debug] closeCurrentModal")
       return set((state) => ({
         ...state,
         loaders: newLoaders,
@@ -114,3 +135,5 @@ export const useGeneralModal = create<GeneralModalType>()(
       })),
   })),
 )
+
+export const useModalOpenSelector = (state: GeneralModalState) => state.open

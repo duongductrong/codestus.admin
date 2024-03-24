@@ -1,11 +1,8 @@
 "use client"
 
-import { useRef } from "react"
 import { PromptState, initialPromptState, promptStore } from "."
 
 export const usePrompt = () => {
-  const ref = useRef<any>(null)
-
   const promptFn = (data: Omit<PromptState, "open" | "confirm">) =>
     new Promise<boolean>((resolve) => {
       promptStore.setState((state) => ({

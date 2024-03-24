@@ -1,5 +1,5 @@
 import { ForwardedRef } from "react"
-import { GeneralModalConfigsType } from "./hooks/use-general-modal"
+import { GeneralModalConfigsState } from "./hooks/use-general-modal"
 
 export interface GeneralModalComponentProps<
   TDefaultValues = any,
@@ -11,7 +11,7 @@ export interface GeneralModalComponentProps<
   setLoading: (index: number, isLoading: boolean) => void
   outerRef?: ForwardedRef<GeneralForwardRef>
   defaultValues?: TDefaultValues
-  configs?: GeneralModalConfigsType<TConfigValues>
+  configs?: GeneralModalConfigsState<TConfigValues>
   dimensions?: {
     width: number
     height: number

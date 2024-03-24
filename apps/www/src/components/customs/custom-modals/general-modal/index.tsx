@@ -2,7 +2,9 @@
 
 "use client"
 
-import { Button } from "../../../ui/button"
+import { ChevronLeftIcon, Component1Icon } from "@radix-ui/react-icons"
+import { useCallback, useMemo, useRef } from "react"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -10,16 +12,14 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../../../ui/dialog"
-import { ScrollArea } from "../../../ui/scroll-area"
-import { useElementSize } from "../../../../hooks/use-element-size"
-import { eventDispatcher } from "../../../../hooks/use-event/core"
-import { cn } from "../../../../libs/utils/tailwind"
-import { ChevronLeftIcon, Component1Icon } from "@radix-ui/react-icons"
-import { useCallback, useMemo, useRef } from "react"
+} from "@/components/ui/dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { useElementSize } from "@/hooks/use-element-size"
+import { eventDispatcher } from "@/hooks/use-event/core"
+import { cn } from "@/libs/utils/tailwind"
 import { GM_EVENT_TYPE } from "./constant"
 import { useGeneralModal } from "./hooks/use-general-modal"
-import { GENERAL_MODAL_LOADER, GeneralModalLoaderType } from "./loaders"
+import { GENERAL_MODAL_LOADER, GeneralModalLoaderKeys } from "./loaders"
 import { generalModalVariants } from "./styles"
 import { GeneralForwardRef } from "./types"
 
@@ -28,7 +28,8 @@ export interface GeneralModalerProps {}
 const GeneralModaler = (props: GeneralModalerProps) => {
   const outerRefs = useRef<GeneralForwardRef[]>([])
 
-  const { loaders, loadings, details, configs, setLoading, closeCurrentModal } = useGeneralModal()
+  const { loaders, loadings, details, configs, setLoading, closeCurrentModal, closes } =
+    useGeneralModal()
 
   const [dialogBodyViewportRef, { width, height }] = useElementSize()
 
@@ -46,14 +47,36 @@ const GeneralModaler = (props: GeneralModalerProps) => {
   )
 
   const handleSuccess =
-    (fromLoader: keyof GeneralModalLoaderType, primaryKey?: string) => (data: unknown) => {
+    (fromLoader: keyof GeneralModalLoaderKeys, index: number, primaryKey?: string) =>
+    (data: unknown) => {
+      const modaler = details[index]
+
+      modaler?.onSuccess?.(data, { closeCurrentModal, closes, setLoading })
+
+      if (modaler.autoCloseOnSuccess) closeCurrentModal()
+
       eventDispatcher(GM_EVENT_TYPE.DISPATCHER(fromLoader, "success", primaryKey), data)
     }
 
   const handleError =
-    (fromLoader: keyof GeneralModalLoaderType, primaryKey?: string) => (data: unknown) => {
+    (fromLoader: keyof GeneralModalLoaderKeys, index: number, primaryKey?: string) =>
+    (data: unknown) => {
+      const modaler = details[index]
+
+      modaler?.onError?.(data, { closeCurrentModal, closes, setLoading })
+
+      if (modaler.autoCloseOnError) closeCurrentModal()
+
       eventDispatcher(GM_EVENT_TYPE.DISPATCHER(fromLoader, "error", primaryKey), data)
     }
+
+  const handleCancel = (fromLoader: keyof GeneralModalLoaderKeys, index: number) => {
+    const modaler = details[index]
+
+    modaler?.onCancel?.()
+
+    closeCurrentModal()
+  }
 
   return loaders?.map((loader, index) => {
     const DialogBody = GENERAL_MODAL_LOADER[loader]
@@ -75,12 +98,12 @@ const GeneralModaler = (props: GeneralModalerProps) => {
         open={!!loader}
         onOpenChange={(isOpen) => (!isOpen ? closeCurrentModal() : null)}
       >
-        <DialogContent className={generalModalVariants({ size: detail?.size })}>
-          <DialogHeader className="flex flex-row items-center flex-wrap justify-start">
+        <DialogContent className={generalModalVariants({ type: detail.type, size: detail?.size })}>
+          <DialogHeader className="flex flex-row flex-wrap items-center justify-start">
             {index !== 0 && !hideBackArrow ? (
               <ChevronLeftIcon
                 role="button"
-                className="text-neutral-grey-300 h-6 w-6 cursor-pointer mr-2"
+                className="text-neutral-grey-300 mr-2 h-6 w-6 cursor-pointer"
                 onClick={() => closeCurrentModal()}
               />
             ) : null}
@@ -108,13 +131,13 @@ const GeneralModaler = (props: GeneralModalerProps) => {
               }}
               closeCurrentModal={closeCurrentModal}
               setLoading={handleSetLoading}
-              onSuccess={handleSuccess(loader, detail.primaryKey)}
-              onError={handleError(loader, detail.primaryKey)}
+              onSuccess={handleSuccess(loader, index, detail.primaryKey)}
+              onError={handleError(loader, index, detail.primaryKey)}
             />
             {isLoading ? <LoadingOverlay /> : null}
           </ScrollArea>
           {actions.length ? (
-            <DialogFooter className="flex gap-4 px-1 [&>*]:flex-1">
+            <DialogFooter className="mt-auto flex gap-1 px-1">
               {actions.map((modalAction) => {
                 switch (modalAction.type) {
                   case "submit":
@@ -127,7 +150,6 @@ const GeneralModaler = (props: GeneralModalerProps) => {
                         onClick={() => outerRefs.current[index].submit()}
                       >
                         {modalAction.text ?? "Save"}
-                        {/* <Translator text={modalAction.text} /> */}
                       </Button>
                     )
                   case "cancel":
@@ -135,12 +157,10 @@ const GeneralModaler = (props: GeneralModalerProps) => {
                       <Button
                         {...modalAction.props}
                         key={modalAction.type}
-                        // variant={modalAction.props?.variant ?? "outlined:secondary-gray"}
                         disabled={isLoading}
-                        onClick={closeCurrentModal}
+                        onClick={() => handleCancel(loader, index)}
                       >
                         {modalAction.text ?? "Cancel"}
-                        {/* <Translator text={modalAction.text} /> */}
                       </Button>
                     )
                   default:

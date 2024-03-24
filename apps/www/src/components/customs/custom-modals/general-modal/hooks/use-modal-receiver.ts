@@ -1,9 +1,9 @@
-import { useEventListener } from "../../../../../hooks/use-event"
+import { useEventListener } from "@/hooks/use-event"
 import { useGeneralModal } from "."
 import { GM_EVENT_TYPE } from "../constant"
-import { GeneralModalLoaderType } from "../loaders"
+import { GeneralModalLoaderKeys } from "../loaders"
 
-export type UseModalReceiverLoader = keyof GeneralModalLoaderType
+export type UseModalReceiverLoader = keyof GeneralModalLoaderKeys
 export type UseModalReceiverVariables<TSuccessData, TErrorData> = {
   primaryKey?: string
 
@@ -15,7 +15,7 @@ export type UseModalReceiverVariables<TSuccessData, TErrorData> = {
 }
 
 export const useModalReceiver = <TSuccessData = unknown, TErrorData = unknown>(
-  loader: keyof GeneralModalLoaderType,
+  loader: keyof GeneralModalLoaderKeys,
   {
     primaryKey,
     autoCloseOnError,
@@ -23,7 +23,7 @@ export const useModalReceiver = <TSuccessData = unknown, TErrorData = unknown>(
     onError,
     onSuccess,
   }: UseModalReceiverVariables<TSuccessData, TErrorData>,
-  deps: any[] = []
+  deps: any[] = [],
 ) => {
   const { closeCurrentModal } = useGeneralModal()
 
@@ -38,7 +38,7 @@ export const useModalReceiver = <TSuccessData = unknown, TErrorData = unknown>(
         }
       }
     },
-    deps
+    deps,
   )
 
   useEventListener(
@@ -51,6 +51,6 @@ export const useModalReceiver = <TSuccessData = unknown, TErrorData = unknown>(
         }
       }
     },
-    deps
+    deps,
   )
 }

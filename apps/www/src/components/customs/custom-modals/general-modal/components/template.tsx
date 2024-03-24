@@ -1,27 +1,28 @@
-import { Form } from "../../../../ui/form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useImperativeHandle } from "react"
 import { useForm } from "react-hook-form"
+import { z } from "zod"
+import Form from "@/components/ui/form"
 import { GeneralModalComponentProps } from "../types"
 
-export interface TemplateProps extends GeneralModalComponentProps {}
+export const schema = z.object({})
+export type SchemaType = z.infer<typeof schema>
 
-const Template = ({ outerRef, defaultValues, onSuccess, onError }: TemplateProps) => {
-  const methods = useForm({
-    // resolver: zodResolver()
+export interface FormTemplateDefaultValues extends SchemaType {}
+export interface FormTemplateSuccessValues extends SchemaType {}
+export interface FormTemplateErrorValues {}
+
+export interface FormTemplateProps extends GeneralModalComponentProps<FormTemplateDefaultValues> {}
+
+const FormTemplate = ({ outerRef, defaultValues, onSuccess, onError }: FormTemplateProps) => {
+  const methods = useForm<SchemaType>({
+    resolver: zodResolver(schema),
     defaultValues,
   })
 
   const handleSubmit = methods.handleSubmit((values) => {
-    // Call api or do something here
-
-    // and dispatch result for trigger component
-    // eslint-disable-next-line no-constant-condition
-    if ("success") {
-      onSuccess(values)
-      // eslint-disable-next-line no-constant-condition
-    } else if ("error") {
-      onError(values)
-    }
+    onSuccess(values)
+    onError(null)
   })
 
   // The actions will trigger me
@@ -33,10 +34,10 @@ const Template = ({ outerRef, defaultValues, onSuccess, onError }: TemplateProps
   }))
 
   return (
-    <Form {...methods}>
-      <form onSubmit={handleSubmit}>Form fields</form>
+    <Form methods={methods} onSubmit={handleSubmit} className="flex flex-col gap-4">
+      Example
     </Form>
   )
 }
 
-export default Template
+export default FormTemplate

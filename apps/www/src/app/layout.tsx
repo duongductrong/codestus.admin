@@ -2,12 +2,12 @@ import { GeistSans } from "geist/font/sans"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { Toaster } from "sonner"
-import GeneralModaler from "../components/customs/custom-modals/general-modal"
-import PreferredTheme from "../components/ui/theme/preferred-theme"
-import { Prompter } from "../components/ui/use-prompt"
+import GeneralModaler from "@/components/customs/custom-modals/general-modal"
+import PreferredTheme from "@/components/ui/theme/preferred-theme"
+import { Prompter } from "@/components/ui/use-prompt"
+import { QueryProvider } from "@/libs/query/query"
 import { cn } from "../libs/utils/tailwind"
 import "./globals.css"
-import { QueryProvider } from "../libs/query/query"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -28,7 +28,7 @@ export default function RootLayout({
           <PreferredTheme>
             {children}
             <Prompter />
-            <Toaster />
+            <Toaster duration={2000} closeButton />
             <GeneralModaler />
           </PreferredTheme>
         </QueryProvider>

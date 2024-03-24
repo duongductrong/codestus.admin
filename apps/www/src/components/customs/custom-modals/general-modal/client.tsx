@@ -1,18 +1,18 @@
 "use client"
 
-import { useEventListener } from "../../../../hooks/use-event"
 import { Slot } from "@radix-ui/react-slot"
 import { ReactNode } from "react"
+import { useEventListener } from "../../../../hooks/use-event"
 import { GM_EVENT_TYPE } from "./constant"
-import { GeneralModalDetailsType, useGeneralModal } from "./hooks"
-import { GeneralModalLoaderType } from "./loaders"
-import { GeneralModalConfigsType } from "./hooks/use-general-modal"
+import { GeneralModalDetailsState, useGeneralModal } from "./hooks"
+import { GeneralModalConfigsState } from "./hooks/use-general-modal"
+import { GeneralModalLoaderKeys } from "./loaders"
 
 export interface GeneralModalTriggerProps {
-  loader: keyof GeneralModalLoaderType
-  details: GeneralModalDetailsType
+  loader: keyof GeneralModalLoaderKeys
+  details: GeneralModalDetailsState
   children: ReactNode
-  configs?: GeneralModalConfigsType
+  configs?: GeneralModalConfigsState
 
   openCallback?: () => void
   onLoading?: () => void
@@ -59,7 +59,7 @@ export const GeneralModalTrigger = ({
     <Slot
       {...props}
       onClick={() => {
-        open(loader, details, configs)
+        open(loader, { ...details }, configs)
 
         if (openCallback) openCallback()
       }}
