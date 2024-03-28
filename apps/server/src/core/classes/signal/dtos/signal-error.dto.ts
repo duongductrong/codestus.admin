@@ -29,7 +29,7 @@ export function SignalErrorDto<T, M>(_errorCls?: any | any[], _metaCls?: any) {
     path: string
 
     @ApiProperty({ type: _errorCls })
-    result: T | T[]
+    data: T | T[]
 
     @IsObject()
     @IsOptional()
@@ -47,7 +47,7 @@ export function SignalErrorDto<T, M>(_errorCls?: any | any[], _metaCls?: any) {
     constructor({
       message,
       path,
-      result,
+      data,
       status,
       statusCode,
       timestamp,
@@ -57,7 +57,7 @@ export function SignalErrorDto<T, M>(_errorCls?: any | any[], _metaCls?: any) {
     }: SignalError<T, M>) {
       this.message = message
       this.path = path
-      this.result = result
+      this.data = data
       this.status = status
       this.statusCode = statusCode
       this.timestamp = timestamp

@@ -18,7 +18,7 @@ export function SignalResponseDto<T, M>(_resultCls?: any | any[], _metaCls?: any
     path: string
 
     @ApiProperty({ type: _resultCls })
-    result: T | T[]
+    data: T | T[]
 
     @IsObject()
     @IsOptional()
@@ -37,14 +37,14 @@ export function SignalResponseDto<T, M>(_resultCls?: any | any[], _metaCls?: any
       message,
       meta,
       path,
-      result,
+      data,
       status,
       statusCode,
       timestamp,
     }: SignalResponse<T, M>) {
       this.statusCode = statusCode
       this.message = message
-      this.result = result
+      this.data = data
       this.status = status
       this.timestamp = timestamp
       this.path = path

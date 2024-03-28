@@ -24,7 +24,7 @@ const PostsList = (props: PostsListProps) => {
   const { firstSorting, sorting, setSorting } = useDataTableSorting()
 
   const {
-    data: { result: data, meta },
+    data: { data, meta },
   } = useSuspensePosts({
     variables: {
       page: pageIndex,

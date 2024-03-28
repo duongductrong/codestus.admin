@@ -22,6 +22,7 @@ import { useGeneralModal } from "./hooks/use-general-modal"
 import { GENERAL_MODAL_LOADER, GeneralModalLoaderKeys } from "./loaders"
 import { generalModalVariants } from "./styles"
 import { GeneralForwardRef } from "./types"
+import { makeSubmission } from "./utils"
 
 export interface GeneralModalerProps {}
 
@@ -46,16 +47,32 @@ const GeneralModaler = (props: GeneralModalerProps) => {
     [],
   )
 
+  const handleSubmit =
+    (fromLoader: keyof GeneralModalLoaderKeys, index: number, primaryKey?: string) =>
+    (data: unknown) => {
+      const modaler = details[index]
+
+      if (modaler?.onSubmit) {
+        return modaler?.onSubmit?.(data, makeSubmission).then((result) => {
+          if (typeof result === "boolean" && result) {
+            if (modaler.autoCloseOnSuccess || modaler.autoCloseOnError) closeCurrentModal()
+          }
+
+          return result
+        })
+      }
+
+      return true
+    }
+
   const handleSuccess =
     (fromLoader: keyof GeneralModalLoaderKeys, index: number, primaryKey?: string) =>
     (data: unknown) => {
       const modaler = details[index]
 
-      modaler?.onSuccess?.(data, { closeCurrentModal, closes, setLoading })
-
-      if (modaler.autoCloseOnSuccess) closeCurrentModal()
-
       eventDispatcher(GM_EVENT_TYPE.DISPATCHER(fromLoader, "success", primaryKey), data)
+
+      return modaler?.onSuccess?.(data, { closeCurrentModal, closes, setLoading })
     }
 
   const handleError =
@@ -64,8 +81,6 @@ const GeneralModaler = (props: GeneralModalerProps) => {
       const modaler = details[index]
 
       modaler?.onError?.(data, { closeCurrentModal, closes, setLoading })
-
-      if (modaler.autoCloseOnError) closeCurrentModal()
 
       eventDispatcher(GM_EVENT_TYPE.DISPATCHER(fromLoader, "error", primaryKey), data)
     }
@@ -89,6 +104,10 @@ const GeneralModaler = (props: GeneralModalerProps) => {
     const isLoading = loadings[index]
     const config = configs[index] || {}
     const hideBackArrow = detail?.generalProps?.hideBackArrow
+
+    const onSubmit = handleSubmit(loader, index, detail.primaryKey)
+    const onSuccess = handleSuccess(loader, index, detail.primaryKey)
+    const onError = handleError(loader, index, detail.primaryKey)
 
     const { defaultValues } = detail
 
@@ -131,8 +150,9 @@ const GeneralModaler = (props: GeneralModalerProps) => {
               }}
               closeCurrentModal={closeCurrentModal}
               setLoading={handleSetLoading}
-              onSuccess={handleSuccess(loader, index, detail.primaryKey)}
-              onError={handleError(loader, index, detail.primaryKey)}
+              onSubmit={onSubmit}
+              onSuccess={onSuccess}
+              onError={onError}
             />
             {isLoading ? <LoadingOverlay /> : null}
           </ScrollArea>

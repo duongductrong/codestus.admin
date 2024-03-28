@@ -46,7 +46,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { DataTableBaseProvider } from "./data-table-base-provider"
 import { isWithinDateRange } from "./filter-fns"
 
-declare module "@tanstack/table-core" {
+declare module "@tanstack/react-table" {
   interface FilterFns {
     isWithinDateRange: FilterFn<unknown>
   }

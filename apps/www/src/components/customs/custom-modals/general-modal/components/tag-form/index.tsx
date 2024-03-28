@@ -3,23 +3,34 @@ import { useImperativeHandle } from "react"
 import { useForm } from "react-hook-form"
 import Form, { FormField } from "@/components/ui/form"
 import { GeneralModalComponentProps } from "../../types"
+import { catchFieldErrors } from "../../utils"
 import { TagFormSchema, tagFormSchema } from "./schema"
 
-export interface TagFormDefaultValues extends TagFormSchema {}
+export interface TagFormValues extends TagFormSchema {}
 export interface TagFormSuccessValues extends TagFormSchema {}
 export interface TagFormErrorValues {}
 
-export interface TagFormProps extends GeneralModalComponentProps<TagFormDefaultValues> {}
+export interface TagFormProps extends GeneralModalComponentProps<TagFormValues> {}
 
-const TagForm = ({ outerRef, defaultValues, onSuccess, onError }: TagFormProps) => {
+const TagForm = ({
+  outerRef,
+  defaultValues,
+  onSubmit,
+  onSuccess,
+  onError,
+  closeCurrentModal,
+}: TagFormProps) => {
   const methods = useForm<TagFormSchema>({
     resolver: zodResolver(tagFormSchema),
     defaultValues,
   })
 
-  const handleSubmit = methods.handleSubmit((values) => {
-    onSuccess(values)
-    onError(null)
+  const handleSubmit = methods.handleSubmit(async (values) => {
+    const result = await onSubmit(values)
+    const hasError = catchFieldErrors(result, methods)
+
+    if(hasError) onError(values)
+    else onSuccess(values)
   })
 
   // The actions will trigger me

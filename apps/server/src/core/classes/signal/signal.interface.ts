@@ -10,7 +10,7 @@ export interface SignalResponse<T, M> {
   status: boolean
   statusCode: HttpStatus
   path: string
-  result: T | T[]
+  data: T | T[]
   meta?: M
   message: string
   timestamp: string

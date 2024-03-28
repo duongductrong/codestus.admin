@@ -1,6 +1,8 @@
 import { Module, Provider } from "@nestjs/common"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { PostEntity } from "../post/infras/entities/post.entity"
+import { BulkDeleteTagHandler } from "./application/commands/bulk-delete-tags/bulk-delete-tag.handler"
+import { BulkDeleteTagHttpController } from "./application/commands/bulk-delete-tags/bulk-delete-tag.http.controller"
 import { CreateTagHandler } from "./application/commands/create-tag/create-tag.handler"
 import { CreateTagHttpController } from "./application/commands/create-tag/create-tag.http.controller"
 import { DeleteTagHandler } from "./application/commands/delete-tag/delete-tag.handler"
@@ -22,7 +24,12 @@ export const Repositories: Provider[] = [{ provide: TAG_REPOSITORY, useClass: Ta
 export const Mappers: Provider[] = [{ provide: TAG_MAPPER, useClass: TagMapper }]
 export const Services: Provider[] = []
 export const EventHandlers = []
-export const CommandHandlers = [CreateTagHandler, UpdateTagHandler, DeleteTagHandler]
+export const CommandHandlers = [
+  CreateTagHandler,
+  UpdateTagHandler,
+  DeleteTagHandler,
+  BulkDeleteTagHandler,
+]
 export const QueryHandlers = [GetTagsHandler, GetTagHandler]
 export const Controllers = [
   GetTagsHttpController,
@@ -30,6 +37,7 @@ export const Controllers = [
   CreateTagHttpController,
   UpdateTagHttpController,
   DeleteTagHttpController,
+  BulkDeleteTagHttpController,
 ]
 
 @Module({

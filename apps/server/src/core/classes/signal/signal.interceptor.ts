@@ -26,7 +26,7 @@ export class SignalInterceptor implements NestInterceptor {
       status: true,
       statusCode: status,
       path: request.url,
-      result: res.data,
+      data: res.data,
       meta: res.meta,
       message: res.message,
       timestamp: new Date().toISOString(),
@@ -50,7 +50,7 @@ export class SignalInterceptor implements NestInterceptor {
         : exception?.getResponse?.()
 
     return response.status(status).json({
-      result,
+      data: result,
       status: false,
       statusCode: status,
       path: request.url,

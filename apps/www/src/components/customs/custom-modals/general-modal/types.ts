@@ -1,5 +1,9 @@
 import { ForwardedRef } from "react"
-import { GeneralModalConfigsState } from "./hooks/use-general-modal"
+import {
+  GeneralModalConfigsState,
+  GeneralModalDetailsState,
+  GeneralModalReturnResult,
+} from "./hooks/use-general-modal"
 
 export interface GeneralModalComponentProps<
   TDefaultValues = any,
@@ -17,8 +21,9 @@ export interface GeneralModalComponentProps<
     height: number
   }
   closeCurrentModal: () => void
-  onSuccess: <T>(data: T) => void
-  onError: <T>(data: T) => void
+  onSubmit: (data: any) => Promise<GeneralModalReturnResult> | boolean
+  onSuccess: (data: any) => void
+  onError: (data: unknown) => void
 }
 
 export interface GeneralForwardRef {

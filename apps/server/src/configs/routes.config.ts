@@ -25,6 +25,7 @@ export const routes = {
       detail: "/tags/:id",
       update: "/tags/:id",
       delete: "/tags/:id",
+      bulkDelete: "/tags/bulk-delete",
     },
     auth: {
       apiTag: "Auth",

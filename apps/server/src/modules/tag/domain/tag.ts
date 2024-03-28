@@ -30,6 +30,10 @@ export class TagClass extends AggregateRootBase implements Tag {
 
   private posts?: PostProps[]
 
+  private createdAt: Date
+
+  private updatedAt: Date
+
   constructor(props: Omit<TagProps, "id">) {
     super()
     Object.assign(this, props)
@@ -53,6 +57,8 @@ export class TagClass extends AggregateRootBase implements Tag {
       slug: this.slug,
       description: this.description,
       posts: this.posts,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
     }
   }
 }

@@ -1,13 +1,16 @@
 "use client"
 
+import { useQueryClient } from "@tanstack/react-query"
+import { PlusIcon } from "lucide-react"
 import { toast } from "sonner"
 import {
-  TagFormDefaultValues,
   TagFormErrorValues,
   TagFormSuccessValues,
+  TagFormValues,
 } from "@/components/customs/custom-modals/general-modal/components/tag-form"
 import { useGeneralModal } from "@/components/customs/custom-modals/general-modal/hooks"
 import { useModalOpenSelector } from "@/components/customs/custom-modals/general-modal/hooks/use-general-modal"
+import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/ui/data-table"
 import { DataTableDateRangeFilter } from "@/components/ui/data-table/components/data-table-date-range-filter"
 import {
@@ -16,6 +19,8 @@ import {
   DataTableStacked,
   DataTableToolbar,
 } from "@/components/ui/data-table/data-table-filters"
+import { takeValidationErrors } from "@/libs/fetch/fetcher-utils"
+import { useCreateTag } from "@/services/tag/hooks/use-create-tag"
 import { useSuspenseTags } from "@/services/tag/hooks/use-get-tags"
 import { useUpdateTag } from "@/services/tag/hooks/use-update-tag"
 import { useColumns } from "./_hooks/use-columns"
@@ -23,40 +28,66 @@ import { useColumns } from "./_hooks/use-columns"
 export interface PostsListProps {}
 
 const PostsList = (props: PostsListProps) => {
+  const ql = useQueryClient()
   const openModaler = useGeneralModal(useModalOpenSelector)
 
-  const { data: response } = useSuspenseTags()
+  const { data: response } = useSuspenseTags({ variables: { limit: 999 } })
 
-  const records = response.result
+  const records = response.data
 
   const { mutateAsync: updateTagFn } = useUpdateTag({
     onSuccess(data) {
       toast.success(data.message)
+
+      ql.invalidateQueries({
+        queryKey: useSuspenseTags.getKey(),
+      })
+    },
+  })
+
+  const { mutateAsync: createTagFn } = useCreateTag({
+    onSuccess(data) {
+      toast.success(data.message)
+
+      ql.invalidateQueries({
+        queryKey: useSuspenseTags.getKey(),
+      })
     },
   })
 
   const columns = useColumns({
     onVisitItem(tag) {
-      openModaler<TagFormDefaultValues, TagFormSuccessValues, TagFormErrorValues>("TagForm", {
+      openModaler<TagFormValues, TagFormSuccessValues, TagFormErrorValues>("TagForm", {
         type: "drawer",
-        title: "Tag",
+        title: "Tag details",
         defaultValues: {
           name: tag.name,
           slug: tag.slug,
           description: tag.description,
         },
-        onSuccess(data) {
-          updateTagFn({
+        onSubmit(data, make) {
+          const promise = updateTagFn({
             id: tag.id,
             name: data.name,
             slug: data.slug,
             description: data.description,
           })
+          return make(promise, takeValidationErrors)
         },
-        onError() {},
       })
     },
   })
+
+  const handleCreateNewTag = () => {
+    openModaler<any, TagFormSuccessValues, TagFormErrorValues>("TagForm", {
+      type: "drawer",
+      title: "Create new tag",
+      onSubmit(data, make) {
+        const promise = createTagFn(data)
+        return make(promise, takeValidationErrors)
+      },
+    })
+  }
 
   return (
     <DataTable
@@ -105,6 +136,10 @@ const PostsList = (props: PostsListProps) => {
               inputClassName="ml-auto"
             />
             <DataTableResetFilter />
+            <Button onClick={handleCreateNewTag}>
+              <PlusIcon className="mr-2 h-4.5 w-4.5" />
+              New tag
+            </Button>
           </DataTableStacked>
         </DataTableToolbar>
       }

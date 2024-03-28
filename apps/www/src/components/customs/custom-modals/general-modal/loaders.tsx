@@ -22,15 +22,6 @@ const takeForm = <T,>(options: DynamicOptions<T> | Loader<T>) => {
   ))
 }
 
-// const DynamicTemplate = dynamic(() => import("./components/template"), {
-//   ssr: true,
-//   loading,
-// })
-
-// const TemplateForm = forwardRef<GeneralForwardRef, GeneralModalComponentProps>((props, ref) => (
-//   <DynamicTemplate {...props} outerRef={ref} />
-// ))
-
 const TagForm = takeForm(() => import("./components/tag-form"))
 
 export const GENERAL_MODAL_LOADER = {

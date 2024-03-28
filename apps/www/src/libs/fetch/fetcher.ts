@@ -9,8 +9,7 @@ export interface FetcherError<TData = any, TConfig = any>
   extends AxiosError<FetcherResult<TData>, TConfig> {}
 
 export interface FetcherResult<T = unknown> {
-  // data: T
-  result: T
+  data: T
   message: string
   // code: string
   meta?: FetcherMeta
@@ -34,12 +33,14 @@ export interface FetcherMeta {
   total: number
 }
 
+export type FetcherValidationError = Record<string, string>
+
 interface AxiosHeaders extends AxiosRequestHeaders {
   [key: string]: any
 }
 
 const fetcher = Axios.create({
-  baseURL: 'http://localhost:8000/api/v1',
+  baseURL: "http://localhost:8000/api/v1",
   paramsSerializer: (params) => qs.stringify(flattenObject(params) || {}),
 })
 

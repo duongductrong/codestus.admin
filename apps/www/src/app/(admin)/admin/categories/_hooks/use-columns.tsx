@@ -12,13 +12,13 @@ export const useColumns = ({ onVisitItem }: UseColumnsVariables = {}) => {
       accessorKey: "id",
       header: "ID",
       size: 150,
-      cell: ({ getValue }) => <b className="line-clamp-1 break-all">{`${getValue<string>()}`}</b>,
+      cell: ({ getValue }) => <p className="line-clamp-1 break-all">{`${getValue<string>()}`}</p>,
     },
     {
       accessorKey: "name",
       cell: (info) => (
         <button
-          className="underline-offset-2 hover:underline"
+          className="font-semibold underline-offset-2 hover:underline"
           type="button"
           onClick={() => onVisitItem?.(info.row.original)}
         >
@@ -43,27 +43,11 @@ export const useColumns = ({ onVisitItem }: UseColumnsVariables = {}) => {
     },
     {
       accessorKey: "updatedAt",
-      header: "Created At",
+      header: "Updated At",
       filterFn: "isWithinDateRange",
       cell: (info) => dayjs(info.getValue<string>()).format("DD/MM/YYYY HH:mm:ss A"),
       size: 250,
     },
-    // {
-    //   accessorKey: "action",
-    //   header: () => "",
-    //   size: 50,
-    //   cell: () => (
-    //     <DropdownMenu>
-    //       <DropdownMenuTrigger>
-    //         <DotsVerticalIcon />
-    //       </DropdownMenuTrigger>
-    //       <DropdownMenuContent>
-    //         <DropdownMenuItem>Edit</DropdownMenuItem>
-    //         <DropdownMenuItem>Delete</DropdownMenuItem>
-    //       </DropdownMenuContent>
-    //     </DropdownMenu>
-    //   ),
-    // },
   ]
 
   return columns

@@ -17,8 +17,19 @@ export type GeneralModalDetailProps = {
   hideBackArrow?: boolean
 }
 
+export type GeneralModalResultError = { field: string; message: string }
+export type GeneralModalReturnResult = { errors?: GeneralModalResultError[] } | boolean
+
+export type GeneralModalOnSubmitMakeArgument = <
+  TPromiseReturn,
+  TTakeErrorsFn extends (e: any) => Record<string, string> | undefined,
+>(
+  promise: Promise<TPromiseReturn>,
+  takeErrorsFn: TTakeErrorsFn,
+) => Promise<GeneralModalReturnResult>
+
 export interface GeneralModalDetailsState<
-  TDefaultValues = any,
+  TFormFieldValues = any,
   TSuccessValues = any,
   TErrorValues = any,
 > {
@@ -29,16 +40,19 @@ export interface GeneralModalDetailsState<
   size?: GeneralModalDetailSizeType
   actions?: GeneralModalDetailActionType[]
   generalProps?: GeneralModalDetailProps
-  defaultValues?: Partial<TDefaultValues>
+  defaultValues?: Partial<TFormFieldValues>
   autoCloseOnSuccess?: boolean
   autoCloseOnError?: boolean
-
-  onSuccess?: <T = TSuccessValues>(
+  onSubmit?: (
+    data: TFormFieldValues,
+    make: GeneralModalOnSubmitMakeArgument,
+  ) => Promise<GeneralModalReturnResult>
+  onSuccess?: (
     data: TSuccessValues,
     modaler: Pick<GeneralModalState, "closeCurrentModal" | "closes" | "setLoading">,
   ) => void
-  onError?: <T = TErrorValues>(
-    data: T,
+  onError?: (
+    data: TErrorValues,
     modaler: Pick<GeneralModalState, "closeCurrentModal" | "closes" | "setLoading">,
   ) => void
   onCancel?: () => void
@@ -52,9 +66,9 @@ export interface GeneralModalState {
   configs: Record<number, GeneralModalConfigsState>
   loadings: Record<number, boolean>
 
-  open: <TDefaultValues = any, TSuccessValues = any, TErrorValues = any>(
+  open: <TFormFieldValues = any, TSuccessValues = any, TErrorValues = any>(
     loader: keyof GeneralModalLoaderKeys,
-    details: GeneralModalDetailsState<TDefaultValues, TSuccessValues, TErrorValues>,
+    details: GeneralModalDetailsState<TFormFieldValues, TSuccessValues, TErrorValues>,
     configs?: GeneralModalConfigsState,
   ) => void
 

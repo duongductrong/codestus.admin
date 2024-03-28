@@ -1,6 +1,6 @@
+import React, { ComponentPropsWithoutRef, forwardRef } from "react"
 import { ForwardRefComponent } from "../../types/react-polymorphic"
 import { cn } from "../../libs/utils/tailwind"
-import React, { ComponentPropsWithoutRef, forwardRef } from "react"
 
 export interface CustomPageSectionProps extends ComponentPropsWithoutRef<"section"> {
   title: string
