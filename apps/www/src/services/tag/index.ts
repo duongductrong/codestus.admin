@@ -1,5 +1,7 @@
 import { fetcher } from "../../libs/fetch/fetcher"
+import { BulkDeleteTagsResult, BulkDeleteTagsVariables } from "./types/bulk-delete-tags"
 import { CreateTagResult, CreateTagVariables } from "./types/create-tag"
+import { DeleteTagResult, DeleteTagVariables } from "./types/delete-tag"
 import { GetTagResult, GetTagVariables } from "./types/get-tag"
 import { GetTagsResult, GetTagsVariables } from "./types/get-tags"
 import { UpdateTagResult, UpdateTagVariables } from "./types/update-tag"
@@ -16,6 +18,8 @@ class TagService {
     return {
       createTag: "/tags",
       updateTag: "/tags/:id",
+      deleteTag: "/tags/:id",
+      bulkDeleteTags: "/tags/bulk-delete",
     }
   }
 
@@ -44,6 +48,16 @@ class TagService {
       this.mutationKeys.updateTag.replace(":id", String(variables.id)),
       variables,
     )
+  }
+
+  deleteTag(variables: DeleteTagVariables) {
+    return fetcher.delete<DeleteTagResult>(
+      this.mutationKeys.deleteTag.replace(":id", String(variables.id)),
+    )
+  }
+
+  bulkDeleteTags(variables: BulkDeleteTagsVariables) {
+    return fetcher.post<BulkDeleteTagsResult>(this.mutationKeys.bulkDeleteTags, variables)
   }
 }
 

@@ -1,17 +1,17 @@
-/* eslint-disable react/no-unescaped-entities */
-import CustomPageSection from "../../../../components/customs/custom-page-section"
-import { LayoutProps } from "../../../../types/utilities"
 import React from "react"
+import CustomPageSection from "@/components/customs/custom-page-section"
+import { LayoutProps } from "@/types/utilities"
 
-export interface PostsLayoutProps extends LayoutProps {}
+export interface CategoriesLayoutProps extends LayoutProps {}
 
-const PostsLayout = ({ children }: PostsLayoutProps) => (
+const CategoriesLayout = ({ children }: CategoriesLayoutProps) => (
   <CustomPageSection
     title="Category"
     description="Your categories list help your customer take overview in your products."
+    fullWidth
   >
     {children}
   </CustomPageSection>
 )
 
-export default PostsLayout
+export default CategoriesLayout

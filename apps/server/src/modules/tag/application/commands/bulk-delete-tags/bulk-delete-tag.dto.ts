@@ -1,12 +1,13 @@
+import { Transform, Type } from "class-transformer"
 import { IsArray, IsDefined, ValidateNested } from "class-validator"
-import { Type } from "class-transformer"
+import { isArray } from "lodash"
 import { BulkDeleteTagCommand } from "./bulk-delete-tag.handler"
 
 export class BulkDeleteTagRequestDto extends BulkDeleteTagCommand {
   @IsDefined()
   @IsArray()
-  @ValidateNested({ each: true })
   @Type(() => Number)
+  @Transform(({ value }) => (isArray(value) ? value.map((curVal) => Number(curVal)) : value))
   ids: number[]
 }
 

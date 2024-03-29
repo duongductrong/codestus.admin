@@ -1,7 +1,7 @@
 "use client"
 
 import { useQueryClient } from "@tanstack/react-query"
-import { PlusIcon } from "lucide-react"
+import { PlusIcon, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 import {
   TagFormErrorValues,
@@ -16,12 +16,16 @@ import { DataTableDateRangeFilter } from "@/components/ui/data-table/components/
 import {
   DataTableResetFilter,
   DataTableSearcher,
+  DataTableSelectionImpact,
   DataTableStacked,
   DataTableToolbar,
 } from "@/components/ui/data-table/data-table-filters"
-import { takeValidationErrors } from "@/libs/fetch/fetcher-utils"
+import { useDataTableRowsSelection } from "@/components/ui/data-table/use-data-table-selection"
+import { usePrompt } from "@/components/ui/use-prompt"
+import { takeErrorMessage, takeValidationErrors } from "@/libs/fetch/fetcher-utils"
+import { useBulkDeleteTags } from "@/services/tag/hooks/use-bulk-delete-tags"
 import { useCreateTag } from "@/services/tag/hooks/use-create-tag"
-import { useSuspenseTags } from "@/services/tag/hooks/use-get-tags"
+import { useSuspenseTags, useTags } from "@/services/tag/hooks/use-get-tags"
 import { useUpdateTag } from "@/services/tag/hooks/use-update-tag"
 import { useColumns } from "./_hooks/use-columns"
 
@@ -30,10 +34,14 @@ export interface PostsListProps {}
 const PostsList = (props: PostsListProps) => {
   const ql = useQueryClient()
   const openModaler = useGeneralModal(useModalOpenSelector)
+  const prompt = usePrompt()
+  const { rowsSelection, setRowsSelection } = useDataTableRowsSelection()
 
   const { data: response } = useSuspenseTags({ variables: { limit: 999 } })
 
   const records = response.data
+
+  const { mutateAsync: bulkDeleteTags } = useBulkDeleteTags()
 
   const { mutateAsync: updateTagFn } = useUpdateTag({
     onSuccess(data) {
@@ -42,6 +50,9 @@ const PostsList = (props: PostsListProps) => {
       ql.invalidateQueries({
         queryKey: useSuspenseTags.getKey(),
       })
+    },
+    onError(error) {
+      toast.error(error.response?.data.message)
     },
   })
 
@@ -52,6 +63,9 @@ const PostsList = (props: PostsListProps) => {
       ql.invalidateQueries({
         queryKey: useSuspenseTags.getKey(),
       })
+    },
+    onError(error) {
+      toast.error(error.response?.data.message)
     },
   })
 
@@ -89,6 +103,30 @@ const PostsList = (props: PostsListProps) => {
     })
   }
 
+  const handleBulkDeleteTags = () => {
+    prompt({ title: "Are you sure?", description: "This deletion action cannot be undone." }).then(
+      (confirmed) => {
+        if (!confirmed) return
+
+        toast.promise(bulkDeleteTags({ ids: Object.keys(rowsSelection ?? {}) }), {
+          loading: "Bulk deleting....",
+          success(data) {
+            return `${data.message}`
+          },
+          error(e) {
+            const msg = takeErrorMessage(e)
+            return msg
+          },
+          finally() {
+            ql.invalidateQueries({
+              queryKey: useTags.getKey(),
+            })
+          },
+        })
+      },
+    )
+  }
+
   return (
     <DataTable
       rowId="id"
@@ -98,38 +136,18 @@ const PostsList = (props: PostsListProps) => {
         pageIndex: 0,
         pageSize: 12,
       }}
+      rowSelection={rowsSelection}
+      onRowSelectionChange={setRowsSelection}
       maxHeight={600}
       header={
         <DataTableToolbar>
           <DataTableStacked fullWidth>
             <DataTableSearcher placeholder="Search all columns" isGlobal />
-            {/* <DataTableSelectionImpact>
-              <Button
-                variant="secondary"
-                onClick={() =>
-                  prompt({
-                    title: "Are you absolutely sure?",
-                    description:
-                      "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
-                  }).then((isConfirmed) => {
-                    console.log(isConfirmed)
-                  })
-                }
-              >
-                Bulk delete
+            <DataTableSelectionImpact>
+              <Button variant="default" size="sm" onClick={handleBulkDeleteTags}>
+                <Trash2 className="h-4 w-4" />
               </Button>
-              <GeneralModalTrigger
-                loader="TagForm"
-                details={{
-                  type: "modal",
-                  title: "Create category",
-                  size: "md",
-                  description: "Create the category for your posts.",
-                }}
-              >
-                <Button variant="secondary">Modal</Button>
-              </GeneralModalTrigger>
-            </DataTableSelectionImpact> */}
+            </DataTableSelectionImpact>
             <DataTableDateRangeFilter
               column="createdAt"
               className="ml-auto"

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, HttpCode, HttpStatus, Inject } from "@nestjs/common"
+import { Body, Controller, HttpCode, HttpStatus, Inject, Post } from "@nestjs/common"
 import { CommandBus } from "@nestjs/cqrs"
 import { ApiOkResponse, ApiTags } from "@nestjs/swagger"
 import { routes } from "@server/configs/routes.config"
@@ -13,7 +13,7 @@ import { BulkDeleteTagCommand, BulkDeleteTagResult } from "./bulk-delete-tag.han
 export class BulkDeleteTagHttpController {
   @Inject() private readonly commandBus: CommandBus
 
-  @Delete(routes.v1.tags.bulkDelete)
+  @Post(routes.v1.tags.bulkDelete)
   @ApiOkResponse({ type: SignalResponseDto(BulkDeleteTagResponseDto) })
   @HttpCode(HttpStatus.OK)
   async run(@Body() body: BulkDeleteTagRequestDto) {
