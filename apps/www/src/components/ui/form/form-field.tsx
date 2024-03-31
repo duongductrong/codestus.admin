@@ -21,6 +21,8 @@ import {
   FormInput,
   FormNumber,
   FormRichEditor,
+  FormSelect,
+  FormSwitch,
   FormTextarea,
   FormUID,
 } from "./form-field-imports"
@@ -28,6 +30,8 @@ import FormFieldInternal from "./form-field-internal"
 import FormItem from "./form-item"
 import FormLabel from "./form-label"
 import FormMessage from "./form-message"
+import { FormSelectProps } from "./components/form-select"
+import { FormSwitchProps } from "./components/form-switch"
 
 export type FormFieldVariantBaseProps =
   | FormTextareaProps
@@ -38,6 +42,8 @@ export type FormFieldVariantBaseProps =
   | FormNumberProps
   | FormRichEditorProps
   | FormDatePickerProps
+  | FormSelectProps
+  | FormSwitchProps
 
 export interface FormFieldStandardBaseProps {
   type?: HTMLInputTypeAttribute
@@ -57,12 +63,13 @@ const FORM_UNIFIED_VARIANT_LOADER = {
   [FORM_UNIFIED_VARIANT.TEXT]: FormInput,
   [FORM_UNIFIED_VARIANT.TEXTAREA]: FormTextarea,
   [FORM_UNIFIED_VARIANT.CHECKBOX]: FormCheckbox,
+  [FORM_UNIFIED_VARIANT.SWITCH]: FormSwitch,
   [FORM_UNIFIED_VARIANT.RADIO_GROUP]: FormRadioGroup,
   [FORM_UNIFIED_VARIANT.UID]: FormUID,
   [FORM_UNIFIED_VARIANT.NUMBER]: FormNumber,
   [FORM_UNIFIED_VARIANT.RICH_EDITOR]: FormRichEditor,
   [FORM_UNIFIED_VARIANT.DATE_PICKER]: FormDatePicker,
-  // [FORM_UNIFIED_VARIANT.SELECT]: FormSelect,
+  [FORM_UNIFIED_VARIANT.SELECT]: FormSelect,
   // [FORM_UNIFIED_VARIANT.SELECT_INFINITE]: FormSelectInfinite,
 } as Record<keyof typeof FORM_UNIFIED_VARIANT, any>
 

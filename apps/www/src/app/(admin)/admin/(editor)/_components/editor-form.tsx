@@ -1,10 +1,14 @@
 "use client"
 
+import { startTransition, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { startTransition, useEffect } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
 import Form, { FormField } from "@/components/ui/form"
 import { useCurrentEditorContext } from "./use-editor-context"
+import { useEditorEvents, useEditorSettingsChanges, useEditorSubmission } from "./use-editor-events"
+import { useDeepCompareMemoize } from "@/hooks/use-deep-compare-memoize"
+import { useEditorSettings } from "./use-editor-settings"
 
 export const editorFormSchema = z.object({
   title: z.string().min(1),
@@ -17,15 +21,25 @@ export const editorFormSchema = z.object({
   status: z.number(),
 })
 
+export interface EditorFormState extends z.infer<typeof editorFormSchema> {}
+
 export interface EditorFormProps {
-  defaultValues?: Partial<z.infer<typeof editorFormSchema>>
+  title: string
+  defaultValues?: Partial<EditorFormState>
 }
 
-const EditorForm = ({ defaultValues }: EditorFormProps) => {
-  const methods = useForm({
+const EditorForm = ({ title, defaultValues }: EditorFormProps) => {
+  const methods = useForm<EditorFormState>({
+    resolver: zodResolver(editorFormSchema),
     defaultValues,
   })
+  const { setTitle } = useEditorSettings()
+  const { settingSetterEvent } = useEditorEvents()
   const editor = useCurrentEditorContext()
+
+  const handleSave = methods.handleSubmit((values) => {
+    console.log(values)
+  })
 
   useEffect(() => {
     startTransition(() => {
@@ -37,8 +51,35 @@ const EditorForm = ({ defaultValues }: EditorFormProps) => {
     })
   }, [defaultValues?.content, editor])
 
+  useEditorSettingsChanges<Partial<EditorFormState>>((values) => {
+    methods.reset({
+      ...methods.getValues(),
+      ...values,
+    })
+  })
+
+  console.log(methods.watch("publishAt"))
+
+  useEditorSubmission(handleSave)
+
+  useEffect(
+    () => {
+      if (defaultValues) {
+        settingSetterEvent(defaultValues)
+      }
+    },
+    useDeepCompareMemoize([defaultValues]),
+  )
+
+  useEffect(() => setTitle(title), [title])
+
+  console.log("debug", {
+    errors: methods.formState.errors,
+    state: methods.watch(),
+  })
+
   return (
-    <Form methods={methods} onSubmit={methods.handleSubmit((values) => console.log(values))}>
+    <Form methods={methods} onSubmit={handleSave}>
       <div className="mx-auto my-5 flex min-h-lvh max-w-[800px] flex-col gap-4">
         <FormField
           variant="TEXT"

@@ -17,20 +17,18 @@ const PostHandler = ({ params: { handler } }: PostHandlerProps) => {
 
   const post = data.data
   const { content, loading } = useUnifiedTransformer(data.data.content ?? "")
+  const defaultValues = {
+    title: post.title,
+    description: post.description,
+    slug: post.slug,
+    status: post.status,
+    publishAt: post.publishAt,
+    content,
+  }
 
   if (loading) return null
 
-  return (
-    <EditorForm
-      defaultValues={{
-        title: post.title,
-        description: post.description,
-        slug: post.slug,
-        status: post.status,
-        content,
-      }}
-    />
-  )
+  return <EditorForm title={post.title} defaultValues={defaultValues} />
 }
 
 export default PostHandler

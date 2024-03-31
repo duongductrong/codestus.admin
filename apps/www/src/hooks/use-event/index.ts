@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { DependencyList, useEffect } from "react"
 import { eventDispatcher, eventListener, eventRemover } from "./core"
 
 /**
@@ -37,7 +37,7 @@ function useEvent<T extends string, D = any>(event: T) {
 function useEventListener<T extends string, C extends (event: CustomEvent | Event) => void>(
   event: T,
   callback: C,
-  deps: any[] = []
+  deps: DependencyList = [],
 ) {
   const { listener, remove } = useEvent(event)
 

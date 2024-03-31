@@ -1,16 +1,20 @@
 import { CSSProperties } from "react"
 import { LayoutProps } from "@/types/utilities"
 import EditorProvider from "./_components/editor-provider"
-import PostManagerProvider from "./_components/post-manager-provider"
 
 export interface EditorLayoutProps extends LayoutProps<"sidebar" | "header" | "toolbar"> {}
 
 export default function EditorLayout({ sidebar, header, toolbar, children }: EditorLayoutProps) {
   return (
-    <PostManagerProvider>
       <EditorProvider>
         <div
-          style={{ "--el-header-height": "60px", "--el-toolbar-height": "50px" } as CSSProperties}
+          style={
+            {
+              "--el-header-height": "60px",
+              "--el-toolbar-height": "50px",
+              "--el-settings-width": "500px",
+            } as CSSProperties
+          }
           className="relative min-h-screen w-full  bg-muted/40"
         >
           {header}
@@ -23,6 +27,5 @@ export default function EditorLayout({ sidebar, header, toolbar, children }: Edi
           </div>
         </div>
       </EditorProvider>
-    </PostManagerProvider>
   )
 }
