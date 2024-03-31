@@ -1,16 +1,19 @@
 import { useCallback, useState } from "react"
 
-import { useIsomorphicLayoutEffect, useEvent } from "react-use"
+import { useEvent, useIsomorphicLayoutEffect } from "react-use"
 
 interface Size {
   width: number
   height: number
   offsetTop: number
+  offsetLeft: number
+  offsetX: number
+  offsetY: number
 }
 
 export function useElementSize<T extends HTMLElement = HTMLDivElement>(): [
   (node: T | null) => void,
-  Size
+  Size,
 ] {
   // Mutable values like 'ref.current' aren't valid dependencies
   // because mutating them doesn't re-render the component.
@@ -20,23 +23,28 @@ export function useElementSize<T extends HTMLElement = HTMLDivElement>(): [
     width: 0,
     height: 0,
     offsetTop: 0,
+    offsetLeft: 0,
+    offsetX: 0,
+    offsetY: 0,
   })
 
   // Prevent too many rendering using useCallback
-  const handleSize = useCallback(() => {
+  const handleParameterChanges = () => {
     setSize({
       width: ref?.offsetWidth || 0,
       height: ref?.offsetHeight || 0,
       offsetTop: ref?.offsetTop || 0,
+      offsetLeft: ref?.offsetLeft || 0,
+      offsetX: ref?.getBoundingClientRect().x || 0,
+      offsetY: ref?.getBoundingClientRect().y || 0,
     })
+  }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ref?.offsetHeight, ref?.offsetWidth])
-
-  useEvent("resize", handleSize)
+  useEvent("resize", handleParameterChanges)
+  useEvent("scroll", handleParameterChanges)
 
   useIsomorphicLayoutEffect(() => {
-    handleSize()
+    handleParameterChanges()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref?.offsetHeight, ref?.offsetWidth])
 

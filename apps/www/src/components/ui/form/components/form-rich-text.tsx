@@ -1,7 +1,7 @@
 import { EditorProviderProps } from "@tiptap/react"
 import { ChangeEvent } from "react"
 import { InputProps } from "@/components/ui/input"
-import { RichText } from "@/components/ui/rich-text"
+import { RichText } from "@/components/ui/editor/rich-editor"
 
 export interface FormRichTextProps extends InputProps {}
 

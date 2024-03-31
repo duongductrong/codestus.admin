@@ -1,18 +1,16 @@
 "use client"
 
-import { CheckboxProps } from "@radix-ui/react-checkbox"
 import get from "lodash/get"
 import { Asterisk } from "lucide-react"
 import { HTMLInputTypeAttribute, forwardRef } from "react"
 import { cn } from "@/libs/utils/tailwind"
-import { InputProps } from "../input"
-import { TextareaProps } from "../textarea"
+import { FormCheckboxProps } from "./components/form-checkbox"
 import { FormDatePickerProps } from "./components/form-datepicker"
+import { FormInputProps } from "./components/form-input"
 import { FormNumberProps } from "./components/form-number"
-import { FormRadioGroupProps } from "./components/form-radio-group"
-import { FormRichTextProps } from "./components/form-rich-text"
-import { FormSelectProps } from "./components/form-select"
-import { FormSelectInfiniteProps } from "./components/form-select-infinite"
+import FormRadioGroup, { FormRadioGroupProps } from "./components/form-radio-group"
+import { FormRichEditorProps } from "./components/form-rich-editor"
+import { FormTextareaProps } from "./components/form-textarea"
 import { FormUIDProps } from "./components/form-uid"
 import { FORM_UNIFIED_VARIANT } from "./constants"
 import FormControl from "./form-control"
@@ -22,75 +20,24 @@ import {
   FormDatePicker,
   FormInput,
   FormNumber,
-  // FormRichText,
-  // FormSelect,
-  // FormSelectInfinite,
+  FormRichEditor,
   FormTextarea,
   FormUID,
-  // RadioGroup,
 } from "./form-field-imports"
 import FormFieldInternal from "./form-field-internal"
 import FormItem from "./form-item"
 import FormLabel from "./form-label"
 import FormMessage from "./form-message"
 
-export interface FormFieldTextVariantProps
-  extends InputProps,
-    React.RefAttributes<HTMLInputElement> {
-  variant: "TEXT"
-}
-
-export interface FormFieldTextareaVariantProps
-  extends TextareaProps,
-    React.RefAttributes<HTMLTextAreaElement> {
-  variant: "TEXTAREA"
-}
-
-export interface FormFieldCheckboxVariantProps extends CheckboxProps {
-  variant: "CHECKBOX"
-}
-
-export interface FormFieldRadioGroupVariantProps extends FormRadioGroupProps {
-  variant: "RADIO_GROUP"
-}
-
-export interface FormFieldSelectVariantProps extends FormSelectProps {
-  variant: "SELECT"
-}
-
-export interface FormFieldUIDVariantProps extends FormUIDProps {
-  variant: "UID"
-}
-
-export interface FormFieldSelectInfiniteVariantProps extends FormSelectInfiniteProps {
-  variant: "SELECT_INFINITE"
-}
-
-export interface FormFieldNumberVariantProps
-  extends Omit<FormFieldTextVariantProps, "variant">,
-    FormNumberProps {
-  variant: "NUMBER"
-}
-
-export interface FormFieldRichTextVariantProps extends FormRichTextProps {
-  variant: "RICH_TEXT"
-}
-
-export type FormFieldDatePickerVariantProps = FormDatePickerProps & {
-  variant: "DATE_PICKER"
-}
-
 export type FormFieldVariantBaseProps =
-  | FormFieldTextVariantProps
-  | FormFieldTextareaVariantProps
-  | FormFieldCheckboxVariantProps
-  | FormFieldRadioGroupVariantProps
-  | FormFieldSelectVariantProps
-  | FormFieldUIDVariantProps
-  | FormFieldSelectInfiniteVariantProps
-  | FormFieldNumberVariantProps
-  | FormFieldRichTextVariantProps
-  | FormFieldDatePickerVariantProps
+  | FormTextareaProps
+  | FormInputProps
+  | FormCheckboxProps
+  | FormRadioGroupProps
+  | FormUIDProps
+  | FormNumberProps
+  | FormRichEditorProps
+  | FormDatePickerProps
 
 export interface FormFieldStandardBaseProps {
   type?: HTMLInputTypeAttribute
@@ -110,14 +57,14 @@ const FORM_UNIFIED_VARIANT_LOADER = {
   [FORM_UNIFIED_VARIANT.TEXT]: FormInput,
   [FORM_UNIFIED_VARIANT.TEXTAREA]: FormTextarea,
   [FORM_UNIFIED_VARIANT.CHECKBOX]: FormCheckbox,
-  // [FORM_UNIFIED_VARIANT.RADIO_GROUP]: RadioGroup,
-  // [FORM_UNIFIED_VARIANT.SELECT]: FormSelect,
+  [FORM_UNIFIED_VARIANT.RADIO_GROUP]: FormRadioGroup,
   [FORM_UNIFIED_VARIANT.UID]: FormUID,
   [FORM_UNIFIED_VARIANT.NUMBER]: FormNumber,
-  // [FORM_UNIFIED_VARIANT.SELECT_INFINITE]: FormSelectInfinite,
-  // [FORM_UNIFIED_VARIANT.RICH_TEXT]: FormRichText,
+  [FORM_UNIFIED_VARIANT.RICH_EDITOR]: FormRichEditor,
   [FORM_UNIFIED_VARIANT.DATE_PICKER]: FormDatePicker,
-}
+  // [FORM_UNIFIED_VARIANT.SELECT]: FormSelect,
+  // [FORM_UNIFIED_VARIANT.SELECT_INFINITE]: FormSelectInfinite,
+} as Record<keyof typeof FORM_UNIFIED_VARIANT, any>
 
 const FormField = forwardRef<
   HTMLDivElement,
@@ -136,7 +83,7 @@ const FormField = forwardRef<
           <FormItem
             className={cn(
               wrapperClassName,
-              shouldHorizontalShowing ? "space-y-0 flex items-center gap-2" : ""
+              shouldHorizontalShowing ? "flex items-center gap-2 space-y-0" : "",
             )}
             ref={ref}
           >
@@ -145,7 +92,7 @@ const FormField = forwardRef<
                 className={cn("flex items-center", shouldHorizontalShowing ? "order-2" : "")}
               >
                 {label}
-                {baseProps?.required ? <Asterisk className="w-3 h-3 ml-1" /> : ""}
+                {baseProps?.required ? <Asterisk className="ml-1 h-3 w-3" /> : ""}
               </FormLabel>
             ) : null}
             <FormControl>
@@ -156,7 +103,7 @@ const FormField = forwardRef<
                 className={cn(
                   className,
                   _error?.message ? "!border-destructive" : null,
-                  shouldHorizontalShowing ? "order-1" : ""
+                  shouldHorizontalShowing ? "order-1" : "",
                 )}
               />
             </FormControl>

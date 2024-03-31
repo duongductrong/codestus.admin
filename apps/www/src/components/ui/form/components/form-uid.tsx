@@ -8,7 +8,8 @@ import get from "lodash/get"
 import FormInput, { FormInputProps } from "./form-input"
 import { cn } from "@/libs/utils/tailwind"
 
-export interface FormUIDProps extends FormInputProps {
+export interface FormUIDProps extends Omit<FormInputProps, "variant"> {
+  variant: "UID"
   fromName: string
 }
 
@@ -21,8 +22,7 @@ const FormUID = forwardRef<HTMLInputElement, FormUIDProps>(
     const handleGenerateUID = () => {
       setIsGenerating(true)
 
-      const relatedInputValue =
-        get(methods.getValues(), fromName) || props?.value || ""
+      const relatedInputValue = get(methods.getValues(), fromName) || props?.value || ""
       const value = slugify(relatedInputValue, {
         lower: true,
         strict: true,
@@ -43,29 +43,25 @@ const FormUID = forwardRef<HTMLInputElement, FormUIDProps>(
         <div
           className={cn(
             "group",
-            "absolute top-1/2 right-3 transform -translate-y-1/2",
-            "flex gap-2"
+            "absolute right-3 top-1/2 -translate-y-1/2 transform",
+            "flex gap-2",
           )}
         >
-          <p className="text-xs text-zinc-500 invisible group-hover:visible">
-            {isGenerating
-              ? "Loading.."
-              : props?.value
-              ? "Regenerate"
-              : "Generate"}
+          <p className="invisible text-xs text-zinc-500 group-hover:visible">
+            {isGenerating ? "Loading.." : props?.value ? "Regenerate" : "Generate"}
           </p>
           {isGenerating ? (
-            <Loader className="w-4 h-4 animate-spin" />
+            <Loader className="h-4 w-4 animate-spin" />
           ) : (
             <RotateCw
-              className={cn("w-4 h-4 cursor-pointer", "text-zinc-500")}
+              className={cn("h-4 w-4 cursor-pointer", "text-zinc-500")}
               onClick={handleGenerateUID}
             />
           )}
         </div>
       </div>
     )
-  }
+  },
 )
 
 FormUID.displayName = "FormUID"

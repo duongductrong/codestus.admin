@@ -3,7 +3,9 @@
 import { forwardRef } from "react"
 import { Input, InputProps } from "../../input"
 
-export interface FormInputProps extends InputProps {}
+export interface FormInputProps extends InputProps {
+  variant: "TEXT"
+}
 
 const FormInput = forwardRef<HTMLInputElement, FormInputProps>((props, ref) => (
   <Input {...props} ref={ref} />

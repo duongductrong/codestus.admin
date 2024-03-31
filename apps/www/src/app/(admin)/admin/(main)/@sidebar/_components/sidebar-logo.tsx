@@ -1,6 +1,6 @@
 import Image from "next/image"
 import React, { ComponentProps, ElementRef, forwardRef } from "react"
-import { cn } from "../../../../../libs/utils/tailwind"
+import { cn } from "../../../../../../libs/utils/tailwind"
 
 export interface SidebarLogoProps
   extends Omit<ComponentProps<typeof Image>, "src" | "width" | "height" | "alt"> {}

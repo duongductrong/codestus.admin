@@ -10,8 +10,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../../../components/ui/accordion"
-import { Alert, AlertDescription, AlertTitle } from "../../../components/ui/alert"
+} from "../../../../components/ui/accordion"
+import { Alert, AlertDescription, AlertTitle } from "../../../../components/ui/alert"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,11 +22,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../../../components/ui/alert-dialog"
-import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avatar"
-import { Badge } from "../../../components/ui/badge"
-import { Button } from "../../../components/ui/button"
-import { Calendar } from "../../../components/ui/calendar"
+} from "../../../../components/ui/alert-dialog"
+import { Avatar, AvatarFallback, AvatarImage } from "../../../../components/ui/avatar"
+import { Badge } from "../../../../components/ui/badge"
+import { Button } from "../../../../components/ui/button"
+import { Calendar } from "../../../../components/ui/calendar"
 import {
   Card,
   CardContent,
@@ -34,8 +34,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../../components/ui/card"
-import { Checkbox } from "../../../components/ui/checkbox"
+} from "../../../../components/ui/card"
+import { Checkbox } from "../../../../components/ui/checkbox"
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -50,25 +50,25 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
-} from "../../../components/ui/context-menu"
-import { DataTable } from "../../../components/ui/data-table"
-import { DatePicker } from "../../../components/ui/date-picker"
-import { DateRangePicker } from "../../../components/ui/date-range-picker"
-import { IconButton } from "../../../components/ui/icon-button"
-import Icons from "../../../components/ui/icons"
-import { List, ListItem, ListItemContent, ListItemTrigger } from "../../../components/ui/list"
-import { Popover, PopoverContent, PopoverTrigger } from "../../../components/ui/popover"
-import { Switch } from "../../../components/ui/switch"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs"
-import { cn } from "../../../libs/utils/tailwind"
-import { Input } from "../../../components/ui/input"
+} from "../../../../components/ui/context-menu"
+import { DataTable } from "../../../../components/ui/data-table"
+import { DatePicker } from "../../../../components/ui/date-picker"
+import { DateRangePicker } from "../../../../components/ui/date-range-picker"
+import { IconButton } from "../../../../components/ui/icon-button"
+import Icons from "../../../../components/ui/icons"
+import { List, ListItem, ListItemContent, ListItemTrigger } from "../../../../components/ui/list"
+import { Popover, PopoverContent, PopoverTrigger } from "../../../../components/ui/popover"
+import { Switch } from "../../../../components/ui/switch"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../components/ui/tabs"
+import { cn } from "../../../../libs/utils/tailwind"
+import { Input } from "../../../../components/ui/input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../../components/ui/select"
+} from "../../../../components/ui/select"
 
 const notifications = [
   {

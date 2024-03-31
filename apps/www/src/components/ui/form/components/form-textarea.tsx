@@ -3,11 +3,13 @@
 import { forwardRef } from "react"
 import { Textarea, TextareaProps } from "../../textarea"
 
-export interface FormTextareaProps extends TextareaProps {}
+export interface FormTextareaProps extends TextareaProps {
+  variant: "TEXTAREA"
+}
 
-const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextareaProps>(
-  (props, ref) => <Textarea {...props} ref={ref} />
-)
+const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextareaProps>((props, ref) => (
+  <Textarea {...props} ref={ref} />
+))
 
 FormTextarea.displayName = "FormTextarea"
 

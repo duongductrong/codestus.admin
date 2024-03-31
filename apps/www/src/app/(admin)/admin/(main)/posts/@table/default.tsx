@@ -2,11 +2,10 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
+import Link from "next/link"
+import CustomPageSection from "@/components/customs/custom-page-section"
 import { Badge } from "@/components/ui/badge"
-import {
-  DataTable,
-  DataTableBasePagination
-} from "@/components/ui/data-table"
+import { DataTable, DataTableBasePagination } from "@/components/ui/data-table"
 import { DataTableSearcher, DataTableToolbar } from "@/components/ui/data-table/data-table-filters"
 import { useDataTablePagination } from "@/components/ui/data-table/use-data-table-pagination"
 import { useDataTableSorting } from "@/components/ui/data-table/use-data-table-sorting"
@@ -14,10 +13,11 @@ import { Tooltip } from "@/components/ui/tooltip"
 import { formatNumber } from "@/libs/utils/number"
 import { useSuspensePosts } from "@/services/post/hooks/use-get-posts"
 import { Post } from "@/services/post/types"
+import { PAGE_ROUTES } from "@/constants/routes"
 
-export interface PostsListProps {}
+export interface PostsTableProps {}
 
-const PostsList = (props: PostsListProps) => {
+const PostsTable = (props: PostsTableProps) => {
   const { pageIndex, pageSize, setPageIndex, setPageSize } = useDataTablePagination({
     pageSize: 10,
   })
@@ -46,7 +46,12 @@ const PostsList = (props: PostsListProps) => {
       accessorKey: "title",
       cell: (info) => (
         <Tooltip triggerProps={{ asChild: true }} content={info.getValue<string>()}>
-          <p className="line-clamp-1">{info.getValue<string>()}</p>
+          <Link
+            className="line-clamp-1"
+            href={PAGE_ROUTES.ADMIN.POST_EDIT.replace(":id", info.row.original.slug)}
+          >
+            {info.getValue<string>()}
+          </Link>
         </Tooltip>
       ),
       size: 300,
@@ -62,7 +67,7 @@ const PostsList = (props: PostsListProps) => {
       accessorKey: "views",
       header: () => "Visits",
       size: 100,
-      cell: (info) => formatNumber(info.getValue<number>())
+      cell: (info) => formatNumber(info.getValue<number>()),
     },
     {
       accessorKey: "status",
@@ -89,27 +94,29 @@ const PostsList = (props: PostsListProps) => {
   }
 
   return (
-    <DataTable
-      rowId="id"
-      header={
-        <DataTableToolbar>
-          <DataTableSearcher placeholder="Search..." isGlobal />
-        </DataTableToolbar>
-      }
-      data={data}
-      columns={columns}
-      pagination={{
-        pageIndex,
-        pageSize,
-        totalRecords: Number(meta?.total),
-      }}
-      onPaginationChange={handlePaginationChange}
-      onSortingChange={setSorting}
-      sorting={sorting}
-      manualSorting
-      manualFiltering
-    />
+    <CustomPageSection title="Posts" description="All posts published over there">
+      <DataTable
+        rowId="id"
+        header={
+          <DataTableToolbar>
+            <DataTableSearcher placeholder="Search..." isGlobal />
+          </DataTableToolbar>
+        }
+        data={data}
+        columns={columns}
+        pagination={{
+          pageIndex,
+          pageSize,
+          totalRecords: Number(meta?.total),
+        }}
+        onPaginationChange={handlePaginationChange}
+        onSortingChange={setSorting}
+        sorting={sorting}
+        manualSorting
+        manualFiltering
+      />
+    </CustomPageSection>
   )
 }
 
-export default PostsList
+export default PostsTable

@@ -19,7 +19,7 @@ export class GetPostHttpController {
   @ApiOkResponse({ type: SignalResponseDto(GetPostResponseDto) })
   @ApiNotFoundResponse({ type: SignalErrorDto() })
   @HttpCode(HttpStatus.OK)
-  async run(@Param("id") id: number, @Query() query: GetPostRequestDto) {
+  async run(@Param("id") id: number | string, @Query() query: GetPostRequestDto) {
     const result = await this.queryBus.execute<GetPostQuery, GetPostResult>(
       new GetPostQuery({ id, relations: arrayFromComma(query.relations) }),
     )

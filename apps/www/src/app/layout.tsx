@@ -9,7 +9,7 @@ import { QueryProvider } from "@/libs/query/query"
 import { cn } from "../libs/utils/tailwind"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
 export const metadata: Metadata = {
   title: "Next.js Shadcn admin starter",
@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(GeistSans.className, "bg-app-background antialiased")}>
+      <body className={cn(GeistSans.className, inter.variable, "bg-app-background antialiased")}>
         <QueryProvider>
           <PreferredTheme>
             {children}

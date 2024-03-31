@@ -11,7 +11,9 @@ import { cn } from "@/libs/utils/tailwind"
 import "./form-number.scss"
 
 export interface FormNumberProps extends InputProps {
+  variant: "NUMBER"
   toFixed?: number
+  hasError?: boolean
 }
 
 const FormNumber = forwardRef<HTMLInputElement, FormNumberProps>(
@@ -52,7 +54,7 @@ const FormNumber = forwardRef<HTMLInputElement, FormNumberProps>(
           ref={ref}
           type="number"
           className={cn(props.className, "form-number")}
-          hasError={hasError}
+          // hasError={hasError}
         />
         <div
           className={cn(

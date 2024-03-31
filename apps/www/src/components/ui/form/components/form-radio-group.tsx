@@ -2,7 +2,7 @@
 
 import { RadioGroupProps } from "@radix-ui/react-radio-group"
 import { forwardRef } from "react"
-import Chip, { ChipProps } from "@/components/ui/chip"
+import { Badge } from "@/components/ui/badge"
 import useFormField from "@/components/ui/form/hooks/use-form-field"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -19,14 +19,12 @@ export interface FormRadioGroupDefaultVariant {
 
 export interface FormRadioGroupChipVariant {
   variant: "chip"
-  size?: ChipProps["size"]
 }
 
-export type FormRadioGroupCustomStyle =
-  | FormRadioGroupDefaultVariant
-  | FormRadioGroupChipVariant
+export type FormRadioGroupCustomStyle = FormRadioGroupDefaultVariant | FormRadioGroupChipVariant
 
 export interface FormRadioGroupProps extends Omit<RadioGroupProps, "onChange"> {
+  variant: "RADIO_GROUP"
   customStyle?: FormRadioGroupCustomStyle
   items: FormRadioGroupItem[]
   onChange?: (value: string) => void
@@ -41,7 +39,7 @@ const FormRadioGroup = forwardRef<HTMLDivElement, FormRadioGroupProps>(
       customStyle = { variant: "default" },
       ...props
     }: FormRadioGroupProps,
-    ref
+    ref,
   ) => {
     const { formItemId } = useFormField()
 
@@ -64,14 +62,13 @@ const FormRadioGroup = forwardRef<HTMLDivElement, FormRadioGroupProps>(
               />
               <Label htmlFor={inputId}>
                 {isChipVariantStyle ? (
-                  <Chip
+                  <Badge
                     variant="outline"
-                    size={customStyle.size}
-                    active={item.value === props.value}
-                    disabled={item?.disabled}
+                    // active={item.value === props.value}
+                    // disabled={item?.disabled}
                   >
                     {item.label}
-                  </Chip>
+                  </Badge>
                 ) : (
                   item.label
                 )}
@@ -81,7 +78,7 @@ const FormRadioGroup = forwardRef<HTMLDivElement, FormRadioGroupProps>(
         })}
       </RadioGroup>
     )
-  }
+  },
 )
 
 FormRadioGroup.displayName = "FormRadioGroup"

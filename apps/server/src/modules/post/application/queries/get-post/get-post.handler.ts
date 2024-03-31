@@ -11,7 +11,7 @@ import { set } from "lodash"
 import { FindOptionsRelations } from "typeorm"
 
 export class GetPostQuery implements IQuery {
-  id: number
+  id: number | string
 
   relations?: string[]
 
@@ -70,7 +70,7 @@ export class GetPostHandler implements IQueryHandler<GetPostQuery, GetPostResult
     }
 
     const post = await this.postRepo.findOne({
-      where: { id },
+      where: Number.isNaN(Number(id)) ? { slug: String(id) } : { id: Number(id) },
       relations,
     })
 

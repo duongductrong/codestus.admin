@@ -4,7 +4,9 @@ import { CheckboxProps } from "@radix-ui/react-checkbox"
 import { forwardRef, useEffect } from "react"
 import { Checkbox } from "../../checkbox"
 
-export interface FormCheckboxProps extends CheckboxProps {}
+export interface FormCheckboxProps extends CheckboxProps {
+  variant: "CHECKBOX"
+}
 
 const FormCheckbox = forwardRef<HTMLButtonElement, FormCheckboxProps>(
   ({ onChange, checked, defaultChecked, value, ...props }, ref) => {
