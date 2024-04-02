@@ -48,7 +48,7 @@ const PostsTable = (props: PostsTableProps) => {
         <Tooltip triggerProps={{ asChild: true }} content={info.getValue<string>()}>
           <Link
             className="line-clamp-1"
-            href={PAGE_ROUTES.ADMIN.POST_EDIT.replace(":id", info.row.original.slug)}
+            href={PAGE_ROUTES.ADMIN.POST_EDIT.replace(":id", info.row.original.id.toString())}
           >
             {info.getValue<string>()}
           </Link>

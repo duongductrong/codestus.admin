@@ -29,11 +29,12 @@ export const randomKey = () => new Date().getTime().toString()
 const EditorProvider = ({ children }: EditorProviderProps) => (
   <EditorProviderPrimitive
     extensions={[
-      Color.configure({ types: [TextStyle.name, ListItem.name] }),
-      TextStyle.configure({}),
       CodeBlockLowlight.configure({
         lowlight,
+        defaultLanguage: "javascript",
       }),
+      Color.configure({ types: [TextStyle.name, ListItem.name] }),
+      TextStyle.configure({}),
       StarterKit.configure({
         bulletList: {
           keepMarks: true,
@@ -50,7 +51,16 @@ const EditorProvider = ({ children }: EditorProviderProps) => (
       Placeholder.configure({
         placeholder: "Write content...",
       }),
-      Markdown.configure({}),
+      Markdown.configure({
+        html: true,                  // Allow HTML input/output
+        tightLists: true,            // No <p> inside <li> in markdown output
+        tightListClass: 'tight',     // Add class to <ul> allowing you to remove <p> margins when tight
+        bulletListMarker: '-',       // <li> prefix in markdown output
+        linkify: true,              // Create links from "https://..." text
+        breaks: true,               // New lines (\n) in markdown input are converted to <br>
+        transformPastedText: true,  // Allow to paste markdown text in the editor
+        transformCopiedText: true,  // Copied text is transformed to markdown
+      }),
     ]}
   >
     {children}

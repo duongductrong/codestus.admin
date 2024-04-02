@@ -19,11 +19,11 @@ import { cn } from "@/libs/utils/tailwind"
 import { editorFormSchema } from "../../../_components/editor-form"
 import { useEditorEvents, useEditorSettingSetter } from "../../../_components/use-editor-events"
 import { useEditorSettings } from "../../../_components/use-editor-settings"
+import FormFieldTags from "./_components/form-field-tags"
 
 export const editorSettingsSchema = editorFormSchema.omit({
   content: true,
   title: true,
-  status: true,
 })
 
 export interface EditorSettingsState extends z.infer<typeof editorSettingsSchema> {}
@@ -35,7 +35,7 @@ const Settings = (props: SettingsProps) => {
   const { openSettings, setOpenSettings } = useEditorSettings()
 
   const methods = useForm<EditorSettingsState>({
-    resolver: zodResolver(editorFormSchema.omit({ content: true, title: true, status: true })),
+    resolver: zodResolver(editorSettingsSchema),
   })
 
   const handleSaveChanges = methods.handleSubmit((values) => {
@@ -62,7 +62,7 @@ const Settings = (props: SettingsProps) => {
       <Card
         className={cn(
           "fixed bottom-0 right-0 top-[calc(var(--el-header-height)+var(--el-toolbar-height))] h-full",
-          "flex w-[500px] flex-col rounded-none border-r-0 border-t-0",
+          "flex h-auto w-[500px] flex-col rounded-none border-r-0 border-t-0",
         )}
       >
         <CardHeader className="flex-row justify-between border-b">
@@ -85,10 +85,10 @@ const Settings = (props: SettingsProps) => {
           />
           <FormField variant="TEXT" name="slug" label="Slug" />
           <FormField variant="TEXTAREA" rows={5} name="description" label="Description" />
-          <FormField variant="TEXT" name="tags" label="Tags" />
-          <FormField variant="SWITCH" name="status" label="Status" />
+          <FormFieldTags />
+          <FormField variant="SWITCH" name="status" label="Status" numeric />
         </CardContent>
-        <CardFooter className="flex justify-end">
+        <CardFooter className="mt-auto flex justify-end">
           <Button type="submit">Save changes</Button>
         </CardFooter>
       </Card>

@@ -1,3 +1,5 @@
+import { Tag } from "@/services/tag/types"
+
 export interface Post {
   id: number
   title: string
@@ -7,11 +9,11 @@ export interface Post {
   description?: string
   content?: string
   status: number
-  createdAt: Date
-  updatedAt: Date
-  publishAt: Date
+  createdAt: string
+  updatedAt: string
+  publishAt?: string
   love: number
   unlove: number
   // user: UserProps
-  // tags: TagProps[]
+  tags: Tag[]
 }

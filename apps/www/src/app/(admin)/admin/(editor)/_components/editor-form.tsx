@@ -1,13 +1,13 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
 import { startTransition, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { useDeepCompareMemoize } from "@/hooks/use-deep-compare-memoize"
 import Form, { FormField } from "@/components/ui/form"
 import { useCurrentEditorContext } from "./use-editor-context"
 import { useEditorEvents, useEditorSettingsChanges, useEditorSubmission } from "./use-editor-events"
-import { useDeepCompareMemoize } from "@/hooks/use-deep-compare-memoize"
 import { useEditorSettings } from "./use-editor-settings"
 
 export const editorFormSchema = z.object({
@@ -17,8 +17,8 @@ export const editorFormSchema = z.object({
   description: z.string().nullish(),
   thumbnail: z.string().nullish(),
   tags: z.array(z.string()).default([]),
-  publishAt: z.date().or(z.string()).nullish(),
-  status: z.number(),
+  publishAt: z.string().nullish(),
+  status: z.number().default(0),
 })
 
 export interface EditorFormState extends z.infer<typeof editorFormSchema> {}
@@ -26,9 +26,10 @@ export interface EditorFormState extends z.infer<typeof editorFormSchema> {}
 export interface EditorFormProps {
   title: string
   defaultValues?: Partial<EditorFormState>
+  onSubmit: (values: EditorFormState) => void
 }
 
-const EditorForm = ({ title, defaultValues }: EditorFormProps) => {
+const EditorForm = ({ title, defaultValues, onSubmit }: EditorFormProps) => {
   const methods = useForm<EditorFormState>({
     resolver: zodResolver(editorFormSchema),
     defaultValues,
@@ -38,7 +39,7 @@ const EditorForm = ({ title, defaultValues }: EditorFormProps) => {
   const editor = useCurrentEditorContext()
 
   const handleSave = methods.handleSubmit((values) => {
-    console.log(values)
+    onSubmit(values)
   })
 
   useEffect(() => {
@@ -51,14 +52,15 @@ const EditorForm = ({ title, defaultValues }: EditorFormProps) => {
     })
   }, [defaultValues?.content, editor])
 
-  useEditorSettingsChanges<Partial<EditorFormState>>((values) => {
-    methods.reset({
-      ...methods.getValues(),
-      ...values,
-    })
-  })
-
-  console.log(methods.watch("publishAt"))
+  useEditorSettingsChanges<Partial<EditorFormState>>(
+    (values) => {
+      methods.reset({
+        ...methods.getValues(),
+        ...values,
+      })
+    },
+    [defaultValues],
+  )
 
   useEditorSubmission(handleSave)
 
@@ -73,11 +75,6 @@ const EditorForm = ({ title, defaultValues }: EditorFormProps) => {
 
   useEffect(() => setTitle(title), [title])
 
-  console.log("debug", {
-    errors: methods.formState.errors,
-    state: methods.watch(),
-  })
-
   return (
     <Form methods={methods} onSubmit={handleSave}>
       <div className="mx-auto my-5 flex min-h-lvh max-w-[800px] flex-col gap-4">
@@ -87,7 +84,13 @@ const EditorForm = ({ title, defaultValues }: EditorFormProps) => {
           placeholder="Enter title..."
           className="border-none p-0 text-3xl font-semibold shadow-none outline-none focus-visible:ring-0"
         />
-        <FormField variant="RICH_EDITOR" name="content" placeholder="Write something..." />
+        <FormField
+          variant="RICH_EDITOR"
+          name="content"
+          placeholder="Write something..."
+          convertedFrom="html"
+          as="markdown"
+        />
       </div>
     </Form>
   )

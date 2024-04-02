@@ -3,18 +3,15 @@ import { Switch, SwitchProps } from "../../switch"
 
 export interface FormSwitchProps extends SwitchProps {
   variant: "SWITCH"
-  handleChange?: (checked: boolean) => void
+  numeric?: boolean
 }
 
 const FormSwitch = forwardRef<ElementRef<typeof Switch>, FormSwitchProps>(
-  ({ onChange, handleChange, value, ...props }, ref) => (
+  ({ onChange, value, numeric, ...props }, ref) => (
     <Switch
       {...props}
       ref={ref}
-      onCheckedChange={(checked) => {
-        onChange?.(checked as any)
-        handleChange?.(checked)
-      }}
+      onCheckedChange={(checked) => onChange?.(numeric ? Number(checked) : (checked as any))}
       checked={!!value}
     />
   ),

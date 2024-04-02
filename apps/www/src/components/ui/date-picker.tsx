@@ -10,7 +10,7 @@ import {
   toDate,
 } from "date-fns"
 import { format as _format } from "date-fns/format"
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react"
+import { forwardRef, useImperativeHandle, useState } from "react"
 import { SelectSingleEventHandler } from "react-day-picker"
 import { cn } from "../../libs/utils/tailwind"
 import { Button } from "./button"
@@ -30,7 +30,7 @@ export interface DatePickerProps {
   fullWidth?: boolean
   value?: string | Date
   withTime?: boolean
-  onChange?: (date?: string) => void
+  onChange?: (date?: Date) => void
 }
 
 export const DatePicker = forwardRef<DatePickerExposeRef, DatePickerProps>(
@@ -41,13 +41,19 @@ export const DatePicker = forwardRef<DatePickerExposeRef, DatePickerProps>(
       initialFocus = true,
       className,
       fullWidth,
-      value,
+      value: defaultValue,
       withTime,
       onChange,
     },
     ref,
   ) => {
-    const [date, setDate] = useState<Date | undefined>(value ? toDate(value) : undefined)
+    const [datePickerDate, setDatePickerDate] = useState<Date | undefined>(
+      defaultValue ? toDate(defaultValue) : undefined,
+    )
+
+    const [date, setDate] = onChange
+      ? [defaultValue ? toDate(defaultValue) : undefined, onChange]
+      : [datePickerDate, setDatePickerDate]
 
     const showNumberBeauty = (val: number) => (val < 10 ? `0${val}` : val)
 
@@ -81,12 +87,6 @@ export const DatePicker = forwardRef<DatePickerExposeRef, DatePickerProps>(
 
       setDate(selectedDate)
     }
-
-    useEffect(() => {
-      if (date) {
-        onChange?.(date.toISOString())
-      }
-    }, [date])
 
     useImperativeHandle(ref, () => ({}))
 

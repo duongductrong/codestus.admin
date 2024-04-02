@@ -11,7 +11,7 @@ interface Size {
   offsetY: number
 }
 
-export function useElementSize<T extends HTMLElement = HTMLDivElement>(): [
+export function useElementSize<T extends HTMLElement>(): [
   (node: T | null) => void,
   Size,
 ] {

@@ -57,7 +57,7 @@ export const useRichEditor = ({
         Placeholder.configure({
           placeholder,
         }),
-        Markdown.configure({}),
+        // Markdown.configure({}),
       ],
       [placeholder],
     ),
