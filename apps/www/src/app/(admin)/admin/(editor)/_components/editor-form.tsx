@@ -34,7 +34,7 @@ const EditorForm = ({ title, defaultValues, onSubmit }: EditorFormProps) => {
     resolver: zodResolver(editorFormSchema),
     defaultValues,
   })
-  const { setTitle } = useEditorSettings()
+  const { setTitle, setEditorDirty } = useEditorSettings()
   const { settingSetterEvent } = useEditorEvents()
   const editor = useCurrentEditorContext()
 
@@ -75,6 +75,8 @@ const EditorForm = ({ title, defaultValues, onSubmit }: EditorFormProps) => {
 
   useEffect(() => setTitle(title), [title])
 
+  useEffect(() => setEditorDirty(methods.formState.isDirty), [methods.formState.isDirty])
+
   return (
     <Form methods={methods} onSubmit={handleSave}>
       <div className="mx-auto my-5 flex min-h-lvh max-w-[800px] flex-col gap-4">
@@ -88,7 +90,6 @@ const EditorForm = ({ title, defaultValues, onSubmit }: EditorFormProps) => {
           variant="RICH_EDITOR"
           name="content"
           placeholder="Write something..."
-          convertedFrom="html"
           as="markdown"
         />
       </div>

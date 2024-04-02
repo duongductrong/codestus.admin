@@ -1,7 +1,9 @@
 "use client"
 
 import { useQueryClient } from "@tanstack/react-query"
+import { Loader } from "lucide-react"
 import { toast } from "sonner"
+import { useUnifiedTransformer } from "@/libs/markdown/use-unified"
 import { useSuspensePost } from "@/services/post/hooks/use-get-post"
 import { useSuspensePosts } from "@/services/post/hooks/use-get-posts"
 import { useUpdatePost } from "@/services/post/hooks/use-update-post"
@@ -18,6 +20,11 @@ const PostHandler = ({ params: { handler } }: PostHandlerProps) => {
     variables: { id: handler, relations: "tags" },
     refetchOnWindowFocus: false,
   })
+
+  const { content: htmlContent, loading: isLoadingConvertContent } = useUnifiedTransformer(
+    data.data.content || "",
+    "markdown",
+  )
 
   const { mutateAsync: updatePost } = useUpdatePost({
     onSuccess(result, variables, context) {
@@ -45,6 +52,8 @@ const PostHandler = ({ params: { handler } }: PostHandlerProps) => {
       thumbnail: values.thumbnail || undefined,
     })
   }
+
+  if (isLoadingConvertContent) return <Loader className="h-4 w-4 animate-spin" />
 
   return (
     <EditorForm

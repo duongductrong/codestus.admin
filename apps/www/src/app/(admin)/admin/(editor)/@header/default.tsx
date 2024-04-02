@@ -31,7 +31,7 @@ import { useEditorSettings } from "../_components/use-editor-settings"
 export interface AdminHeaderProps {}
 
 const AdminHeader = (props: AdminHeaderProps) => {
-  const { title, openSettings, setOpenSettings } = useEditorSettings()
+  const { title, openSettings, isEditorDirty, setOpenSettings } = useEditorSettings()
 
   const { submitEvent } = useEditorEvents()
 
@@ -111,8 +111,8 @@ const AdminHeader = (props: AdminHeaderProps) => {
         <Button variant="link" onClick={() => setOpenSettings(!openSettings)}>
           <Settings className="h-4 w-4" />
         </Button>
-        <Button onClick={() => submitEvent(null)}>
-          Publish or Save
+        <Button onClick={() => submitEvent(null)} disabled={!isEditorDirty}>
+          Save
           <ArrowRight className="ml-1 h-4 w-4" />
         </Button>
       </div>
