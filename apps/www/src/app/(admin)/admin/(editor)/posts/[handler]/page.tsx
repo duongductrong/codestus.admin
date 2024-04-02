@@ -21,7 +21,7 @@ const PostHandler = ({ params: { handler } }: PostHandlerProps) => {
     refetchOnWindowFocus: false,
   })
 
-  const { content: htmlContent, loading: isLoadingConvertContent } = useUnifiedTransformer(
+  const { loading: isLoadingConvertContent } = useUnifiedTransformer(
     data.data.content || "",
     "markdown",
   )
@@ -39,7 +39,7 @@ const PostHandler = ({ params: { handler } }: PostHandlerProps) => {
 
   const post = data.data
 
-  const handleEditorSubmit: EditorFormProps["onSubmit"] = async (values) => {
+  const handleEditorSubmit: EditorFormProps["onSubmit"] = async (values) =>
     updatePost({
       id: Number(handler),
       // publishAt: values.publishAt || undefined,
@@ -50,8 +50,15 @@ const PostHandler = ({ params: { handler } }: PostHandlerProps) => {
       content: values.content || undefined,
       description: values.description || undefined,
       thumbnail: values.thumbnail || undefined,
-    })
-  }
+    }).then((response) => ({
+      title: response.data.title,
+      description: response.data.description,
+      slug: response.data.slug,
+      status: response.data.status,
+      publishAt: response.data.publishAt,
+      tags: response.data.tags?.map((tag) => tag.id.toString()),
+      content: response.data.content,
+    }))
 
   if (isLoadingConvertContent) return <Loader className="h-4 w-4 animate-spin" />
 

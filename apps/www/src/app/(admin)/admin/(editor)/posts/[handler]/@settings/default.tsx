@@ -66,7 +66,7 @@ const Settings = (props: SettingsProps) => {
         )}
       >
         <CardHeader className="flex-row justify-between border-b">
-          <div>
+          <div className="flex flex-col gap-1">
             <CardTitle>Settings</CardTitle>
             <CardDescription>Add information for your blog</CardDescription>
           </div>

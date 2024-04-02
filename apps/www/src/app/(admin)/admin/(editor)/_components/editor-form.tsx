@@ -9,6 +9,7 @@ import Form, { FormField } from "@/components/ui/form"
 import { useCurrentEditorContext } from "./use-editor-context"
 import { useEditorEvents, useEditorSettingsChanges, useEditorSubmission } from "./use-editor-events"
 import { useEditorSettings } from "./use-editor-settings"
+import { useEditorDefaultValues } from "./use-editor-default-values"
 
 export const editorFormSchema = z.object({
   title: z.string().min(1),
@@ -26,7 +27,7 @@ export interface EditorFormState extends z.infer<typeof editorFormSchema> {}
 export interface EditorFormProps {
   title: string
   defaultValues?: Partial<EditorFormState>
-  onSubmit: (values: EditorFormState) => void
+  onSubmit: (values: EditorFormState) => Promise<Partial<EditorFormState>>
 }
 
 const EditorForm = ({ title, defaultValues, onSubmit }: EditorFormProps) => {
@@ -34,12 +35,14 @@ const EditorForm = ({ title, defaultValues, onSubmit }: EditorFormProps) => {
     resolver: zodResolver(editorFormSchema),
     defaultValues,
   })
-  const { setTitle, setEditorDirty } = useEditorSettings()
-  const { settingSetterEvent } = useEditorEvents()
   const editor = useCurrentEditorContext()
 
+  const { setTitle, setEditorDirty } = useEditorSettings()
+
   const handleSave = methods.handleSubmit((values) => {
-    onSubmit(values)
+    onSubmit(values).then((mutated) => {
+      methods.reset(mutated)
+    })
   })
 
   useEffect(() => {
@@ -54,9 +57,10 @@ const EditorForm = ({ title, defaultValues, onSubmit }: EditorFormProps) => {
 
   useEditorSettingsChanges<Partial<EditorFormState>>(
     (values) => {
-      methods.reset({
-        ...methods.getValues(),
-        ...values,
+      Object.keys(values).forEach((key) => {
+        methods.setValue(key as keyof EditorFormState, values[key as keyof EditorFormState], {
+          shouldDirty: true,
+        })
       })
     },
     [defaultValues],
@@ -64,14 +68,7 @@ const EditorForm = ({ title, defaultValues, onSubmit }: EditorFormProps) => {
 
   useEditorSubmission(handleSave)
 
-  useEffect(
-    () => {
-      if (defaultValues) {
-        settingSetterEvent(defaultValues)
-      }
-    },
-    useDeepCompareMemoize([defaultValues]),
-  )
+  useEditorDefaultValues(defaultValues)
 
   useEffect(() => setTitle(title), [title])
 

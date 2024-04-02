@@ -18,7 +18,7 @@
   }
 
   .is-editor-empty {
-    @apply h-0;
+    @apply h-[20px];
   }
 
   code {
