@@ -2,14 +2,14 @@
 
 import * as React from "react"
 
+import { GitHubLogoIcon } from "@radix-ui/react-icons"
+import { Loader2Icon } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { Button } from "../../../../components/ui/button"
 import { Input } from "../../../../components/ui/input"
 import { Label } from "../../../../components/ui/label"
 
 import { cn } from "../../../../libs/utils/tailwind"
-import { GitHubLogoIcon } from "@radix-ui/react-icons"
-import { Loader2Icon } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { PAGE_ROUTES } from "../../../../constants/routes"
 
 interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
