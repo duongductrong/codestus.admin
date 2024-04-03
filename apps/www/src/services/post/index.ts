@@ -1,4 +1,5 @@
 import { fetcher } from "../../libs/fetch/fetcher"
+import { CreatePostResult, CreatePostVariables } from "./types/create-post"
 import { GetPostResult, GetPostVariables } from "./types/get-post"
 import { GetPostsResult, GetPostsVariables } from "./types/get-posts"
 import { UpdatePostVariables } from "./types/update-post"
@@ -13,6 +14,7 @@ class PostService {
 
   get mutationKeys() {
     return {
+      createPost: "/posts",
       updatePost: "/posts/:id",
     }
   }
@@ -35,6 +37,10 @@ class PostService {
         ...variables,
       } as GetPostVariables,
     })
+  }
+
+  createPost(variables: CreatePostVariables) {
+    return fetcher.post<CreatePostResult>(this.mutationKeys.createPost, variables)
   }
 
   updatePost(variables: UpdatePostVariables) {
