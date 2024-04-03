@@ -7,7 +7,7 @@ import { LoginCommand, LoginResult } from "./login.handler"
 export class LoginRequestDto implements LoginCommand {
   @IsString()
   @IsEmail()
-  @IsExists({ entity: UserEntity, field: "email" }, {})
+  @IsExists({ entity: UserEntity, field: "email" })
   identifier: string
 
   @IsString()

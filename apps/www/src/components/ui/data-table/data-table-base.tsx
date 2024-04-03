@@ -280,7 +280,7 @@ export const DataTableBase = <TData, TColumn>({
 
   const totalRecords = isManualPagination ? Number(manualPagination.totalRecords) : data.length
   const totalPages = isManualPagination
-    ? Math.floor(totalRecords / selfPagination.pageSize)
+    ? Math.ceil(totalRecords / selfPagination.pageSize)
     : table?.getPageCount?.() ?? 0
 
   const pagination = {

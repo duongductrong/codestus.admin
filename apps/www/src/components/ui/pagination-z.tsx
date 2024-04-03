@@ -3,7 +3,6 @@
 
 "use client"
 
-import { cn } from "../../libs/utils/tailwind"
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
 import {
   IPaginationProps,
@@ -12,6 +11,7 @@ import {
   Pagination as PaginationRoot,
   PrevButton,
 } from "react-headless-pagination"
+import { cn } from "@/libs/utils/tailwind"
 import { buttonVariants } from "./button"
 
 export interface PaginationProps

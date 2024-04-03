@@ -14,7 +14,7 @@ class PostService {
 
   get mutationKeys() {
     return {
-      createPost: "/posts",
+      createPost: "/posts/",
       updatePost: "/posts/:id",
     }
   }
@@ -22,11 +22,12 @@ class PostService {
   getPosts(variables?: GetPostsVariables) {
     return fetcher.get<GetPostsResult>(this.queryKeys.getPosts, {
       params: {
+        ...variables,
         orderBy: {
           field: "createdAt",
           value: "desc",
+          ...variables?.orderBy,
         },
-        ...variables,
       } as GetPostsVariables,
     })
   }

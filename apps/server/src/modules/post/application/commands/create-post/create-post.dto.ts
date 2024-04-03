@@ -6,7 +6,7 @@ import { Type } from "class-transformer"
 import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 import { CreatePostCommand, CreatePostResult } from "./create-post.handler"
 
-export class CreatePostRequestDto implements CreatePostCommand {
+export class CreatePostRequestDto implements Omit<CreatePostCommand, "userId"> {
   @ApiProperty()
   @IsString()
   title: string
@@ -35,9 +35,9 @@ export class CreatePostRequestDto implements CreatePostCommand {
   @IsNumber()
   status: number
 
-  @ApiProperty()
-  @IsNumber()
-  userId: number
+  // @ApiProperty()
+  // @IsNumber()
+  // userId: number
 
   @ApiProperty()
   @IsArray()

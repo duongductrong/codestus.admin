@@ -1,5 +1,7 @@
 import Axios, { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios"
+import { getCookie } from "cookies-next"
 import qs from "querystring"
+import { tokenKeys } from "@/components/ui/use-manage-tokens"
 import { flattenObject } from "../utils/object"
 
 export interface FetcherResponse<TData = any, TConfig = any>
@@ -45,7 +47,7 @@ const fetcher = Axios.create({
 })
 
 fetcher.interceptors.request.use((config): any => {
-  const token = "your_token"
+  const token = getCookie(tokenKeys.authToken)
   const newHeaders = {
     Authorization: `Bearer ${token}`,
     ...config.headers,

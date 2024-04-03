@@ -11,6 +11,8 @@ import { EntityManager, EntitySchema, ObjectType } from "typeorm"
 export interface IsExistsConstraintOptions<E = unknown> {
   entity: ObjectType<E> | EntitySchema<E> | string
   field?: keyof E
+
+  message?: string
 }
 
 @ValidatorConstraint({ name: "IsExistsConstraint", async: true })
@@ -32,7 +34,10 @@ export class IsExistsConstraint implements ValidatorConstraintInterface {
   }
 
   defaultMessage?(validationArguments?: ValidationArguments): string {
-    return `The object is not exists`
+    if (validationArguments?.constraints?.[0].message)
+      return validationArguments.constraints[0].message
+
+    return `The ${validationArguments?.property ?? "object"} is not exists`
   }
 }
 
@@ -41,7 +46,7 @@ export class IsExistsConstraint implements ValidatorConstraintInterface {
  */
 export function IsExists<E>(
   options: IsExistsConstraintOptions<E>,
-  validatorOptions: ValidatorOptions,
+  validatorOptions?: ValidatorOptions,
 ) {
   // eslint-disable-next-line func-names, @typescript-eslint/ban-types
   return function (object: Object, propertyName: string) {
