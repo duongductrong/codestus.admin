@@ -31,6 +31,7 @@ const PostHandler = ({ params: { handler } }: PostHandlerProps) => {
       toast.success(result.message)
 
       ql.invalidateQueries({ queryKey: useSuspensePosts.getKey() })
+      ql.invalidateQueries({ queryKey: useSuspensePost.getKey() })
     },
     onError(error, variables, context) {
       toast.error(error.response?.data.message)

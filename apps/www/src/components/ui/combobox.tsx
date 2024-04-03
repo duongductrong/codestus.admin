@@ -115,7 +115,7 @@ export const Combobox = React.forwardRef<React.ElementRef<typeof Button>, Combob
             <Badge variant="secondary" key={curValue}>
               {labelsMap?.[curValue]}
               <X
-                className="ml-1 h-3 w-3 text-muted-foreground"
+                className="ml-1 h-3 w-3 text-muted-foreground cursor-pointer"
                 onClick={withPreventDefault((e) => {
                   handleSelect(curValue)
                 })}
@@ -135,7 +135,7 @@ export const Combobox = React.forwardRef<React.ElementRef<typeof Button>, Combob
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className="h-auto w-full justify-between px-2 hover:bg-transparent"
+              className="h-auto w-full justify-between px-2 hover:bg-transparent cursor-text"
             >
               <span className="flex w-full flex-1 flex-wrap gap-1">{renderSelectedValue}</span>
               <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />

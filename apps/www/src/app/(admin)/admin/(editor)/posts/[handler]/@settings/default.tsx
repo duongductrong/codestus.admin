@@ -52,6 +52,7 @@ const Settings = (props: SettingsProps) => {
       slug: data.slug,
       tags: data.tags,
       thumbnail: data.thumbnail,
+      status: data.status
     })
   })
 

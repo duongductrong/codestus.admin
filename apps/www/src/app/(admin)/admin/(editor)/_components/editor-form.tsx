@@ -4,12 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { startTransition, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { useDeepCompareMemoize } from "@/hooks/use-deep-compare-memoize"
 import Form, { FormField } from "@/components/ui/form"
 import { useCurrentEditorContext } from "./use-editor-context"
-import { useEditorEvents, useEditorSettingsChanges, useEditorSubmission } from "./use-editor-events"
-import { useEditorSettings } from "./use-editor-settings"
 import { useEditorDefaultValues } from "./use-editor-default-values"
+import { useEditorSettingsChanges, useEditorSubmission } from "./use-editor-events"
+import { useEditorSettings } from "./use-editor-settings"
 
 export const editorFormSchema = z.object({
   title: z.string().min(1),
