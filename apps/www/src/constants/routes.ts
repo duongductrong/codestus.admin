@@ -9,4 +9,9 @@ export const PAGE_ROUTES = {
 
     CATEGORY_LIST: "/admin/categories",
   },
+
+  AUTH: {
+    SIGN_IN: "/login",
+    SIGN_UP: "/sign-up",
+  },
 } as const

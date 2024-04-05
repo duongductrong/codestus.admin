@@ -6,6 +6,7 @@ import { SignalResponseDto } from "@server/core/classes/signal/dtos/signal-respo
 import { SignalBuilder } from "@server/core/classes/signal/signal.builder"
 import { GENERAL_MESSAGES } from "@server/core/message.base"
 import { arrayFromComma } from "@server/core/utils/array"
+import { Auth } from "@server/modules/authenticator/infras/decorators/auth.decorator"
 import { GetPostsRequestDto, GetPostsResultDto } from "./get-posts.dto"
 import { GetPostsQuery, GetPostsResult } from "./get-posts.handler"
 
@@ -17,6 +18,7 @@ export class GetPostsHttpController {
   @Get(routes.v1.posts.root)
   @ApiOkResponse({ type: SignalResponseDto([GetPostsResultDto]) })
   @HttpCode(HttpStatus.OK)
+  @Auth()
   async run(@Query() query: GetPostsRequestDto) {
     const { count, data } = await this.queryBus.execute<GetPostsQuery, GetPostsResult>(
       new GetPostsQuery({ ...query, relations: arrayFromComma(query.relations) }),

@@ -1,6 +1,9 @@
 import { Module, Provider } from "@nestjs/common"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { PostEntity } from "../post/infras/entities/post.entity"
+import { UserRepository } from "../user/infras/repositories/user.repository"
+import { USER_MAPPER, USER_REPOSITORY } from "../user/user.di-tokens"
+import { UserMapper } from "../user/user.mapper"
 import { BulkDeleteTagHandler } from "./application/commands/bulk-delete-tags/bulk-delete-tag.handler"
 import { BulkDeleteTagHttpController } from "./application/commands/bulk-delete-tags/bulk-delete-tag.http.controller"
 import { CreateTagHandler } from "./application/commands/create-tag/create-tag.handler"
@@ -18,6 +21,7 @@ import { TagEntity } from "./infras/entities/tag.entity"
 import { TagRepository } from "./infras/repositories/tag.repository"
 import { TAG_FACTORY, TAG_MAPPER, TAG_REPOSITORY } from "./tag.di-tokens"
 import { TagMapper } from "./tag.mapper"
+import { UserEntity } from "../user/infras/entities/user.entity"
 
 export const Factories: Provider[] = [{ provide: TAG_FACTORY, useClass: TagFactory }]
 export const Repositories: Provider[] = [{ provide: TAG_REPOSITORY, useClass: TagRepository }]
@@ -41,7 +45,7 @@ export const Controllers = [
 ]
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TagEntity, PostEntity])],
+  imports: [TypeOrmModule.forFeature([TagEntity, UserEntity, PostEntity])],
   controllers: Controllers,
   providers: [
     ...Services,

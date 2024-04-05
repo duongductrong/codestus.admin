@@ -5,6 +5,7 @@ import { routes } from "@server/configs/routes.config"
 import { SignalResponseDto } from "@server/core/classes/signal/dtos/signal-response.dto"
 import { SignalBuilder } from "@server/core/classes/signal/signal.builder"
 import { GENERAL_MESSAGES } from "@server/core/message.base"
+import { Auth } from "@server/modules/authenticator/infras/decorators/auth.decorator"
 import { UpdateUserRequestDto, UpdateUserResponseDto } from "./update-user.dto"
 import { UpdateUserCommand } from "./update-user.handler"
 
@@ -18,6 +19,7 @@ export class UpdateUserHttpController {
   @ApiParam({ name: "id", schema: { type: "number" } })
   @ApiOkResponse({ type: SignalResponseDto(UpdateUserResponseDto) })
   @HttpCode(HttpStatus.OK)
+  @Auth()
   async run(@Param("id") id: number, @Body() data: UpdateUserRequestDto) {
     const result = await this.commandBus.execute(new UpdateUserCommand({ id, ...data }))
     return SignalBuilder.create().setData(result).setMessage(GENERAL_MESSAGES.QUERY_SUCCESS)

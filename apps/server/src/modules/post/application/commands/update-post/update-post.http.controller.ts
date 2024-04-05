@@ -21,6 +21,7 @@ import { SignalErrorDto } from "@server/core/classes/signal/dtos/signal-error.dt
 import { SignalResponseDto } from "@server/core/classes/signal/dtos/signal-response.dto"
 import { SignalBuilder } from "@server/core/classes/signal/signal.builder"
 import { GENERAL_MESSAGES } from "@server/core/message.base"
+import { Auth } from "@server/modules/authenticator/infras/decorators/auth.decorator"
 import { UpdatePostRequestDto } from "./update-post.dto"
 import { UpdatePostCommand, UpdatePostResult } from "./update-post.handler"
 
@@ -34,6 +35,7 @@ export class UpdatePostHttpController {
   @ApiBadRequestResponse({ type: SignalErrorDto(BadRequestException) })
   @ApiForbiddenResponse({ type: SignalErrorDto(ForbiddenException) })
   @HttpCode(HttpStatus.OK)
+  @Auth()
   async run(@Param("id") id: number, @Body() body: UpdatePostRequestDto) {
     if (id !== body.id) throw new ForbiddenException(GENERAL_MESSAGES.FORBIDDEN)
 

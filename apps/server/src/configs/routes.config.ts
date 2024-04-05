@@ -33,6 +33,7 @@ export const routes = {
       root: "/auth",
       login: "/auth/login",
       signUp: "/auth/signup",
+      getMe: "/auth/me",
     },
   },
 } as const

@@ -14,6 +14,7 @@ import { routes } from "@server/configs/routes.config"
 import { SignalResponseDto } from "@server/core/classes/signal/dtos/signal-response.dto"
 import { SignalBuilder } from "@server/core/classes/signal/signal.builder"
 import { GENERAL_MESSAGES } from "@server/core/message.base"
+import { Auth } from "@server/modules/authenticator/infras/decorators/auth.decorator"
 import { UpdateTagRequestDto, UpdateTagResponseDto } from "./update-tag.dto"
 import { UpdateTagCommand, UpdateTagResult } from "./update-tag.handler"
 
@@ -25,6 +26,7 @@ export class UpdateTagHttpController {
   @Put(routes.v1.tags.update)
   @ApiOkResponse({ type: SignalResponseDto(UpdateTagResponseDto) })
   @HttpCode(HttpStatus.OK)
+  @Auth()
   async run(@Param("id") id: number, @Body() body: UpdateTagRequestDto) {
     if (id !== body.id) throw new ForbiddenException(GENERAL_MESSAGES.FORBIDDEN)
 

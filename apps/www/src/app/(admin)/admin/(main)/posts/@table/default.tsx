@@ -14,6 +14,10 @@ import { formatNumber } from "@/libs/utils/number"
 import { useSuspensePosts } from "@/services/post/hooks/use-get-posts"
 import { Post } from "@/services/post/types"
 import { PAGE_ROUTES } from "@/constants/routes"
+import { Stack } from "@/components/ui/stack"
+import { Button } from "@/components/ui/button"
+import { Trash } from "lucide-react"
+import { usePrompt } from "@/components/ui/use-prompt"
 
 export interface PostsTableProps {}
 
@@ -22,6 +26,8 @@ const PostsTable = (props: PostsTableProps) => {
     pageSize: 10,
   })
   const { firstSorting, sorting, setSorting } = useDataTableSorting()
+
+  const confirm = usePrompt()
 
   const {
     data: { data, meta },
@@ -86,11 +92,27 @@ const PostsTable = (props: PostsTableProps) => {
       cell: (info) => info.getValue<Date>().toLocaleString(),
       size: 250,
     },
+    {
+      accessorKey: "id",
+      header: "Actions",
+      cell: (info) => (
+        <Stack direction="row">
+          <Trash className="h-4 w-4 cursor-pointer" onClick={() => handleDeletePost(info.row.original.id)} />
+        </Stack>
+      ),
+    },
   ]
 
   const handlePaginationChange: DataTableBasePagination["onPaginationChange"] = (state) => {
     setPageIndex(state.pageIndex)
     setPageSize(state.pageSize)
+  }
+
+  const handleDeletePost = (id: string | number) => {
+    confirm({
+      title: "Are you sure?",
+      description: "This action is irreversible",
+    })
   }
 
   return (

@@ -3,6 +3,7 @@ import { CommandBus } from "@nestjs/cqrs"
 import { ApiTags } from "@nestjs/swagger"
 import { routes } from "@server/configs/routes.config"
 import { SignalBuilder } from "@server/core/classes/signal/signal.builder"
+import { Auth } from "@server/modules/authenticator/infras/decorators/auth.decorator"
 import { CreateUserRequestDto } from "./create-user.dto"
 import { CreateUserCommand } from "./create-user.handler"
 
@@ -12,6 +13,7 @@ export class CreateUserHttpController {
   constructor(private readonly commandBus: CommandBus) {}
 
   @Post(routes.v1.users.root)
+  @Auth()
   async run(@Body() data: CreateUserRequestDto) {
     try {
       const result = await this.commandBus.execute(new CreateUserCommand(data))

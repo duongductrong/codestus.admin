@@ -5,6 +5,7 @@ import { routes } from "@server/configs/routes.config"
 import { SignalResponseDto } from "@server/core/classes/signal/dtos/signal-response.dto"
 import { SignalBuilder } from "@server/core/classes/signal/signal.builder"
 import { GENERAL_MESSAGES } from "@server/core/message.base"
+import { Auth } from "@server/modules/authenticator/infras/decorators/auth.decorator"
 import { GetTagQuery, GetTagResult } from "../../queries/get-tag/get-tag.handler"
 import { DeleteTagResponseDto } from "./delete-tag.dto"
 import { DeleteTagCommand, DeleteTagResult } from "./delete-tag.handler"
@@ -19,6 +20,7 @@ export class DeleteTagHttpController {
   @Delete(routes.v1.tags.delete)
   @ApiOkResponse({ type: SignalResponseDto(DeleteTagResponseDto) })
   @HttpCode(HttpStatus.OK)
+  @Auth()
   async run(@Param("id") id: number) {
     const tag = await this.queryBus.execute<GetTagQuery, GetTagResult>(new GetTagQuery({ id }))
 

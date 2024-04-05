@@ -5,6 +5,7 @@ import { routes } from "@server/configs/routes.config"
 import { SignalResponseDto } from "@server/core/classes/signal/dtos/signal-response.dto"
 import { SignalBuilder } from "@server/core/classes/signal/signal.builder"
 import { AuthGuard } from "@server/modules/authenticator/infras/guards/authenticator.guard"
+import { Auth } from "@server/modules/authenticator/infras/decorators/auth.decorator"
 import { GetUsersCountQuery } from "../get-users-count/get-users-count.handler"
 import { GetUsersRequestDto, GetUsersResponseDto } from "./get-users.dto"
 import { GetUsersQuery, GetUsersResult } from "./get-users.handler"
@@ -15,7 +16,7 @@ export class GetUsersHttpController {
   constructor(private readonly queryBus: QueryBus) {}
 
   @Get(routes.v1.users.root)
-  @UseGuards(AuthGuard)
+  @Auth()
   @ApiOkResponse({ type: SignalResponseDto(GetUsersResponseDto) })
   async run(@Query() payload: GetUsersRequestDto) {
     try {

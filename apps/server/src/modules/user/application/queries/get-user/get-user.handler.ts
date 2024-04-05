@@ -1,13 +1,9 @@
 import { Inject, NotFoundException } from "@nestjs/common"
 import { IQuery, IQueryHandler, QueryHandler } from "@nestjs/cqrs"
-import { InjectRepository } from "@nestjs/typeorm"
-import { UserEntity } from "@server/modules/user/infras/entities/user.entity"
-import { UserRepository } from "@server/modules/user/infras/repositories/user.repository"
+import { UserProps } from "@server/modules/user/domain/user"
 import { UserRepositoryPort } from "@server/modules/user/domain/user.repository.port"
 import { USER_REPOSITORY } from "@server/modules/user/user.di-tokens"
 import { compact } from "lodash"
-import { Repository } from "typeorm"
-import { UserProps } from "@server/modules/user/domain/user"
 
 export class GetUserQuery implements IQuery {
   identifier: string | number
