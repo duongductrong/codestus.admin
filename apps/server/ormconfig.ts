@@ -4,7 +4,7 @@ import { DataSource, DataSourceOptions } from "typeorm"
 config()
 
 export const databaseOptions: DataSourceOptions = {
-  port: Number(process.env.DATABASE_PORT) || 8000,
+  port: Number(process.env.DATABASE_PORT) || 3306,
   host: process.env.DATABASE_HOST,
   type: process.env.DATABASE_TYPE as "mysql",
   username: process.env.DATABASE_USERNAME,

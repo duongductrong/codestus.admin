@@ -1,11 +1,14 @@
 import { registerAs } from "@nestjs/config"
 import { TypeOrmModuleOptions } from "@nestjs/typeorm"
+import { config } from "dotenv"
+
+config()
 
 export const database = registerAs<TypeOrmModuleOptions | Promise<TypeOrmModuleOptions>>(
   "database",
   () => ({
     name: process.env.DATABASE_NAME || "default",
-    type: process.env.DATABASE_TYPE as any,
+    type: (process.env.DATABASE_TYPE as any) || "mysql",
     port: Number(process.env.DATABASE_PORT) || 8000,
     host: process.env.DATABASE_HOST,
     username: process.env.DATABASE_USERNAME,
