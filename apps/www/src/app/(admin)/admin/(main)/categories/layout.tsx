@@ -8,7 +8,6 @@ const CategoriesLayout = ({ children }: CategoriesLayoutProps) => (
   <CustomPageSection
     title="Category"
     description="Your categories list help your customer take overview in your products."
-    fullWidth
   >
     {children}
   </CustomPageSection>
