@@ -14,6 +14,7 @@ export const databaseOptions: DataSourceOptions = {
   migrations: ["dist/src/database/migrations/*{.ts,.js}"],
   subscribers: ["dist/src/modules/**/*.subscriber{.ts,.js}"],
   synchronize: true,
+  migrationsTableName: "migrations",
 }
 
 const dataSource = new DataSource(databaseOptions)
