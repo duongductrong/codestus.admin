@@ -5,6 +5,8 @@ import { useEffect } from "react"
 import slugify from "slugify"
 import { toast } from "sonner"
 import { useCreatePost } from "@/services/post/hooks/use-create-post"
+import { getQueryClient } from "@/libs/query"
+import { usePosts } from "@/services/post/hooks/use-get-posts"
 
 export const Route = createFileRoute("/admin/_admin/_editor/posts/_layout/create")({
   component: PageComponent,
@@ -15,14 +17,17 @@ function PageComponent() {
 
   const { mutate } = useCreatePost({
     onSuccess(data) {
-      toast.success(data.message, { position: "top-right" })
+      getQueryClient.invalidateQueries({ queryKey: usePosts.getKey() })
+
       navigate({
         to: "/admin/posts/$handler",
         params: {
           handler: String(data.data.id),
         },
-        replace: true
+        replace: true,
       })
+
+      toast.success(data.message, { position: "top-right" })
     },
   })
 

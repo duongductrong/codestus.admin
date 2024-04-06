@@ -17,7 +17,7 @@ import { PAGE_ROUTES } from "@/constants/routes"
 import { getQueryClient } from "@/libs/query"
 import { formatNumber } from "@/libs/utils/number"
 import { useDeletePost } from "@/services/post/hooks/use-delete-post"
-import { usePosts, useSuspensePosts } from "@/services/post/hooks/use-get-posts"
+import { usePosts } from "@/services/post/hooks/use-get-posts"
 import { Post } from "@/services/post/types"
 
 export const Route = createFileRoute("/admin/_admin/_main/posts/_layout/")({
@@ -47,7 +47,7 @@ function PostsTable() {
 
   const { mutateAsync: deletePost } = useDeletePost({
     onSuccess(result) {
-      getQueryClient.invalidateQueries({ queryKey: useSuspensePosts.getKey() })
+      getQueryClient.invalidateQueries({ queryKey: usePosts.getKey() })
 
       toast.success(result.message)
     },

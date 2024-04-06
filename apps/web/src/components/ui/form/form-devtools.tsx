@@ -10,7 +10,6 @@ export interface FormDevtoolsProps<
 }
 
 const FormDevtools = ({ methods }: FormDevtoolsProps) =>
-   
   process.env.NODE_ENV === "development" && methods ? (
     <DevTool control={methods?.control} placement="bottom-left" />
   ) : null

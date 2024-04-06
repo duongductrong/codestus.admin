@@ -1,11 +1,11 @@
 "use client"
 
- 
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Home, LineChart, Package, Package2, Settings, ShoppingCart, Users2 } from "lucide-react"
-
-import { TooltipContent, TooltipRoot, TooltipTrigger } from "@/components/ui/tooltip"
 import { Link } from "@tanstack/react-router"
+import { ReactElement, cloneElement } from "react"
+import { TooltipContent, TooltipRoot, TooltipTrigger } from "@/components/ui/tooltip"
+import { sidebarItems } from "./data"
 
 export interface AdminSidebarProps {}
 
@@ -19,66 +19,21 @@ const AdminSidebar = (props: AdminSidebarProps) => (
         <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
         <span className="sr-only">Acme Inc</span>
       </Link>
-      <TooltipRoot>
-        <TooltipTrigger asChild>
-          <Link
-            href="#"
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-          >
-            <Home className="h-5 w-5" />
-            <span className="sr-only">Dashboard</span>
-          </Link>
-        </TooltipTrigger>
-        <TooltipContent side="right">Dashboard</TooltipContent>
-      </TooltipRoot>
-      <TooltipRoot>
-        <TooltipTrigger asChild>
-          <Link
-            href="#"
-            className="flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:text-foreground md:h-8 md:w-8"
-          >
-            <ShoppingCart className="h-5 w-5" />
-            <span className="sr-only">Orders</span>
-          </Link>
-        </TooltipTrigger>
-        <TooltipContent side="right">Orders</TooltipContent>
-      </TooltipRoot>
-      <TooltipRoot>
-        <TooltipTrigger asChild>
-          <Link
-            href="#"
-            className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-          >
-            <Package className="h-5 w-5" />
-            <span className="sr-only">Products</span>
-          </Link>
-        </TooltipTrigger>
-        <TooltipContent side="right">Products</TooltipContent>
-      </TooltipRoot>
-      <TooltipRoot>
-        <TooltipTrigger asChild>
-          <Link
-            href="#"
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-          >
-            <Users2 className="h-5 w-5" />
-            <span className="sr-only">Customers</span>
-          </Link>
-        </TooltipTrigger>
-        <TooltipContent side="right">Customers</TooltipContent>
-      </TooltipRoot>
-      <TooltipRoot>
-        <TooltipTrigger asChild>
-          <Link
-            href="#"
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-          >
-            <LineChart className="h-5 w-5" />
-            <span className="sr-only">Analytics</span>
-          </Link>
-        </TooltipTrigger>
-        <TooltipContent side="right">Analytics</TooltipContent>
-      </TooltipRoot>
+      {sidebarItems.map((item) => (
+        <TooltipRoot key={item.path}>
+          <TooltipTrigger asChild>
+            <Link
+              href="#"
+              to={item.path}
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+            >
+              {cloneElement(item.icon as ReactElement, { className: "h-5 w-5" })}
+              <span className="sr-only">{item.label}</span>
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent side="right">{item.label}</TooltipContent>
+        </TooltipRoot>
+      ))}
     </nav>
     <nav className="mt-auto flex flex-col items-center gap-4 px-2 py-4">
       <TooltipRoot>

@@ -1,5 +1,4 @@
-import dynamic from "next/dynamic"
-import { ComponentProps, ReactNode, forwardRef } from "react"
+import { ComponentProps, ReactNode, Suspense, forwardRef, lazy } from "react"
 import { FieldValues, FormProvider, FormProviderProps } from "react-hook-form"
 import FormControl from "./form-control"
 import FormDescription from "./form-description"
@@ -8,7 +7,7 @@ import FormFieldInternal from "./form-field-internal"
 import FormItem from "./form-item"
 import FormMessage from "./form-message"
 
-const FormDevtools = dynamic(() => import("./form-devtools"), { ssr: false })
+const FormDevtools = lazy(() => import("./form-devtools"))
 
 export interface FormProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -24,7 +23,9 @@ const Form = forwardRef<HTMLFormElement, FormProps<any>>(({ children, methods, .
     <form {...props} ref={ref}>
       {children}
     </form>
-    <FormDevtools methods={methods} />
+    {/* <Suspense>
+      <FormDevtools methods={methods} />
+    </Suspense> */}
   </FormProvider>
 ))
 
