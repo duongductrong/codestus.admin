@@ -1,5 +1,9 @@
 "use client"
 
+import { Link } from "@tanstack/react-router"
+import { ColumnDef } from "@tanstack/react-table"
+import { Trash } from "lucide-react"
+import { toast } from "sonner"
 import CustomPageSection from "@/components/customs/custom-page-section"
 import { Badge } from "@/components/ui/badge"
 import { DataTable, DataTableBasePagination } from "@/components/ui/data-table"
@@ -10,16 +14,13 @@ import { Stack } from "@/components/ui/stack"
 import { Tooltip } from "@/components/ui/tooltip"
 import { usePrompt } from "@/components/ui/use-prompt"
 import { PAGE_ROUTES } from "@/constants/routes"
+import { getQueryClient } from "@/libs/query"
 import { formatNumber } from "@/libs/utils/number"
-import { useSuspensePosts } from "@/services/post/hooks/use-get-posts"
+import { useDeletePost } from "@/services/post/hooks/use-delete-post"
+import { usePosts, useSuspensePosts } from "@/services/post/hooks/use-get-posts"
 import { Post } from "@/services/post/types"
-import { Link } from "@tanstack/react-router"
-import { ColumnDef } from "@tanstack/react-table"
-import { Trash } from "lucide-react"
 
-export interface PostsTableProps {}
-
-const PostsTable = (props: PostsTableProps) => {
+export default function PostsTable() {
   const { pageIndex, pageSize, setPageIndex, setPageSize } = useDataTablePagination({
     pageSize: 10,
   })
@@ -27,15 +28,27 @@ const PostsTable = (props: PostsTableProps) => {
 
   const confirm = usePrompt()
 
-  const {
-    data: { data, meta },
-  } = useSuspensePosts({
+  const postResult = usePosts({
     variables: {
       page: pageIndex,
       limit: pageSize,
       orderBy: firstSorting
         ? { field: firstSorting?.id, value: firstSorting?.desc ? "desc" : "asc" }
         : undefined,
+    },
+  })
+
+  const data = postResult.data?.data ?? []
+  const meta = postResult.data?.meta
+
+  const { mutateAsync: deletePost } = useDeletePost({
+    onSuccess(result) {
+      getQueryClient.invalidateQueries({ queryKey: useSuspensePosts.getKey() })
+
+      toast.success(result.message)
+    },
+    onError(error) {
+      toast.error(error.response?.data.message)
     },
   })
 
@@ -52,7 +65,7 @@ const PostsTable = (props: PostsTableProps) => {
         <Tooltip triggerProps={{ asChild: true }} content={info.getValue<string>()}>
           <Link
             className="line-clamp-1"
-            href={PAGE_ROUTES.ADMIN.POST_EDIT.replace(":id", info.row.original.id.toString())}
+            to={PAGE_ROUTES.ADMIN.POST_EDIT.replace(":id", info.row.original.id.toString())}
           >
             {info.getValue<string>()}
           </Link>
@@ -91,7 +104,6 @@ const PostsTable = (props: PostsTableProps) => {
       size: 250,
     },
     {
-      accessorKey: "id",
       header: "Actions",
       cell: (info) => (
         <Stack direction="row">
@@ -111,8 +123,12 @@ const PostsTable = (props: PostsTableProps) => {
 
   const handleDeletePost = (id: string | number) => {
     confirm({
-      title: "Are you sure?",
-      description: "This action is irreversible",
+      title: "Confirm Delete",
+      description: "Are you sure you want to delete this post? This action is irreversible.",
+    }).then((isConfirmed) => {
+      if (isConfirmed) {
+        deletePost({ id: Number(id) })
+      }
     })
   }
 
@@ -141,5 +157,3 @@ const PostsTable = (props: PostsTableProps) => {
     </CustomPageSection>
   )
 }
-
-export default PostsTable

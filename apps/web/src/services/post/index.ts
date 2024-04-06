@@ -1,8 +1,9 @@
 import { fetcher } from "../../libs/fetch/fetcher"
 import { CreatePostResult, CreatePostVariables } from "./types/create-post"
+import { DeletePostResult, DeletePostVariables } from "./types/delete-post"
 import { GetPostResult, GetPostVariables } from "./types/get-post"
 import { GetPostsResult, GetPostsVariables } from "./types/get-posts"
-import { UpdatePostVariables } from "./types/update-post"
+import { UpdatePostResult, UpdatePostVariables } from "./types/update-post"
 
 class PostService {
   get queryKeys() {
@@ -16,6 +17,7 @@ class PostService {
     return {
       createPost: "/posts/",
       updatePost: "/posts/:id",
+      deletePost: "/posts/:id",
     }
   }
 
@@ -45,10 +47,14 @@ class PostService {
   }
 
   updatePost(variables: UpdatePostVariables) {
-    return fetcher.put<GetPostResult>(
+    return fetcher.put<UpdatePostResult>(
       this.queryKeys.getPost.replace(":id", String(variables.id)),
       variables,
     )
+  }
+
+  deletePost({ id }: DeletePostVariables) {
+    return fetcher.delete<DeletePostResult>(this.mutationKeys.deletePost.replace(":id", String(id)))
   }
 }
 

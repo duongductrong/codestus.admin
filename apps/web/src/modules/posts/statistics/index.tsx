@@ -1,5 +1,5 @@
-import { Plus } from "lucide-react"
 import { Link } from "@tanstack/react-router"
+import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -10,7 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { PAGE_ROUTES } from "@/constants/routes"
 
 export interface PostsStatisticsProps {}
 

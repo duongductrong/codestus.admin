@@ -11,6 +11,7 @@ export const getQueryClientInstance = () => {
           retry(failureCount, error) {
             return false
           },
+          placeholderData: (previousData: any) => previousData,
         },
       },
     })
@@ -18,5 +19,4 @@ export const getQueryClientInstance = () => {
   return __queryClientInstance
 }
 
-// export const getQueryClient = cache(() => getQueryClientInstance())
 export const getQueryClient = getQueryClientInstance()

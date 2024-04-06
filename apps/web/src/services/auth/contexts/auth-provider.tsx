@@ -1,6 +1,6 @@
-import { User } from "@/services/user/types/user"
 import React, { createContext, useMemo } from "react"
 import { Loader2 } from "lucide-react"
+import { User } from "@/services/user/types/user"
 import { useMe } from "../hooks/use-me"
 
 export interface AuthState {
