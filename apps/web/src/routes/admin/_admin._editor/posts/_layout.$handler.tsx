@@ -1,14 +1,14 @@
 "use client"
 
 import { createFileRoute } from "@tanstack/react-router"
-import { useQueryClient } from "@tanstack/react-query"
 import { Loader } from "lucide-react"
 import { toast } from "sonner"
 import { useUnifiedTransformer } from "@/libs/markdown/use-unified"
+import { getQueryClient } from "@/libs/query"
+import EditorForm, { EditorFormProps } from "@/modules/posts/editor/editor-form"
 import { useSuspensePost } from "@/services/post/hooks/use-get-post"
 import { useSuspensePosts } from "@/services/post/hooks/use-get-posts"
 import { useUpdatePost } from "@/services/post/hooks/use-update-post"
-import EditorForm, { EditorFormProps } from "@/modules/posts/editor/editor-form"
 
 export const Route = createFileRoute("/admin/_admin/_editor/posts/_layout/$handler")({
   component: PageComponent,
@@ -16,8 +16,7 @@ export const Route = createFileRoute("/admin/_admin/_editor/posts/_layout/$handl
 
 function PageComponent() {
   const params = Route.useParams()
-  const ql = useQueryClient()
-  const { data } = useSuspensePost({
+  const { data, isLoading, isFetching } = useSuspensePost({
     variables: { id: params.handler, relations: "tags" },
     refetchOnWindowFocus: false,
   })
@@ -28,13 +27,13 @@ function PageComponent() {
   )
 
   const { mutateAsync: updatePost } = useUpdatePost({
-    onSuccess(result, variables, context) {
+    onSuccess(result) {
       toast.success(result.message)
 
-      ql.invalidateQueries({ queryKey: useSuspensePosts.getKey() })
-      ql.invalidateQueries({ queryKey: useSuspensePost.getKey() })
+      getQueryClient.invalidateQueries({ queryKey: useSuspensePosts.getKey() })
+      getQueryClient.invalidateQueries({ queryKey: useSuspensePost.getKey() })
     },
-    onError(error, variables, context) {
+    onError(error) {
       toast.error(error.response?.data.message)
     },
   })
@@ -62,7 +61,8 @@ function PageComponent() {
       content: response.data.content,
     }))
 
-  if (isLoadingConvertContent) return <Loader className="h-4 w-4 animate-spin" />
+  if (isLoadingConvertContent || isLoading || isFetching)
+    return <Loader className="h-4 w-4 animate-spin" />
 
   return (
     <EditorForm

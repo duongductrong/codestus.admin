@@ -6,7 +6,10 @@ import { ForwardRefComponent } from "@/types/react-polymorphic"
 export const stackVariants = cva(["flex"], {
   variants: {
     gap: {
+      xs: "gap-1",
+      sm: "gap-2",
       default: "gap-4",
+      lg: "gap-6",
     },
     direction: {
       row: "flex-row",

@@ -2,10 +2,10 @@
 
 import { Link, createFileRoute } from "@tanstack/react-router"
 import { ColumnDef } from "@tanstack/react-table"
-import { Trash } from "lucide-react"
+import { CheckCircle2, Squircle, Trash } from "lucide-react"
+import { ReactNode } from "react"
 import { toast } from "sonner"
 import CustomPageSection from "@/components/customs/custom-page-section"
-import { Badge } from "@/components/ui/badge"
 import { DataTable, DataTableBasePagination } from "@/components/ui/data-table"
 import { DataTableSearcher, DataTableToolbar } from "@/components/ui/data-table/data-table-filters"
 import { useDataTablePagination } from "@/components/ui/data-table/use-data-table-pagination"
@@ -93,7 +93,22 @@ function PostsTable() {
     {
       accessorKey: "status",
       header: "Status",
-      cell: ({ getValue }) => <Badge variant="outline">{getValue<string>()}</Badge>,
+      cell: ({ getValue }) => {
+        const labels = {
+          0: (
+            <Stack direction="row" gap="sm">
+              <Squircle className="h-4 w-4" />
+              Draft
+            </Stack>
+          ),
+          1: (
+            <Stack direction="row" gap="xs">
+              <CheckCircle2 className="h-4 w-4" /> Published
+            </Stack>
+          ),
+        } as Record<string, ReactNode>
+        return labels[getValue<string>()]
+      },
     },
     {
       accessorKey: "createdAt",

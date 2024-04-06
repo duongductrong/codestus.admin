@@ -81,4 +81,22 @@ import { UserModule } from "./modules/user/user.module"
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}
+
+  // async onModuleInit() {
+  //   const mutation = this.dataSource.createEntityManager()
+  //   const query = this.dataSource.createQueryBuilder()
+
+  //   const data = (await query
+  //     .createQueryBuilder()
+  //     .select()
+  //     .from("post_tags", "post_tags")
+  //     .execute()) as any[]
+
+  //   const bulkMutateData = data.map((item) => {
+  //     const { postId, tagId } = item
+
+  //     return { postId, tagId }
+  //   })
+  //   mutation.insert("post_to_tag", bulkMutateData as any)
+  // }
 }
