@@ -1,6 +1,6 @@
 import { createMutation } from "react-query-kit"
-import { UpdatePostResult, UpdatePostVariables } from "../types/update-post"
 import { FetcherError, FetcherValidationError } from "@/libs/fetch/fetcher"
+import { UpdatePostResult, UpdatePostVariables } from "../types/update-post"
 import { postService } from ".."
 
 export interface UseUpdatePostResponse extends UpdatePostResult {}

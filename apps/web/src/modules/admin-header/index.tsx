@@ -21,8 +21,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { PreferredThemeSwitcher } from "@/components/ui/theme"
-import { HeaderUserProfile } from "./components/header-user-profile"
 import { Link } from "@tanstack/react-router"
+import { HeaderUserProfile } from "./components/header-user-profile"
 
 export interface AdminHeaderProps {}
 

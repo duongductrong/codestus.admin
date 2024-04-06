@@ -1,6 +1,5 @@
+import { ComponentProps, Fragment, lazy, memo, useMemo } from "react"
 import { cn } from "../../../libs/utils/tailwind"
-import dynamic from "next/dynamic"
-import React, { ComponentProps, Fragment, memo, useMemo } from "react"
 
 export interface IconsProps extends ComponentProps<"svg"> {
   name: IconName
@@ -8,8 +7,7 @@ export interface IconsProps extends ComponentProps<"svg"> {
 
 const Icons = ({ name, className, ...props }: IconsProps) => {
   const Icon = useMemo(
-    () =>
-      name ? dynamic(() => import(`./${name?.replace(/\./g, "/")}.svg`), { ssr: true }) : Fragment,
+    () => (name ? lazy(() => import(`./${name?.replace(/\./g, "/")}.svg`)) : Fragment),
     [name],
   ) as any
 

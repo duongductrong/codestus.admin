@@ -1,11 +1,26 @@
-import { Link, createLazyFileRoute } from "@tanstack/react-router"
 import { LoginForm } from "@/modules/auth/login-form"
+import { Link, createFileRoute, redirect } from "@tanstack/react-router"
+import { z } from "zod"
 
-export const Route = createLazyFileRoute("/login/")({
+export const Route = createFileRoute("/login/")({
+  validateSearch: z.object({
+    redirect: z.string().nullish(),
+  }),
+  beforeLoad({ context: { auth }, location: { search } }) {
+    if (auth.isAuthenticated) {
+      throw redirect({ to: (search as any).redirect || "/admin" })
+    }
+  },
   component: AuthenticationPage,
 })
 
 export default function AuthenticationPage() {
+  const redirectTo = Route.useSearch({
+    select(search) {
+      return search.redirect
+    },
+  })
+
   return (
     <div className="container relative hidden h-lvh flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
@@ -43,7 +58,7 @@ export default function AuthenticationPage() {
               Enter your email below to sign in the system
             </p>
           </div>
-          <LoginForm />
+          <LoginForm redirectOnSuccess={redirectTo} />
           <p className="px-8 text-center text-sm text-muted-foreground">
             By clicking continue, you agree to our{" "}
             <Link href="/terms" className="underline underline-offset-4 hover:text-primary">

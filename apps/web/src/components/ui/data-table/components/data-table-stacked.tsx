@@ -1,5 +1,5 @@
-import { cn } from "../../../../libs/utils/tailwind"
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react"
+import { cn } from "../../../../libs/utils/tailwind"
 
 export interface DataTableStackedProps extends ComponentPropsWithoutRef<"div"> {
   fullWidth?: boolean

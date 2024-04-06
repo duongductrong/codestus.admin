@@ -31,7 +31,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { PlusIcon, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 
-export const Route = createFileRoute("/admin/_main/categories/_layout/")({
+export const Route = createFileRoute("/admin/_admin/_main/categories/_layout/")({
   component: CategoryListPage,
 })
 

@@ -1,19 +1,25 @@
-import React, { StrictMode } from "react"
+import { RouterProvider } from "@tanstack/react-router"
+import { StrictMode } from "react"
 import ReactDOM from "react-dom/client"
-import { RouterProvider, createRouter } from "@tanstack/react-router"
+import { Toaster } from "sonner"
+import GeneralModaler from "./components/customs/custom-modals/general-modal"
+import PreferredTheme from "./components/ui/theme/preferred-theme"
+import { Prompter } from "./components/ui/use-prompt"
+import { QueryProvider } from "./libs/query/query"
+import { router } from "./router"
+import AuthProvider, { AuthState } from "./services/auth/contexts/auth-provider"
+import { useAuth } from "./services/auth/hooks/use-auth"
 import "./globals.css"
 
-// Import the generated route tree
-import { routeTree } from "./routeTree.gen"
-
-// Create a new router instance
-const router = createRouter({ routeTree })
-
-// Register the router instance for type safety
 declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router
   }
+}
+
+export function InnerApp() {
+  const auth = useAuth()
+  return <RouterProvider router={router} context={{ auth: auth as AuthState }} />
 }
 
 // Render the app
@@ -23,7 +29,16 @@ if (!rootElement?.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <QueryProvider>
+        <PreferredTheme>
+          <AuthProvider>
+            <InnerApp />
+            <GeneralModaler />
+          </AuthProvider>
+          <Prompter />
+          <Toaster duration={2000} closeButton />
+        </PreferredTheme>
+      </QueryProvider>
     </StrictMode>,
   )
 }

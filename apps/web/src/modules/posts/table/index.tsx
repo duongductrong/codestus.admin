@@ -1,22 +1,21 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
-
-import { Link } from "@tanstack/react-router"
 import CustomPageSection from "@/components/customs/custom-page-section"
 import { Badge } from "@/components/ui/badge"
 import { DataTable, DataTableBasePagination } from "@/components/ui/data-table"
 import { DataTableSearcher, DataTableToolbar } from "@/components/ui/data-table/data-table-filters"
 import { useDataTablePagination } from "@/components/ui/data-table/use-data-table-pagination"
 import { useDataTableSorting } from "@/components/ui/data-table/use-data-table-sorting"
+import { Stack } from "@/components/ui/stack"
 import { Tooltip } from "@/components/ui/tooltip"
+import { usePrompt } from "@/components/ui/use-prompt"
+import { PAGE_ROUTES } from "@/constants/routes"
 import { formatNumber } from "@/libs/utils/number"
 import { useSuspensePosts } from "@/services/post/hooks/use-get-posts"
 import { Post } from "@/services/post/types"
-import { PAGE_ROUTES } from "@/constants/routes"
-import { Stack } from "@/components/ui/stack"
+import { Link } from "@tanstack/react-router"
+import { ColumnDef } from "@tanstack/react-table"
 import { Trash } from "lucide-react"
-import { usePrompt } from "@/components/ui/use-prompt"
 
 export interface PostsTableProps {}
 

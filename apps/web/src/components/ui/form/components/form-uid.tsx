@@ -5,8 +5,8 @@ import { forwardRef, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import slugify from "slugify"
 import get from "lodash/get"
-import FormInput, { FormInputProps } from "./form-input"
 import { cn } from "@/libs/utils/tailwind"
+import FormInput, { FormInputProps } from "./form-input"
 
 export interface FormUIDProps extends Omit<FormInputProps, "variant"> {
   variant: "UID"

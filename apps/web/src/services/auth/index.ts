@@ -1,9 +1,9 @@
 import { fetcher } from "@/libs/fetch/fetcher"
+import { AxiosRequestConfig } from "axios"
+import { set, unset } from "lodash"
 import { GetMeResult, GetMeVariables } from "./types/get-me"
 import { SignInResult, SignInVariables } from "./types/sign-in"
 import { SignUpResult, SignUpVariables } from "./types/sign-up"
-import { AxiosRequestConfig } from "axios"
-import { set, unset } from "lodash"
 
 class AuthService {
   get queryKeys() {
@@ -30,7 +30,7 @@ class AuthService {
   getMe(variables: GetMeVariables) {
     const config: AxiosRequestConfig<any> = {}
 
-    if (variables.token) {
+    if (variables?.token) {
       set(config, "headers.Authorization", `Bearer ${variables.token}`)
     }
 

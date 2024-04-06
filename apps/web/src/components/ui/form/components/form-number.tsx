@@ -5,9 +5,9 @@
 import { forwardRef } from "react"
 import isNil from "lodash/isNil"
 import { ChevronDown, ChevronUp } from "lucide-react"
+import { cn } from "@/libs/utils/tailwind"
 import { Input, InputProps } from "../../input"
 
-import { cn } from "@/libs/utils/tailwind"
 import "./form-number.scss"
 
 export interface FormNumberProps extends InputProps {

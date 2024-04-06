@@ -9,9 +9,7 @@ export interface FormSelectInfiniteProps extends ComboboxInfiniteProps {}
 const FormSelectInfinite = forwardRef<
   HTMLButtonElement,
   FormSelectInfiniteProps
->((props, ref) => {
-  return <ComboboxInfinite {...props} ref={ref} />
-})
+>((props, ref) => <ComboboxInfinite {...props} ref={ref} />)
 
 FormSelectInfinite.displayName = "FormSelectInfinite"
 

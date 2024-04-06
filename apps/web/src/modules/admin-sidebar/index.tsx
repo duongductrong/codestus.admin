@@ -1,6 +1,6 @@
 "use client"
 
-/* eslint-disable jsx-a11y/control-has-associated-label */
+ 
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Home, LineChart, Package, Package2, Settings, ShoppingCart, Users2 } from "lucide-react"
 

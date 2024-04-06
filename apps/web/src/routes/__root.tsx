@@ -1,22 +1,15 @@
-import GeneralModaler from "@/components/customs/custom-modals/general-modal"
-import PreferredTheme from "@/components/ui/theme/preferred-theme"
-import { Prompter } from "@/components/ui/use-prompt"
-import { QueryProvider } from "@/libs/query/query"
-import { createRootRoute, Outlet } from "@tanstack/react-router"
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
 import { TanStackRouterDevtools } from "@tanstack/router-devtools"
-import { Toaster } from "sonner"
+import { AuthState } from "@/services/auth/contexts/auth-provider"
 
-export const Route = createRootRoute({
+export interface RouterContext {
+  auth: AuthState
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => (
     <>
-      <QueryProvider>
-        <PreferredTheme>
-          <Outlet />
-          <Prompter />
-          <Toaster duration={2000} closeButton />
-          <GeneralModaler />
-        </PreferredTheme>
-      </QueryProvider>
+      <Outlet />
       <TanStackRouterDevtools />
     </>
   ),

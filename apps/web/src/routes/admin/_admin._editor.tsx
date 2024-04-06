@@ -5,7 +5,7 @@ import EditorToolbar from "@/modules/posts/editor/editor-toolbar"
 import { Outlet, createFileRoute } from "@tanstack/react-router"
 import { CSSProperties } from "react"
 
-export const Route = createFileRoute("/admin/_editor")({
+export const Route = createFileRoute("/admin/_admin/_editor")({
   component: EditorLayout,
 })
 

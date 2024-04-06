@@ -1,6 +1,6 @@
 "use client"
 
-/* eslint-disable jsx-a11y/control-has-associated-label */
+ 
 import { Link } from "@tanstack/react-router"
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { PaintBucket, Paperclip, Pen, Settings } from "lucide-react"

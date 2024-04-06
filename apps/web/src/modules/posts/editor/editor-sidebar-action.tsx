@@ -1,6 +1,6 @@
+import { ComponentPropsWithoutRef, ReactElement, ReactNode, cloneElement } from "react"
 import { TooltipContent, TooltipRoot, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/libs/utils/tailwind"
-import { ComponentPropsWithoutRef, ReactElement, ReactNode, cloneElement } from "react"
 
 export interface EditorSidebarActionProps extends ComponentPropsWithoutRef<"button"> {
   icon: ReactNode

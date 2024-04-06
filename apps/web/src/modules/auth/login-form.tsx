@@ -4,18 +4,19 @@ import * as React from "react"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { GitHubLogoIcon } from "@radix-ui/react-icons"
+import { useNavigate } from "@tanstack/react-router"
 import { Loader2Icon } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
-
 import Form, { FormField } from "@/components/ui/form"
 import { Stack } from "@/components/ui/stack"
 import { useManageAuthToken } from "@/components/ui/use-manage-tokens"
-import { PAGE_ROUTES } from "@/constants/routes"
-import { useSignIn } from "@/services/auth/hooks/use-sign-in"
+import { getQueryClient } from "@/libs/query"
 import { cn } from "@/libs/utils/tailwind"
+import { useMe } from "@/services/auth/hooks/use-me"
+import { useSignIn } from "@/services/auth/hooks/use-sign-in"
+import { Nullable } from "@/types/utilities"
 
 export const loginFormSchema = z.object({
   identifier: z.string().email().min(1),
@@ -24,10 +25,13 @@ export const loginFormSchema = z.object({
 
 export interface LoginFormState extends z.infer<typeof loginFormSchema> {}
 
-interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {
+  redirectOnSuccess?: Nullable<string>
+}
 
-export function LoginForm({ className, ...props }: LoginFormProps) {
+export function LoginForm({ className, redirectOnSuccess, ...props }: LoginFormProps) {
   const { setToken } = useManageAuthToken()
+  const navigate = useNavigate()
 
   const methods = useForm<LoginFormState>({
     resolver: zodResolver(loginFormSchema),
@@ -38,10 +42,19 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
   })
 
   const { mutate: signIn, isPending } = useSignIn({
-    onSuccess(data) {
+    async onSuccess(data) {
       setToken(data.data.jwtToken, data.data.expiredAt)
 
-      // router.push(PAGE_ROUTES.ADMIN.POST_LIST)
+      await getQueryClient.invalidateQueries({
+        queryKey: useMe.getKey(),
+      })
+
+      setTimeout(() => {
+        navigate({
+          to: redirectOnSuccess || "/admin",
+          replace: true,
+        })
+      })
     },
     onError(error) {
       Object.entries(error.response?.data.data ?? {}).forEach(([key, value]) => {

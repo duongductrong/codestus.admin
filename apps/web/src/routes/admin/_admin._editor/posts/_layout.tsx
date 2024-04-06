@@ -5,7 +5,7 @@ import { useEditorSettings } from "@/modules/posts/editor/use-editor-settings"
 import { Outlet, createFileRoute } from "@tanstack/react-router"
 import { ReactNode, Suspense } from "react"
 
-export const Route = createFileRoute("/admin/_editor/posts/_layout")({
+export const Route = createFileRoute("/admin/_admin/_editor/posts/_layout")({
   component: LayoutComponent,
 })
 

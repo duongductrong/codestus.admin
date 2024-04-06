@@ -1,4 +1,3 @@
-import { flattenObject, parseToPrimitiveObject } from "../libs/utils/object"
 import _get from "lodash/get"
 import isNil from "lodash/isNil"
 import omit from "lodash/omit"
@@ -7,6 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation"
 import { NextRouter, useRouter } from "next/router"
 import qs from "querystring"
 import { useCallback } from "react"
+import { flattenObject, parseToPrimitiveObject } from "../libs/utils/object"
 import { useDeepCompareMemoize } from "./use-deep-compare-memoize"
 
 export const useSharedSearchParams = <TSearchParams extends Record<string, any>>() => {

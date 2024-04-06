@@ -3,13 +3,11 @@ import AdminHeader from "@/modules/admin-header"
 import AdminSidebar from "@/modules/admin-sidebar"
 import { Outlet, createFileRoute } from "@tanstack/react-router"
 
-export const Route = createFileRoute("/admin/_main")({
+export const Route = createFileRoute("/admin/_admin/_main")({
   component: LayoutComponent,
 })
 
-export interface AdminLayoutProps {}
-
-function LayoutComponent(props: AdminLayoutProps) {
+function LayoutComponent() {
   return (
     <TooltipProvider>
       <div className="flex min-h-screen w-full flex-col bg-muted/40">

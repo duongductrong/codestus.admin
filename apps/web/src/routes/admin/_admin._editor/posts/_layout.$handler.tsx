@@ -1,4 +1,5 @@
 "use client"
+
 import { createFileRoute } from "@tanstack/react-router"
 import { useQueryClient } from "@tanstack/react-query"
 import { Loader } from "lucide-react"
@@ -9,7 +10,7 @@ import { useSuspensePosts } from "@/services/post/hooks/use-get-posts"
 import { useUpdatePost } from "@/services/post/hooks/use-update-post"
 import EditorForm, { EditorFormProps } from "@/modules/posts/editor/editor-form"
 
-export const Route = createFileRoute("/admin/_editor/posts/_layout/$handler")({
+export const Route = createFileRoute("/admin/_admin/_editor/posts/_layout/$handler")({
   component: PageComponent,
 })
 

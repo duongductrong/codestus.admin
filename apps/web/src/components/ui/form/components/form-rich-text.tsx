@@ -7,7 +7,9 @@ export interface FormRichTextProps extends InputProps {}
 
 const FormRichText = ({ value, onBlur, onChange }: FormRichTextProps) => {
   const handleUpdateContents: EditorProviderProps["onUpdate"] = ({ editor }) => {
-    onChange && onChange(editor.getHTML() as unknown as ChangeEvent<HTMLInputElement>)
+    if (onChange) {
+      onChange(editor.getHTML() as unknown as ChangeEvent<HTMLInputElement>)
+    }
   }
 
   return (

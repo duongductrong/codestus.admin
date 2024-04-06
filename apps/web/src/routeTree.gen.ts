@@ -13,25 +13,30 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AdminMainImport } from './routes/admin/_main'
-import { Route as AdminEditorImport } from './routes/admin/_editor'
-import { Route as AdminMainIndexImport } from './routes/admin/_main/index'
-import { Route as AdminMainPostsLayoutImport } from './routes/admin/_main/posts/_layout'
-import { Route as AdminMainCategoriesLayoutImport } from './routes/admin/_main/categories/_layout'
-import { Route as AdminEditorPostsCreateImport } from './routes/admin/_editor/posts/create'
-import { Route as AdminEditorPostsLayoutImport } from './routes/admin/_editor/posts/_layout'
-import { Route as AdminMainPostsLayoutIndexImport } from './routes/admin/_main/posts/_layout.index'
-import { Route as AdminMainCategoriesLayoutIndexImport } from './routes/admin/_main/categories/_layout.index'
-import { Route as AdminEditorPostsLayoutHandlerImport } from './routes/admin/_editor/posts/_layout.$handler'
+import { Route as LoginIndexImport } from './routes/login/index'
+import { Route as AdminAdminImport } from './routes/admin/_admin'
+import { Route as AdminAdminMainImport } from './routes/admin/_admin._main'
+import { Route as AdminAdminEditorImport } from './routes/admin/_admin._editor'
+import { Route as AdminAdminMainIndexImport } from './routes/admin/_admin._main/index'
+import { Route as AdminAdminMainPostsLayoutImport } from './routes/admin/_admin._main/posts/_layout'
+import { Route as AdminAdminMainCategoriesLayoutImport } from './routes/admin/_admin._main/categories/_layout'
+import { Route as AdminAdminEditorPostsCreateImport } from './routes/admin/_admin._editor/posts/create'
+import { Route as AdminAdminEditorPostsLayoutImport } from './routes/admin/_admin._editor/posts/_layout'
+import { Route as AdminAdminMainPostsLayoutIndexImport } from './routes/admin/_admin._main/posts/_layout.index'
+import { Route as AdminAdminMainCategoriesLayoutIndexImport } from './routes/admin/_admin._main/categories/_layout.index'
+import { Route as AdminAdminEditorPostsLayoutHandlerImport } from './routes/admin/_admin._editor/posts/_layout.$handler'
 
 // Create Virtual Routes
 
 const AdminImport = createFileRoute('/admin')()
 const AboutLazyImport = createFileRoute('/about')()
-const LoginIndexLazyImport = createFileRoute('/login/')()
-const AdminMainPostsImport = createFileRoute('/admin/_main/posts')()
-const AdminMainCategoriesImport = createFileRoute('/admin/_main/categories')()
-const AdminEditorPostsImport = createFileRoute('/admin/_editor/posts')()
+const AdminAdminMainPostsImport = createFileRoute('/admin/_admin/_main/posts')()
+const AdminAdminMainCategoriesImport = createFileRoute(
+  '/admin/_admin/_main/categories',
+)()
+const AdminAdminEditorPostsImport = createFileRoute(
+  '/admin/_admin/_editor/posts',
+)()
 
 // Create/Update Routes
 
@@ -45,76 +50,85 @@ const AboutLazyRoute = AboutLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
 
-const LoginIndexLazyRoute = LoginIndexLazyImport.update({
+const LoginIndexRoute = LoginIndexImport.update({
   path: '/login/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/login/index.lazy').then((d) => d.Route))
+} as any)
 
-const AdminMainRoute = AdminMainImport.update({
+const AdminAdminRoute = AdminAdminImport.update({
+  id: '/_admin',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminAdminMainRoute = AdminAdminMainImport.update({
   id: '/_main',
-  getParentRoute: () => AdminRoute,
+  getParentRoute: () => AdminAdminRoute,
 } as any)
 
-const AdminEditorRoute = AdminEditorImport.update({
+const AdminAdminEditorRoute = AdminAdminEditorImport.update({
   id: '/_editor',
-  getParentRoute: () => AdminRoute,
+  getParentRoute: () => AdminAdminRoute,
 } as any)
 
-const AdminMainPostsRoute = AdminMainPostsImport.update({
+const AdminAdminMainPostsRoute = AdminAdminMainPostsImport.update({
   path: '/posts',
-  getParentRoute: () => AdminMainRoute,
+  getParentRoute: () => AdminAdminMainRoute,
 } as any)
 
-const AdminMainCategoriesRoute = AdminMainCategoriesImport.update({
+const AdminAdminMainCategoriesRoute = AdminAdminMainCategoriesImport.update({
   path: '/categories',
-  getParentRoute: () => AdminMainRoute,
+  getParentRoute: () => AdminAdminMainRoute,
 } as any)
 
-const AdminEditorPostsRoute = AdminEditorPostsImport.update({
+const AdminAdminEditorPostsRoute = AdminAdminEditorPostsImport.update({
   path: '/posts',
-  getParentRoute: () => AdminEditorRoute,
+  getParentRoute: () => AdminAdminEditorRoute,
 } as any)
 
-const AdminMainIndexRoute = AdminMainIndexImport.update({
+const AdminAdminMainIndexRoute = AdminAdminMainIndexImport.update({
   path: '/',
-  getParentRoute: () => AdminMainRoute,
+  getParentRoute: () => AdminAdminMainRoute,
 } as any)
 
-const AdminMainPostsLayoutRoute = AdminMainPostsLayoutImport.update({
+const AdminAdminMainPostsLayoutRoute = AdminAdminMainPostsLayoutImport.update({
   id: '/_layout',
-  getParentRoute: () => AdminMainPostsRoute,
+  getParentRoute: () => AdminAdminMainPostsRoute,
 } as any)
 
-const AdminMainCategoriesLayoutRoute = AdminMainCategoriesLayoutImport.update({
-  id: '/_layout',
-  getParentRoute: () => AdminMainCategoriesRoute,
-} as any)
-
-const AdminEditorPostsCreateRoute = AdminEditorPostsCreateImport.update({
-  path: '/create',
-  getParentRoute: () => AdminEditorPostsRoute,
-} as any)
-
-const AdminEditorPostsLayoutRoute = AdminEditorPostsLayoutImport.update({
-  id: '/_layout',
-  getParentRoute: () => AdminEditorPostsRoute,
-} as any)
-
-const AdminMainPostsLayoutIndexRoute = AdminMainPostsLayoutIndexImport.update({
-  path: '/',
-  getParentRoute: () => AdminMainPostsLayoutRoute,
-} as any)
-
-const AdminMainCategoriesLayoutIndexRoute =
-  AdminMainCategoriesLayoutIndexImport.update({
-    path: '/',
-    getParentRoute: () => AdminMainCategoriesLayoutRoute,
+const AdminAdminMainCategoriesLayoutRoute =
+  AdminAdminMainCategoriesLayoutImport.update({
+    id: '/_layout',
+    getParentRoute: () => AdminAdminMainCategoriesRoute,
   } as any)
 
-const AdminEditorPostsLayoutHandlerRoute =
-  AdminEditorPostsLayoutHandlerImport.update({
+const AdminAdminEditorPostsCreateRoute =
+  AdminAdminEditorPostsCreateImport.update({
+    path: '/create',
+    getParentRoute: () => AdminAdminEditorPostsRoute,
+  } as any)
+
+const AdminAdminEditorPostsLayoutRoute =
+  AdminAdminEditorPostsLayoutImport.update({
+    id: '/_layout',
+    getParentRoute: () => AdminAdminEditorPostsRoute,
+  } as any)
+
+const AdminAdminMainPostsLayoutIndexRoute =
+  AdminAdminMainPostsLayoutIndexImport.update({
+    path: '/',
+    getParentRoute: () => AdminAdminMainPostsLayoutRoute,
+  } as any)
+
+const AdminAdminMainCategoriesLayoutIndexRoute =
+  AdminAdminMainCategoriesLayoutIndexImport.update({
+    path: '/',
+    getParentRoute: () => AdminAdminMainCategoriesLayoutRoute,
+  } as any)
+
+const AdminAdminEditorPostsLayoutHandlerRoute =
+  AdminAdminEditorPostsLayoutHandlerImport.update({
     path: '/$handler',
-    getParentRoute: () => AdminEditorPostsLayoutRoute,
+    getParentRoute: () => AdminAdminEditorPostsLayoutRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -129,61 +143,65 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminImport
       parentRoute: typeof rootRoute
     }
-    '/admin/_editor': {
-      preLoaderRoute: typeof AdminEditorImport
+    '/admin/_admin': {
+      preLoaderRoute: typeof AdminAdminImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/_main': {
-      preLoaderRoute: typeof AdminMainImport
-      parentRoute: typeof AdminImport
-    }
     '/login/': {
-      preLoaderRoute: typeof LoginIndexLazyImport
+      preLoaderRoute: typeof LoginIndexImport
       parentRoute: typeof rootRoute
     }
-    '/admin/_main/': {
-      preLoaderRoute: typeof AdminMainIndexImport
-      parentRoute: typeof AdminMainImport
+    '/admin/_admin/_editor': {
+      preLoaderRoute: typeof AdminAdminEditorImport
+      parentRoute: typeof AdminAdminImport
     }
-    '/admin/_editor/posts': {
-      preLoaderRoute: typeof AdminEditorPostsImport
-      parentRoute: typeof AdminEditorImport
+    '/admin/_admin/_main': {
+      preLoaderRoute: typeof AdminAdminMainImport
+      parentRoute: typeof AdminAdminImport
     }
-    '/admin/_editor/posts/_layout': {
-      preLoaderRoute: typeof AdminEditorPostsLayoutImport
-      parentRoute: typeof AdminEditorPostsRoute
+    '/admin/_admin/_main/': {
+      preLoaderRoute: typeof AdminAdminMainIndexImport
+      parentRoute: typeof AdminAdminMainImport
     }
-    '/admin/_editor/posts/create': {
-      preLoaderRoute: typeof AdminEditorPostsCreateImport
-      parentRoute: typeof AdminEditorPostsImport
+    '/admin/_admin/_editor/posts': {
+      preLoaderRoute: typeof AdminAdminEditorPostsImport
+      parentRoute: typeof AdminAdminEditorImport
     }
-    '/admin/_main/categories': {
-      preLoaderRoute: typeof AdminMainCategoriesImport
-      parentRoute: typeof AdminMainImport
+    '/admin/_admin/_editor/posts/_layout': {
+      preLoaderRoute: typeof AdminAdminEditorPostsLayoutImport
+      parentRoute: typeof AdminAdminEditorPostsRoute
     }
-    '/admin/_main/categories/_layout': {
-      preLoaderRoute: typeof AdminMainCategoriesLayoutImport
-      parentRoute: typeof AdminMainCategoriesRoute
+    '/admin/_admin/_editor/posts/create': {
+      preLoaderRoute: typeof AdminAdminEditorPostsCreateImport
+      parentRoute: typeof AdminAdminEditorPostsImport
     }
-    '/admin/_main/posts': {
-      preLoaderRoute: typeof AdminMainPostsImport
-      parentRoute: typeof AdminMainImport
+    '/admin/_admin/_main/categories': {
+      preLoaderRoute: typeof AdminAdminMainCategoriesImport
+      parentRoute: typeof AdminAdminMainImport
     }
-    '/admin/_main/posts/_layout': {
-      preLoaderRoute: typeof AdminMainPostsLayoutImport
-      parentRoute: typeof AdminMainPostsRoute
+    '/admin/_admin/_main/categories/_layout': {
+      preLoaderRoute: typeof AdminAdminMainCategoriesLayoutImport
+      parentRoute: typeof AdminAdminMainCategoriesRoute
     }
-    '/admin/_editor/posts/_layout/$handler': {
-      preLoaderRoute: typeof AdminEditorPostsLayoutHandlerImport
-      parentRoute: typeof AdminEditorPostsLayoutImport
+    '/admin/_admin/_main/posts': {
+      preLoaderRoute: typeof AdminAdminMainPostsImport
+      parentRoute: typeof AdminAdminMainImport
     }
-    '/admin/_main/categories/_layout/': {
-      preLoaderRoute: typeof AdminMainCategoriesLayoutIndexImport
-      parentRoute: typeof AdminMainCategoriesLayoutImport
+    '/admin/_admin/_main/posts/_layout': {
+      preLoaderRoute: typeof AdminAdminMainPostsLayoutImport
+      parentRoute: typeof AdminAdminMainPostsRoute
     }
-    '/admin/_main/posts/_layout/': {
-      preLoaderRoute: typeof AdminMainPostsLayoutIndexImport
-      parentRoute: typeof AdminMainPostsLayoutImport
+    '/admin/_admin/_editor/posts/_layout/$handler': {
+      preLoaderRoute: typeof AdminAdminEditorPostsLayoutHandlerImport
+      parentRoute: typeof AdminAdminEditorPostsLayoutImport
+    }
+    '/admin/_admin/_main/categories/_layout/': {
+      preLoaderRoute: typeof AdminAdminMainCategoriesLayoutIndexImport
+      parentRoute: typeof AdminAdminMainCategoriesLayoutImport
+    }
+    '/admin/_admin/_main/posts/_layout/': {
+      preLoaderRoute: typeof AdminAdminMainPostsLayoutIndexImport
+      parentRoute: typeof AdminAdminMainPostsLayoutImport
     }
   }
 }
@@ -193,27 +211,31 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   AboutLazyRoute,
   AdminRoute.addChildren([
-    AdminEditorRoute.addChildren([
-      AdminEditorPostsRoute.addChildren([
-        AdminEditorPostsLayoutRoute.addChildren([
-          AdminEditorPostsLayoutHandlerRoute,
-        ]),
-        AdminEditorPostsCreateRoute,
-      ]),
-    ]),
-    AdminMainRoute.addChildren([
-      AdminMainIndexRoute,
-      AdminMainCategoriesRoute.addChildren([
-        AdminMainCategoriesLayoutRoute.addChildren([
-          AdminMainCategoriesLayoutIndexRoute,
+    AdminAdminRoute.addChildren([
+      AdminAdminEditorRoute.addChildren([
+        AdminAdminEditorPostsRoute.addChildren([
+          AdminAdminEditorPostsLayoutRoute.addChildren([
+            AdminAdminEditorPostsLayoutHandlerRoute,
+          ]),
+          AdminAdminEditorPostsCreateRoute,
         ]),
       ]),
-      AdminMainPostsRoute.addChildren([
-        AdminMainPostsLayoutRoute.addChildren([AdminMainPostsLayoutIndexRoute]),
+      AdminAdminMainRoute.addChildren([
+        AdminAdminMainIndexRoute,
+        AdminAdminMainCategoriesRoute.addChildren([
+          AdminAdminMainCategoriesLayoutRoute.addChildren([
+            AdminAdminMainCategoriesLayoutIndexRoute,
+          ]),
+        ]),
+        AdminAdminMainPostsRoute.addChildren([
+          AdminAdminMainPostsLayoutRoute.addChildren([
+            AdminAdminMainPostsLayoutIndexRoute,
+          ]),
+        ]),
       ]),
     ]),
   ]),
-  LoginIndexLazyRoute,
+  LoginIndexRoute,
 ])
 
 /* prettier-ignore-end */

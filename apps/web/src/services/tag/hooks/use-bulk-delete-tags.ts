@@ -1,6 +1,6 @@
 import { createMutation } from "react-query-kit"
-import { tagService } from ".."
 import { FetcherError, FetcherValidationError } from "@/libs/fetch/fetcher"
+import { tagService } from ".."
 import { BulkDeleteTagsResult, BulkDeleteTagsVariables } from "../types/bulk-delete-tags"
 
 export interface UseBulkDeleteTagsVariables extends BulkDeleteTagsVariables {}
