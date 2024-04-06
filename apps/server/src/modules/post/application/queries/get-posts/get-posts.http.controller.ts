@@ -18,7 +18,6 @@ export class GetPostsHttpController {
   @Get(routes.v1.posts.root)
   @ApiOkResponse({ type: SignalResponseDto([GetPostsResultDto]) })
   @HttpCode(HttpStatus.OK)
-  @Auth()
   async run(@Query() query: GetPostsRequestDto) {
     const { count, data } = await this.queryBus.execute<GetPostsQuery, GetPostsResult>(
       new GetPostsQuery({ ...query, relations: arrayFromComma(query.relations) }),
