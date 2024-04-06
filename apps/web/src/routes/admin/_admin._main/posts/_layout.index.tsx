@@ -1,5 +1,8 @@
 "use client"
 
+import { Link, createFileRoute } from "@tanstack/react-router"
+import { ColumnDef } from "@tanstack/react-table"
+import { Trash } from "lucide-react"
 import CustomPageSection from "@/components/customs/custom-page-section"
 import { Badge } from "@/components/ui/badge"
 import { DataTable, DataTableBasePagination } from "@/components/ui/data-table"
@@ -13,9 +16,6 @@ import { PAGE_ROUTES } from "@/constants/routes"
 import { formatNumber } from "@/libs/utils/number"
 import { useSuspensePosts } from "@/services/post/hooks/use-get-posts"
 import { Post } from "@/services/post/types"
-import { Link, createFileRoute } from "@tanstack/react-router"
-import { ColumnDef } from "@tanstack/react-table"
-import { Trash } from "lucide-react"
 
 export const Route = createFileRoute("/admin/_admin/_main/posts/_layout/")({
   component: PostsTable,

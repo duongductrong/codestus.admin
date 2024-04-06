@@ -20,10 +20,10 @@ import { Route as AdminAdminEditorImport } from './routes/admin/_admin._editor'
 import { Route as AdminAdminMainIndexImport } from './routes/admin/_admin._main/index'
 import { Route as AdminAdminMainPostsLayoutImport } from './routes/admin/_admin._main/posts/_layout'
 import { Route as AdminAdminMainCategoriesLayoutImport } from './routes/admin/_admin._main/categories/_layout'
-import { Route as AdminAdminEditorPostsCreateImport } from './routes/admin/_admin._editor/posts/create'
 import { Route as AdminAdminEditorPostsLayoutImport } from './routes/admin/_admin._editor/posts/_layout'
 import { Route as AdminAdminMainPostsLayoutIndexImport } from './routes/admin/_admin._main/posts/_layout.index'
 import { Route as AdminAdminMainCategoriesLayoutIndexImport } from './routes/admin/_admin._main/categories/_layout.index'
+import { Route as AdminAdminEditorPostsLayoutCreateImport } from './routes/admin/_admin._editor/posts/_layout.create'
 import { Route as AdminAdminEditorPostsLayoutHandlerImport } from './routes/admin/_admin._editor/posts/_layout.$handler'
 
 // Create Virtual Routes
@@ -101,12 +101,6 @@ const AdminAdminMainCategoriesLayoutRoute =
     getParentRoute: () => AdminAdminMainCategoriesRoute,
   } as any)
 
-const AdminAdminEditorPostsCreateRoute =
-  AdminAdminEditorPostsCreateImport.update({
-    path: '/create',
-    getParentRoute: () => AdminAdminEditorPostsRoute,
-  } as any)
-
 const AdminAdminEditorPostsLayoutRoute =
   AdminAdminEditorPostsLayoutImport.update({
     id: '/_layout',
@@ -123,6 +117,12 @@ const AdminAdminMainCategoriesLayoutIndexRoute =
   AdminAdminMainCategoriesLayoutIndexImport.update({
     path: '/',
     getParentRoute: () => AdminAdminMainCategoriesLayoutRoute,
+  } as any)
+
+const AdminAdminEditorPostsLayoutCreateRoute =
+  AdminAdminEditorPostsLayoutCreateImport.update({
+    path: '/create',
+    getParentRoute: () => AdminAdminEditorPostsLayoutRoute,
   } as any)
 
 const AdminAdminEditorPostsLayoutHandlerRoute =
@@ -171,10 +171,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminEditorPostsLayoutImport
       parentRoute: typeof AdminAdminEditorPostsRoute
     }
-    '/admin/_admin/_editor/posts/create': {
-      preLoaderRoute: typeof AdminAdminEditorPostsCreateImport
-      parentRoute: typeof AdminAdminEditorPostsImport
-    }
     '/admin/_admin/_main/categories': {
       preLoaderRoute: typeof AdminAdminMainCategoriesImport
       parentRoute: typeof AdminAdminMainImport
@@ -193,6 +189,10 @@ declare module '@tanstack/react-router' {
     }
     '/admin/_admin/_editor/posts/_layout/$handler': {
       preLoaderRoute: typeof AdminAdminEditorPostsLayoutHandlerImport
+      parentRoute: typeof AdminAdminEditorPostsLayoutImport
+    }
+    '/admin/_admin/_editor/posts/_layout/create': {
+      preLoaderRoute: typeof AdminAdminEditorPostsLayoutCreateImport
       parentRoute: typeof AdminAdminEditorPostsLayoutImport
     }
     '/admin/_admin/_main/categories/_layout/': {
@@ -216,8 +216,8 @@ export const routeTree = rootRoute.addChildren([
         AdminAdminEditorPostsRoute.addChildren([
           AdminAdminEditorPostsLayoutRoute.addChildren([
             AdminAdminEditorPostsLayoutHandlerRoute,
+            AdminAdminEditorPostsLayoutCreateRoute,
           ]),
-          AdminAdminEditorPostsCreateRoute,
         ]),
       ]),
       AdminAdminMainRoute.addChildren([

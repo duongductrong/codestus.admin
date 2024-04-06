@@ -25,10 +25,12 @@ const PostsStatistics = (props: PostsStatisticsProps) => (
         </CardDescription>
       </CardHeader>
       <CardFooter>
-        <Button size="sm" as={Link} href={PAGE_ROUTES.ADMIN.POST_CREATE}>
-          <Plus className="mr-1 h-4 w-4" />
-          Create New Post
-        </Button>
+        <Link to="/admin/posts/create">
+          <Button size="sm">
+            <Plus className="mr-1 h-4 w-4" />
+            Create New Post
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
     <Card>

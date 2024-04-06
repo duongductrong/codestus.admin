@@ -1,22 +1,28 @@
-"use client"
-
+import { createFileRoute } from "@tanstack/react-router"
+import { debounce } from "lodash"
 import { Loader2 } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import slugify from "slugify"
 import { toast } from "sonner"
-import { debounce } from "lodash"
 import { useCreatePost } from "@/services/post/hooks/use-create-post"
-import { PAGE_ROUTES } from "@/constants/routes"
 
-export interface PostCreationProps {}
+export const Route = createFileRoute("/admin/_admin/_editor/posts/_layout/create")({
+  component: PageComponent,
+})
 
-const PostCreation = (props: PostCreationProps) => {
-  const router = useRouter()
+function PageComponent() {
+  const navigate = Route.useNavigate()
+
   const { mutate } = useCreatePost({
     onSuccess(data) {
       toast.success(data.message, { position: "top-right" })
-      router.push(PAGE_ROUTES.ADMIN.POST_EDIT.replace(":id", String(data.data.id)))
+      navigate({
+        to: "/admin/posts/$handler",
+        params: {
+          handler: String(data.data.id),
+        },
+        replace: true
+      })
     },
   })
 
@@ -38,5 +44,3 @@ const PostCreation = (props: PostCreationProps) => {
     </div>
   )
 }
-
-export default PostCreation
