@@ -1,18 +1,12 @@
 "use client"
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import {
-  ArrowRight,
-  Home,
-  LineChart,
-  Package,
-  Package2,
-  PanelLeft,
-  Settings,
-  ShoppingCart,
-  Users2,
-} from "lucide-react"
 import { Link } from "@tanstack/react-router"
+import {
+  ArrowLeft,
+  ArrowRight,
+  Settings
+} from "lucide-react"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -22,7 +16,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { PAGE_ROUTES } from "@/constants/routes"
 import { cn } from "@/libs/utils/tailwind"
 import { useEditorEvents } from "./use-editor-events"
@@ -43,7 +36,7 @@ const EditorHeader = (props: EditorHeaderProps) => {
         "max-h-[var(--el-header-height)] w-full bg-background",
       )}
     >
-      <Sheet>
+      {/* <Sheet>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
             <PanelLeft className="h-5 w-5" />
@@ -93,7 +86,13 @@ const EditorHeader = (props: EditorHeaderProps) => {
             </Link>
           </nav>
         </SheetContent>
-      </Sheet>
+      </Sheet> */}
+      <Link to="/admin/posts/" className="flex">
+        <Button size="icon" variant="outline">
+          <ArrowLeft className="h-5 w-5" />
+          <span className="sr-only">Back</span>
+        </Button>
+      </Link>
       <Breadcrumb className="hidden md:flex">
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -107,7 +106,7 @@ const EditorHeader = (props: EditorHeaderProps) => {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="relative ml-auto flex flex-1 items-center gap-2 md:grow-0">
+      <div className="relative ml-auto flex items-center gap-2 md:grow-0">
         <Button variant="link" onClick={() => setOpenSettings(!openSettings)}>
           <Settings className="h-4 w-4" />
         </Button>
