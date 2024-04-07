@@ -52,7 +52,7 @@ const EditorSettings = (props: EditorSettingsProps) => {
       slug: data.slug,
       tags: data.tags,
       thumbnail: data.thumbnail,
-      status: data.status
+      status: data.status,
     })
   })
 

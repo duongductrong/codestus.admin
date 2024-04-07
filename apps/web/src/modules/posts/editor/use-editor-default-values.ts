@@ -10,7 +10,9 @@ export const useEditorDefaultValues = <TFieldValues>(
   useEffect(
     () => {
       if (defaultValues) {
-        settingSetterEvent(defaultValues)
+        setTimeout(() => {
+          settingSetterEvent(defaultValues)
+        })
       }
     },
     useDeepCompareMemoize([defaultValues]),
