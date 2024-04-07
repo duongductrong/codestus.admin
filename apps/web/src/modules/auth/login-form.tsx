@@ -8,6 +8,8 @@ import { useNavigate } from "@tanstack/react-router"
 import { Loader2Icon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { add } from "date-fns/add"
+import { toDate } from "date-fns/toDate"
 import { Button } from "@/components/ui/button"
 import Form, { FormField } from "@/components/ui/form"
 import { Stack } from "@/components/ui/stack"
@@ -43,7 +45,7 @@ export function LoginForm({ className, redirectOnSuccess, ...props }: LoginFormP
 
   const { mutate: signIn, isPending } = useSignIn({
     async onSuccess(data) {
-      setToken(data.data.jwtToken, data.data.expiredAt)
+      setToken(data.data.token, add(toDate(data.data.expiredAt), { months: 1 }).toISOString())
 
       await getQueryClient.invalidateQueries({
         queryKey: useMe.getKey(),

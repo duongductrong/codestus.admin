@@ -16,6 +16,7 @@ import { useManageAuthToken } from "@/components/ui/use-manage-tokens"
 import { PAGE_ROUTES } from "@/constants/routes"
 import { useSignIn } from "@/services/auth/hooks/use-sign-in"
 import { cn } from "../../../../libs/utils/tailwind"
+import { add, toDate } from "date-fns"
 
 export const loginFormSchema = z.object({
   identifier: z.string().email().min(1),
@@ -40,7 +41,8 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
 
   const { mutate: signIn, isPending } = useSignIn({
     onSuccess(data) {
-      setToken(data.data.jwtToken, data.data.expiredAt)
+      setToken(data.data.token, add(toDate(data.data.expiredAt), { months: 1 }).toISOString())
+      console.log(data.data.token, add(toDate(data.data.expiredAt), { months: 1 }).toISOString())
 
       router.push(PAGE_ROUTES.ADMIN.POST_LIST)
     },

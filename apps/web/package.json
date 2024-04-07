@@ -57,6 +57,7 @@
     "@types/lodash": "^4.14.202",
     "@types/query-string": "^6.3.0",
     "axios": "^1.6.7",
+    "axios-auth-refresh": "^3.3.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.1",

@@ -1,6 +1,9 @@
 import Axios, { AxiosError, AxiosRequestHeaders, AxiosResponse } from "axios"
-import { getCookie } from "cookies-next"
+import { getCookie, setCookie } from "cookies-next"
 import qs from "query-string"
+import createAuthRefreshInterceptor from "axios-auth-refresh"
+import { toDate } from "date-fns/toDate"
+import { add } from "date-fns/add"
 import { tokenKeys } from "@/components/ui/use-manage-tokens"
 import { flattenObject } from "../utils/object"
 
@@ -64,6 +67,31 @@ fetcher.interceptors.request.use((config): any => {
 fetcher.interceptors.response.use(
   (response) => response,
   (error) => Promise.reject(error),
+)
+
+createAuthRefreshInterceptor(fetcher, (failedRequest: any) =>
+  // 1. First try request fails - refresh the token.
+  fetcher.post("/auth/refresh").then((resp) => {
+    // 1a. Clear old helper cookie used in 'authorize.ts' higher order function.
+    if (fetcher.defaults.headers.setCookie) {
+      delete fetcher.defaults.headers.setCookie
+    }
+
+    const { token, expiredAt } = resp.data.data
+    // 2. Set up new access token
+    const bearer = `Bearer ${token}`
+    fetcher.defaults.headers.Authorization = bearer
+    // 3. Set up new access token as cookie
+    setCookie(tokenKeys.authToken, token, {
+      expires: add(toDate(expiredAt as Date), { months: 1 }),
+    })
+
+    // 4. Set up access token of the failed request.
+    failedRequest.response.config.headers.Authorization = bearer
+
+    // 5. Retry the request with new setup!
+    return Promise.resolve()
+  }),
 )
 
 export { fetcher }

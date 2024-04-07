@@ -1,6 +1,6 @@
-import { fetcher } from "@/libs/fetch/fetcher"
 import { AxiosRequestConfig } from "axios"
 import { set, unset } from "lodash"
+import { fetcher } from "@/libs/fetch/fetcher"
 import { GetMeResult, GetMeVariables } from "./types/get-me"
 import { SignInResult, SignInVariables } from "./types/sign-in"
 import { SignUpResult, SignUpVariables } from "./types/sign-up"

@@ -19,7 +19,7 @@ export class LoginCommand implements ICommand {
 }
 
 export class LoginResult {
-  jwtToken: string
+  token: string
 
   expiredAt: string | Date
 }
@@ -49,7 +49,7 @@ export class LoginHandler implements ICommandHandler<LoginCommand, LoginResult> 
     const token = await this.jwtService.sign(payload)
 
     return {
-      jwtToken: token,
+      token,
       expiredAt: dayjs().add(3, "hour").toISOString(),
     }
   }

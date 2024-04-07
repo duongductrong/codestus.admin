@@ -18,7 +18,7 @@ export class LoginRequestDto implements LoginCommand {
 export class LoginResponseDto implements LoginResult {
   @ApiProperty()
   @IsString()
-  jwtToken: string
+  token: string
 
   @ApiProperty()
   @IsString()

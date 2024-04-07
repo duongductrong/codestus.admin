@@ -34,6 +34,7 @@ export const routes = {
       login: "/auth/login",
       signUp: "/auth/signup",
       getMe: "/auth/me",
+      refreshToken: "/auth/refresh",
     },
   },
 } as const

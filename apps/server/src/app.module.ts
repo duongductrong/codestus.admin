@@ -39,7 +39,7 @@ import { UserModule } from "./modules/user/user.module"
     JwtModule.register({
       global: true,
       secret: "SECRET_KEY",
-      signOptions: { expiresIn: "3h" },
+      signOptions: { expiresIn: "1h" },
     }),
     I18nModule.forRootAsync({
       useFactory(configService: ConfigService) {

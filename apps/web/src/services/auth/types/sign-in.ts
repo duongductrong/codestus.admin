@@ -8,6 +8,6 @@ export interface SignInVariables {
 
 export interface SignInResult
   extends FetcherResult<{
-    jwtToken: string
+    token: string
     expiredAt: string
   }> {}

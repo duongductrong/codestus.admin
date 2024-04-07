@@ -1,5 +1,5 @@
-import { FetcherError } from "@/libs/fetch/fetcher"
 import { createQuery, createSuspenseQuery } from "react-query-kit"
+import { FetcherError } from "@/libs/fetch/fetcher"
 import { authService } from ".."
 import { GetMeResult, GetMeVariables } from "../types/get-me"
 

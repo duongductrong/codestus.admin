@@ -321,6 +321,9 @@ importers:
       axios:
         specifier: ^1.6.7
         version: 1.6.7
+      axios-auth-refresh:
+        specifier: ^3.3.6
+        version: 3.3.6(axios@1.6.7)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -8580,6 +8583,14 @@ packages:
     resolution: {integrity: sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==}
     engines: {node: '>=4'}
     dev: true
+
+  /axios-auth-refresh@3.3.6(axios@1.6.7):
+    resolution: {integrity: sha512-2CeBUce/SxIfFxow5/n8vApJ97yYF6qoV4gh1UrswT7aEOnlOdBLxxyhOI4IaxGs6BY0l8YujU2jlc4aCmK17Q==}
+    peerDependencies:
+      axios: '>= 0.18 < 0.19.0 || >= 0.19.1'
+    dependencies:
+      axios: 1.6.7
+    dev: false
 
   /axios@1.6.7:
     resolution: {integrity: sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==}

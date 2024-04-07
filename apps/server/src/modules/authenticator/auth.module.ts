@@ -9,6 +9,8 @@ import { USER_FACTORY, USER_MAPPER, USER_REPOSITORY } from "../user/user.di-toke
 import { UserMapper } from "../user/user.mapper"
 import { LoginHandler } from "./application/commands/login/login.handler"
 import { LoginHttpController } from "./application/commands/login/login.http.controller"
+import { RefreshTokenHandler } from "./application/commands/refresh-token/refresh-token.handler"
+import { RefreshTokenHttpController } from "./application/commands/refresh-token/refresh-token.http.controller"
 import { SignUpHandler } from "./application/commands/signup/signup.handler"
 import { SignUpHttpController } from "./application/commands/signup/signup.http.controller"
 import { GetMeHandler } from "./application/queries/get-me.handler"
@@ -17,9 +19,14 @@ import { GetMeHttpController } from "./application/queries/get-me.http.controlle
 const Repositories: Provider[] = [{ provide: USER_REPOSITORY, useClass: UserRepository }]
 const Services: Provider[] = [HashService, { provide: USER_FACTORY, useClass: UserFactory }]
 const Mappers: Provider[] = [{ provide: USER_MAPPER, useClass: UserMapper }]
-const Commands = [LoginHandler, SignUpHandler]
+const Commands = [LoginHandler, SignUpHandler, RefreshTokenHandler]
 const Queries = [GetMeHandler]
-const Controllers = [LoginHttpController, SignUpHttpController, GetMeHttpController]
+const Controllers = [
+  LoginHttpController,
+  SignUpHttpController,
+  GetMeHttpController,
+  RefreshTokenHttpController,
+]
 
 @Module({
   imports: [CqrsModule, TypeOrmModule.forFeature([UserEntity])],
