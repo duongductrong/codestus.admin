@@ -1,9 +1,9 @@
+import { Outlet, createFileRoute } from "@tanstack/react-router"
+import { CSSProperties } from "react"
 import EditorHeader from "@/modules/posts/editor/editor-header"
 import EditorProvider from "@/modules/posts/editor/editor-provider"
 import EditorSidebar from "@/modules/posts/editor/editor-sidebar"
 import EditorToolbar from "@/modules/posts/editor/editor-toolbar"
-import { Outlet, createFileRoute } from "@tanstack/react-router"
-import { CSSProperties } from "react"
 
 export const Route = createFileRoute("/admin/_admin/_editor")({
   component: EditorLayout,

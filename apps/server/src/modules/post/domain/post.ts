@@ -77,7 +77,15 @@ export class PostClass extends AggregateRoot implements Post {
       "updatedAt",
       "createdAt",
     ] as (keyof PostProps)[])
-    const _slug = cleanProps?.slug ? slugify(cleanProps.slug) : this.slug
+    const _slug = cleanProps?.slug
+      ? slugify(cleanProps.slug, {
+          lower: true,
+          locale: "utf8",
+          strict: true,
+          trim: true,
+          replacement: "-",
+        })
+      : this.slug
 
     Object.assign(this, {
       ...cleanProps,

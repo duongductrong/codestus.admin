@@ -1,7 +1,8 @@
-import React, { createContext, useMemo } from "react"
 import { Loader2 } from "lucide-react"
+import React, { createContext, useMemo } from "react"
+import { useDeepCompareMemoize } from "@/components/ui/use-deep-compare-memoize"
 import { User } from "@/services/user/types/user"
-import { useMe } from "../hooks/use-me"
+import { useSuspenseMe } from "../hooks/use-me"
 
 export interface AuthState {
   profile: Omit<User, "password" | "providerId"> | undefined
@@ -17,15 +18,19 @@ export const AuthLoading = () => (
 )
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { data, isLoading, isFetching } = useMe()
+  const { data, isLoading, isFetching } = useSuspenseMe()
   const user = data?.data
   const loading = isLoading || isFetching
 
-  const values = useMemo<AuthState>(() => ({ profile: user, isAuthenticated: !!user }), [user])
+  const values = useMemo<AuthState>(
+    () => ({ profile: user, isAuthenticated: !!user }),
+    useDeepCompareMemoize([user]),
+  )
 
   return (
     <AuthContext.Provider value={values}>
-      {loading ? <AuthLoading /> : children}
+      {loading ? <AuthLoading /> : null}
+      {children}
     </AuthContext.Provider>
   )
 }

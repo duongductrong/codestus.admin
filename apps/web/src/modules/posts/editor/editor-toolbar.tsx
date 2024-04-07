@@ -1,5 +1,3 @@
- 
-
 "use client"
 
 import { SelectItemText } from "@radix-ui/react-select"
@@ -24,6 +22,7 @@ import { cn } from "@/libs/utils/tailwind"
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { useCurrentEditorContext } from "./use-editor-context"
+import EditorToolbarLoading from "./editor-toolbar-loading"
 
 export const toolbarEditorVariants = cva(
   ["flex [&>*]:flex-shrink-0 items-center gap-2 p-2 border-b"],
@@ -52,18 +51,13 @@ export interface EditorToolbarVariantsProps extends VariantProps<typeof toolbarE
 
 export interface EditorToolbarProps
   extends ComponentPropsWithoutRef<"div">,
-    EditorToolbarVariantsProps {
-  root?: {
-    width: number
-    height: number
-  }
-}
+    EditorToolbarVariantsProps {}
 
-const EditorToolbar = ({ className, direction, root, ...props }: EditorToolbarProps) => {
+const EditorToolbar = ({ className }: EditorToolbarProps) => {
   const editor = useCurrentEditorContext()
 
   if (!editor) {
-    return null
+    return <EditorToolbarLoading />
   }
 
   const handleTextFormat = (val: string) => {

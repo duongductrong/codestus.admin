@@ -1,11 +1,12 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Editor } from "@tiptap/react"
 import { startTransition, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import Form, { FormField } from "@/components/ui/form"
-import { useCurrentEditorContext } from "./use-editor-context"
+import { useCurrentEditorContext, useEditorContext } from "./use-editor-context"
 import { useEditorDefaultValues } from "./use-editor-default-values"
 import { useEditorSettingsChanges, useEditorSubmission } from "./use-editor-events"
 import { useEditorSettings } from "./use-editor-settings"
@@ -35,6 +36,7 @@ const EditorForm = ({ title, defaultValues, onSubmit }: EditorFormProps) => {
     defaultValues,
   })
   const editor = useCurrentEditorContext()
+  const setCurrentEditor = useEditorContext((state) => state.setEditor)
 
   const { setTitle, setEditorDirty } = useEditorSettings()
 
@@ -87,6 +89,7 @@ const EditorForm = ({ title, defaultValues, onSubmit }: EditorFormProps) => {
           name="content"
           placeholder="Write something..."
           as="markdown"
+          onCreate={({ editor: _editor }) => setCurrentEditor(_editor as Editor)}
         />
       </div>
     </Form>

@@ -1,19 +1,26 @@
 "use client"
 
-import { EditorProvider as EditorProviderPrimitive } from "@tiptap/react"
-import { ReactNode } from "react"
-import { takeRichEditorExtensions } from "@/components/ui/editor/rich-editor-extentions"
+import { ReactNode, memo, useRef } from "react"
+import { EditorContext, createEditorStore } from "./use-editor-context"
+// import { EditorProvider as EditorProviderPrimitive } from "@tiptap/react"
+// import { takeRichEditorExtensions } from "@/components/ui/editor/rich-editor-extentions"
 
 export interface EditorProviderProps {
   children: ReactNode
 }
 
-export const randomKey = () => new Date().getTime().toString()
+const EditorProvider = ({ children }: EditorProviderProps) => {
+  const store = useRef(createEditorStore({})).current
 
-const EditorProvider = ({ children }: EditorProviderProps) => (
-  <EditorProviderPrimitive extensions={takeRichEditorExtensions({ placeholder: "Write content" })}>
-    {children}
-  </EditorProviderPrimitive>
-)
+  // return (
+  //   <EditorProviderPrimitive
+  //     extensions={takeRichEditorExtensions({ placeholder: "Write content" })}
+  //   >
+  //     {children}
+  //   </EditorProviderPrimitive>
+  // )
+
+  return <EditorContext.Provider value={store}>{children}</EditorContext.Provider>
+}
 
 export default EditorProvider

@@ -4,18 +4,21 @@
 
 import "./rich-editor.css"
 
-import { EditorContent, EditorOptions, useCurrentEditor } from "@tiptap/react"
+import { Editor, EditorContent, EditorOptions, useCurrentEditor } from "@tiptap/react"
 import { CSSProperties, ReactElement, ReactNode, cloneElement, useEffect } from "react"
 import { useElementSize } from "@/hooks/use-element-size"
 import { cn } from "@/libs/utils/tailwind"
 import { useRichEditor } from "./use-rich-editor"
 
 export interface RichEditorProps {
+  editor?: Editor | null
   value?: string
   placeholder?: string
   editable?: boolean
   onChange?: EditorOptions["onUpdate"]
   onBlur?: EditorOptions["onBlur"]
+  onCreate?: EditorOptions["onCreate"]
+  onBeforeCreate?: EditorOptions["onBeforeCreate"]
 
   menubar?: ReactNode
 }
@@ -25,28 +28,36 @@ export const RichEditor = ({
   placeholder,
   editable,
   menubar,
+  editor: _editor,
   onChange,
   onBlur,
+  onCreate,
+  onBeforeCreate,
 }: RichEditorProps) => {
-  const provideEditor = useCurrentEditor()?.editor
-  const editor =
-    // extend provider
-    provideEditor ||
-    // Controlled editor
-    useRichEditor({ editable, placeholder, value, onBlur, onChange })
+  const externalEditor = _editor || useCurrentEditor()?.editor
+
+  const editor = useRichEditor({
+    editable,
+    placeholder,
+    value,
+    onBlur,
+    onChange,
+    onCreate,
+    onBeforeCreate,
+  })
 
   const [ref, { width, height, offsetLeft, offsetY }] = useElementSize()
 
   useEffect(() => {
     function eventEmitterFromProvider() {
-      if (provideEditor) {
-        if (onChange) provideEditor.on("update", onChange)
-        if (onBlur) provideEditor.on("blur", onBlur)
+      if (externalEditor) {
+        if (onChange) externalEditor.on("update", onChange)
+        if (onBlur) externalEditor.on("blur", onBlur)
       }
     }
 
     eventEmitterFromProvider()
-  }, [provideEditor])
+  }, [externalEditor])
 
   return (
     <div

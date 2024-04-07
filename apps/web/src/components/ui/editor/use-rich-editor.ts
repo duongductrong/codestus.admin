@@ -8,6 +8,8 @@ export interface UseRichEditorVariables {
   editable?: boolean
   onChange?: EditorOptions["onUpdate"]
   onBlur?: EditorOptions["onBlur"]
+  onCreate?: EditorOptions["onCreate"]
+  onBeforeCreate?: EditorOptions["onBeforeCreate"]
 }
 
 export const useRichEditor = ({
@@ -16,6 +18,8 @@ export const useRichEditor = ({
   value,
   onBlur,
   onChange,
+  onCreate,
+  onBeforeCreate,
 }: UseRichEditorVariables = {}) => {
   const editor = useEditor({
     extensions: useMemo(() => takeRichEditorExtensions({ placeholder }), [placeholder]),
@@ -23,6 +27,12 @@ export const useRichEditor = ({
     editable,
     onUpdate: onChange,
     onBlur,
+    onCreate: (props) => {
+      onCreate?.(props)
+    },
+    onBeforeCreate: (props) => {
+      onBeforeCreate?.(props)
+    },
   })
 
   return editor

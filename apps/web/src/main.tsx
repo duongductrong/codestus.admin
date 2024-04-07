@@ -5,11 +5,11 @@ import { Toaster } from "sonner"
 import GeneralModaler from "./components/customs/custom-modals/general-modal"
 import PreferredTheme from "./components/ui/theme/preferred-theme"
 import { Prompter } from "./components/ui/use-prompt"
+import "./globals.css"
 import { QueryProvider } from "./libs/query/query"
 import { router } from "./router"
 import AuthProvider, { AuthState } from "./services/auth/contexts/auth-provider"
 import { useAuth } from "./services/auth/hooks/use-auth"
-import "./globals.css"
 
 declare module "@tanstack/react-router" {
   interface Register {

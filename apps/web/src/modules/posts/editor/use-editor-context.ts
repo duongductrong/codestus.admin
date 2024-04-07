@@ -1,16 +1,21 @@
-import { Editor, useCurrentEditor } from "@tiptap/react"
+import { Editor } from "@tiptap/react"
 import { createContext, useContext } from "react"
 import { create, useStore } from "zustand"
 import { devtools } from "zustand/middleware"
 
 export interface EditorContextState {
   editor: Editor | null
+  setEditor: (editor: Editor) => void
 }
 
 export const createEditorStore = (defaultState: Partial<EditorContextState>) =>
   create<EditorContextState>()(
-    devtools((set, get) => ({
+    devtools((set) => ({
       editor: defaultState.editor ?? null,
+
+      setEditor(editor) {
+        set((state) => ({ ...state, editor }))
+      },
     })),
   )
 
@@ -28,5 +33,6 @@ export const useEditorContext = <TSelector>(
   )
 }
 
-// export const useCurrentEditorContext = () => useEditorContext((state) => state.editor)
-export const useCurrentEditorContext = () => useCurrentEditor().editor
+export const useCurrentEditorContext = () => useEditorContext((state) => state.editor)
+
+// export const useCurrentEditorContext = () => useCurrentEditor().editor

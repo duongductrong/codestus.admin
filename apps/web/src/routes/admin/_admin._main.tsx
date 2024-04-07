@@ -1,7 +1,7 @@
+import { Outlet, createFileRoute } from "@tanstack/react-router"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import AdminHeader from "@/modules/admin-header"
 import AdminSidebar from "@/modules/admin-sidebar"
-import { Outlet, createFileRoute } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/admin/_admin/_main")({
   component: LayoutComponent,

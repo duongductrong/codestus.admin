@@ -111,6 +111,7 @@ export class UpdatePostHandler implements ICommandHandler<UpdatePostCommand, Upd
 
     post.setProps({
       ...command,
+      slug,
       tags: tags.map((tag) => tag.getProps()),
     })
 

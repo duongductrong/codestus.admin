@@ -1,9 +1,8 @@
 "use client"
 
 import { createFileRoute } from "@tanstack/react-router"
-import { Loader } from "lucide-react"
 import { toast } from "sonner"
-import { useUnifiedTransformer } from "@/libs/markdown/use-unified"
+import { memo } from "react"
 import { getQueryClient } from "@/libs/query"
 import EditorForm, { EditorFormProps } from "@/modules/posts/editor/editor-form"
 import { useSuspensePost } from "@/services/post/hooks/use-get-post"
@@ -11,20 +10,17 @@ import { useSuspensePosts } from "@/services/post/hooks/use-get-posts"
 import { useUpdatePost } from "@/services/post/hooks/use-update-post"
 
 export const Route = createFileRoute("/admin/_admin/_editor/posts/_layout/$handler")({
-  component: PageComponent,
+  component: memo(PageComponent),
 })
 
 function PageComponent() {
   const params = Route.useParams()
-  const { data, isLoading, isFetching } = useSuspensePost({
+
+  const { data } = useSuspensePost({
     variables: { id: params.handler, relations: "tags" },
     refetchOnWindowFocus: false,
+    staleTime: Infinity,
   })
-
-  const { loading: isLoadingConvertContent } = useUnifiedTransformer(
-    data.data.content || "",
-    "markdown",
-  )
 
   const { mutateAsync: updatePost } = useUpdatePost({
     onSuccess(result) {
@@ -60,9 +56,6 @@ function PageComponent() {
       tags: response.data.tags?.map((tag) => tag.id.toString()),
       content: response.data.content,
     }))
-
-  if (isLoadingConvertContent || isLoading || isFetching)
-    return <Loader className="h-4 w-4 animate-spin" />
 
   return (
     <EditorForm

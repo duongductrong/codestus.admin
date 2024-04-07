@@ -1,21 +1,21 @@
+/* eslint-disable react/no-unused-prop-types */
+
 "use client"
 
 import { forwardRef, useImperativeHandle } from "react"
 import { RichEditor, RichEditorProps } from "../../editor/rich-editor"
 
-export interface FormRichEditorProps {
-  // eslint-disable-next-line react/no-unused-prop-types
+export interface FormRichEditorProps
+  extends Pick<RichEditorProps, "placeholder" | "value" | "onBeforeCreate" | "onCreate"> {
   variant: "RICH_EDITOR"
 
-  value?: string
   onChange?: (val: string) => void
   onBlur?: () => void
-  placeholder?: string
   as?: "html" | "markdown"
 }
 
 const FormRichEditor = forwardRef<HTMLInputElement, FormRichEditorProps>(
-  ({ onBlur, onChange, as = "markdown", value, placeholder }, ref) => {
+  ({ onBlur, onChange, onBeforeCreate, onCreate, as = "markdown", value, placeholder }, ref) => {
     const handleOnChange: RichEditorProps["onChange"] = ({ editor }) => {
       switch (as) {
         case "html":
@@ -34,8 +34,10 @@ const FormRichEditor = forwardRef<HTMLInputElement, FormRichEditorProps>(
     return (
       <RichEditor
         value={value}
-        onBlur={() => onBlur?.()}
+        onCreate={onCreate}
         onChange={handleOnChange}
+        onBeforeCreate={onBeforeCreate}
+        onBlur={() => onBlur?.()}
         placeholder={placeholder}
       />
     )
