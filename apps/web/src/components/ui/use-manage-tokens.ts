@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from "cookies-next"
+import { deleteCookie, getCookie, setCookie } from "cookies-next"
 
 export const tokenKeys = {
   authToken: "authToken",
@@ -19,8 +19,13 @@ export const useManageAuthToken = () => {
     getCookie(authToken)
   }
 
+  const removeToken = () => {
+    deleteCookie(authToken)
+  }
+
   return {
     getToken,
     setToken,
+    removeToken,
   }
 }

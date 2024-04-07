@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -10,10 +11,27 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { PAGE_ROUTES } from "@/constants/routes"
 import { useAuth } from "@/services/auth/hooks/use-auth"
+import { getQueryClient } from "@/libs/query"
+import { useSuspenseMe } from "@/services/auth/hooks/use-me"
 
 export const HeaderUserProfile = () => {
-  const { profile } = useAuth()
+  const navigate = useNavigate()
+  const { profile, logout } = useAuth()
+
+  const handleLogout = () => {
+    logout()
+
+    getQueryClient.invalidateQueries({ queryKey: useSuspenseMe.getKey() }).then(() => {
+      setTimeout(() => {
+        navigate({
+          to: PAGE_ROUTES.AUTH.SIGN_IN,
+          replace: true,
+        })
+      })
+    })
+  }
 
   return (
     <DropdownMenu>
@@ -49,7 +67,7 @@ export const HeaderUserProfile = () => {
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

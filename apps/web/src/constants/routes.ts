@@ -3,6 +3,8 @@ export const PAGE_ROUTES = {
   COMPONENTS: "/components",
 
   ADMIN: {
+    DASHBOARD: "/admin",
+
     POST_LIST: "/admin/posts",
     POST_CREATE: "/admin/posts/create",
     POST_EDIT: "/admin/posts/:id",
