@@ -23,6 +23,8 @@ import { PostEntity } from "./infras/entities/post.entity"
 import { PostRepository } from "./infras/repositories/post.repository"
 import { POST_FACTORY, POST_MAPPER, POST_REPOSITORY } from "./post.di-tokens"
 import { PostMapper } from "./post.mapper"
+import { GetPostStatisticsHandler } from "./application/queries/get-post-statistics/get-post-statistics.handler"
+import { GetPostStatisticsHttpController } from "./application/queries/get-post-statistics/get-post-statistics.http.controller"
 
 export const Factories: Provider[] = [{ provide: POST_FACTORY, useClass: PostFactory }]
 export const Repositories: Provider[] = [
@@ -38,8 +40,9 @@ export const Mappers: Provider[] = [
 export const Services: Provider[] = []
 export const EventHandlers = []
 export const CommandHandlers = [CreatePostHandler, UpdatePostHandler, DeletePostHandler]
-export const QueryHandlers = [GetPostsHandler, GetPostHandler]
+export const QueryHandlers = [GetPostsHandler, GetPostHandler, GetPostStatisticsHandler]
 export const Controllers = [
+  GetPostStatisticsHttpController,
   GetPostsHttpController,
   GetPostHttpController,
   CreatePostHttpController,

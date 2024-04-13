@@ -1,4 +1,4 @@
-import { AggregateRoot } from "@nestjs/cqrs"
+import { AggregateRoot, EntityBase } from "@server/core/libs/ddd"
 import { TagProps } from "@server/modules/tag/domain/tag"
 import { UserProps } from "@server/modules/user/domain/user"
 import { omit } from "lodash"
@@ -22,7 +22,7 @@ export interface PostProps {
   tags: TagProps[]
 }
 
-export interface Post extends Pick<AggregateRoot, "commit" | "autoCommit" | "uncommit"> {
+export interface Post extends EntityBase<PostProps> {
   getProps(): PostProps
   setProps(props: Partial<PostProps>): void
 }

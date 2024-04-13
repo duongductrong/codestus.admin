@@ -1,4 +1,4 @@
-import { AggregateRootBase, EntityBase } from "@server/core/libs/ddd"
+import { AggregateRoot, EntityBase } from "@server/core/libs/ddd"
 import { PostProps } from "@server/modules/post/domain/post"
 import { omit } from "lodash"
 import slugify from "slugify"
@@ -19,7 +19,7 @@ export interface Tag extends EntityBase<TagProps> {
   getProps(): TagProps
 }
 
-export class TagClass extends AggregateRootBase implements Tag {
+export class TagClass extends AggregateRoot implements Tag {
   private readonly id: number
 
   private name: string

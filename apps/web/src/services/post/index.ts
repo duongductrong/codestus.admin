@@ -2,6 +2,7 @@ import { fetcher } from "../../libs/fetch/fetcher"
 import { CreatePostResult, CreatePostVariables } from "./types/create-post"
 import { DeletePostResult, DeletePostVariables } from "./types/delete-post"
 import { GetPostResult, GetPostVariables } from "./types/get-post"
+import { GetPostStatisticsResult, GetPostStatisticsVariables } from "./types/get-post-statistics"
 import { GetPostsResult, GetPostsVariables } from "./types/get-posts"
 import { UpdatePostResult, UpdatePostVariables } from "./types/update-post"
 
@@ -10,6 +11,7 @@ class PostService {
     return {
       getPosts: "/posts",
       getPost: "/posts/:id",
+      getPostStatistics: "/posts/statistics",
     }
   }
 
@@ -30,6 +32,14 @@ class PostService {
           value: "desc",
           ...variables?.orderBy,
         },
+      } as GetPostsVariables,
+    })
+  }
+
+  getPostStatistics(variables?: GetPostStatisticsVariables) {
+    return fetcher.get<GetPostStatisticsResult>(this.queryKeys.getPostStatistics, {
+      params: {
+        ...variables,
       } as GetPostsVariables,
     })
   }

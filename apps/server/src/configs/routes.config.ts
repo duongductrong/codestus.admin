@@ -16,6 +16,7 @@ export const routes = {
       detail: "/posts/:id",
       update: "/posts/:id",
       delete: "/posts/:id",
+      statistics: "/posts/statistics",
     },
     tags: {
       apiTag: "Tag",

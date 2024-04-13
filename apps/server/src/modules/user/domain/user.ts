@@ -1,4 +1,4 @@
-import { AggregateRoot } from "@nestjs/cqrs"
+import { AggregateRoot, EntityBase } from "@server/core/libs/ddd"
 import { UserCreatedEvent } from "./events/user-created.event"
 
 export interface UserProps {
@@ -15,7 +15,7 @@ export interface UserProps {
   updatedAt?: Date
 }
 
-export interface User extends Pick<AggregateRoot, "commit" | "autoCommit" | "uncommit"> {
+export interface User extends EntityBase<UserProps> {
   setName(name?: string | null): void
   verifiedEmail(): void
   updatePassword(password: string): void
