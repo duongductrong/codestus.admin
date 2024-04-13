@@ -15,6 +15,11 @@ export class GetPostsRequestDto
   @ApiProperty({ description: "Relations (example: user,tags)" })
   relations?: string
 
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ description: "Search" })
+  search?: string
+
   constructor(props: PaginationParams<GetPostsRequestDto>) {
     super({
       limit: props?.limit,
@@ -23,6 +28,7 @@ export class GetPostsRequestDto
     })
 
     this.relations = props?.relations
+    this.search = props?.search
   }
 }
 

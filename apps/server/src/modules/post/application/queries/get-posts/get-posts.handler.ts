@@ -2,7 +2,7 @@ import { Inject } from "@nestjs/common"
 import { IQuery, IQueryHandler, QueryHandler } from "@nestjs/cqrs"
 import { BasePaginationQuery, PaginationParams } from "@server/core/query.base"
 import { set } from "lodash"
-import { FindOptionsOrder, FindOptionsRelations } from "typeorm"
+import { FindOptionsOrder, FindOptionsRelations, FindOptionsWhere, Like } from "typeorm"
 import { PostProps } from "../../../domain/post"
 import { PostRepositoryPort } from "../../../domain/post.repository.port"
 import { PostEntity } from "../../../infras/entities/post.entity"
@@ -14,9 +14,12 @@ export class GetPostsQuery extends BasePaginationQuery implements IQuery {
    */
   relations: string[]
 
+  search?: string
+
   constructor(props: PaginationParams<GetPostsQuery>) {
     super({ limit: props.limit, orderBy: props.orderBy, page: props.page })
-    this.relations = props.relations
+    this.relations = props?.relations
+    this.search = props?.search
   }
 }
 
@@ -37,6 +40,7 @@ export class GetPostsHandler implements IQueryHandler<GetPostsQuery, GetPostsRes
   async execute(command: GetPostsQuery): Promise<GetPostsResult> {
     const order: FindOptionsOrder<PostEntity> = {}
     const relations: FindOptionsRelations<PostEntity> = {}
+    const where: FindOptionsWhere<PostEntity>[] = []
 
     if (command.orderBy?.field && command.orderBy?.field) {
       set(order, command.orderBy?.field, command.orderBy?.value)
@@ -49,14 +53,22 @@ export class GetPostsHandler implements IQueryHandler<GetPostsQuery, GetPostsRes
       })
     }
 
+    if (command.search) {
+      where.push(
+        { title: Like(`%${command.search}%`) },
+        { description: Like(`%${command.search}%`) },
+      )
+    }
+
     const [posts, count] = await Promise.all([
       this.postRepo.find({
         order,
         relations,
+        where,
         skip: command.offset,
         take: command.limit,
       }),
-      this.postRepo.count(),
+      this.postRepo.count({ where }),
     ])
 
     return { data: posts.map((post) => post.getProps()), count }

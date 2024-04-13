@@ -1,10 +1,12 @@
 "use client"
 
-import { Link, createFileRoute } from "@tanstack/react-router"
+import { Link, createFileRoute, useNavigate, useSearch } from "@tanstack/react-router"
 import { ColumnDef } from "@tanstack/react-table"
 import { CheckCircle2, Squircle, Trash } from "lucide-react"
 import { ReactNode } from "react"
 import { toast } from "sonner"
+import { debounce } from "lodash"
+import { z } from "zod"
 import CustomPageSection from "@/components/customs/custom-page-section"
 import { DataTable, DataTableBasePagination } from "@/components/ui/data-table"
 import { DataTableSearcher, DataTableToolbar } from "@/components/ui/data-table/data-table-filters"
@@ -21,10 +23,16 @@ import { usePosts } from "@/services/post/hooks/use-get-posts"
 import { Post } from "@/services/post/types"
 
 export const Route = createFileRoute("/admin/_admin/_main/posts/_layout/")({
+  validateSearch: z.object({
+    q: z.string().nullish(),
+  }),
   component: PostsTable,
 })
 
 function PostsTable() {
+  const searchParams = Route.useSearch()
+  const navigate = useNavigate()
+
   const { pageIndex, pageSize, setPageIndex, setPageSize } = useDataTablePagination({
     pageSize: 10,
   })
@@ -34,6 +42,7 @@ function PostsTable() {
 
   const postResult = usePosts({
     variables: {
+      search: searchParams.q,
       page: pageIndex,
       limit: pageSize,
       orderBy: firstSorting
@@ -151,6 +160,10 @@ function PostsTable() {
     })
   }
 
+  const handleGlobalFilteringChange = debounce((value: string) => {
+    navigate({ search: { ...searchParams, q: value }, startTransition: true })
+  }, 200)
+
   return (
     <CustomPageSection title="Posts" description="All posts published over there">
       <DataTable
@@ -168,6 +181,7 @@ function PostsTable() {
           totalRecords: Number(meta?.total),
         }}
         onPaginationChange={handlePaginationChange}
+        onGlobalFilteringChange={handleGlobalFilteringChange}
         onSortingChange={setSorting}
         sorting={sorting}
         manualSorting
