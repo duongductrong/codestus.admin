@@ -17,12 +17,14 @@ import {
   Strikethrough,
   Undo,
 } from "lucide-react"
-import { ComponentPropsWithoutRef } from "react"
+import { ComponentPropsWithoutRef, useEffect, useState } from "react"
 import { cn } from "@/libs/utils/tailwind"
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { useCurrentEditorContext } from "./use-editor-context"
 import EditorToolbarLoading from "./editor-toolbar-loading"
+import EditorToolbarTextFormat from "./editor-toolbar-text-format"
+import { useCurrentEditorContext } from "./use-editor-context"
+import EditorToolbarCodeblock from "./editor-toolbar-codeblock"
 
 export const toolbarEditorVariants = cva(
   ["flex [&>*]:flex-shrink-0 items-center gap-2 p-2 border-b"],
@@ -53,49 +55,20 @@ export interface EditorToolbarProps
   extends ComponentPropsWithoutRef<"div">,
     EditorToolbarVariantsProps {}
 
+const generateToolbarId = () => new Date().getTime()
+
 const EditorToolbar = ({ className }: EditorToolbarProps) => {
+  const [, setSelectionUpdateId] = useState(generateToolbarId())
   const editor = useCurrentEditorContext()
+
+  useEffect(() => {
+    editor?.on("selectionUpdate", () => {
+      setSelectionUpdateId(generateToolbarId())
+    })
+  }, [editor])
 
   if (!editor) {
     return <EditorToolbarLoading />
-  }
-
-  const handleTextFormat = (val: string) => {
-    switch (val) {
-      case "paragraph":
-        editor.chain().focus().setParagraph().run()
-        break
-      case "h1":
-        editor.chain().focus().toggleHeading({ level: 1 }).run()
-        break
-      case "h2":
-        editor.chain().focus().toggleHeading({ level: 2 }).run()
-        break
-      case "h3":
-        editor.chain().focus().toggleHeading({ level: 3 }).run()
-        break
-      case "h4":
-        editor.chain().focus().toggleHeading({ level: 4 }).run()
-        break
-      case "h5":
-        editor.chain().focus().toggleHeading({ level: 5 }).run()
-        break
-      case "h6":
-        editor.chain().focus().toggleHeading({ level: 6 }).run()
-        break
-      default:
-    }
-  }
-
-  const getTextFormatContent = () => {
-    if (editor?.isActive("paragraph")) return "Paragraph"
-    if (editor?.isActive("heading", { level: 1 })) return "Heading 1"
-    if (editor?.isActive("heading", { level: 2 })) return "Heading 2"
-    if (editor?.isActive("heading", { level: 3 })) return "Heading 3"
-    if (editor?.isActive("heading", { level: 4 })) return "Heading 4"
-    if (editor?.isActive("heading", { level: 5 })) return "Heading 5"
-    if (editor?.isActive("heading", { level: 6 })) return "Heading 6"
-    return "Paragraph"
   }
 
   return (
@@ -118,34 +91,12 @@ const EditorToolbar = ({ className }: EditorToolbarProps) => {
       >
         <Redo className="h-4 w-4" />
       </Button>
-      <Select onValueChange={handleTextFormat}>
-        <SelectTrigger className="max-w-[150px] shadow-none">
-          {getTextFormatContent()}
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="paragraph">
-            <SelectItemText>Paragraph</SelectItemText>
-          </SelectItem>
-          <SelectItem value="h1">
-            <SelectItemText>Heading 1</SelectItemText>
-          </SelectItem>
-          <SelectItem value="h2">
-            <SelectItemText>Heading 2</SelectItemText>
-          </SelectItem>
-          <SelectItem value="h3">
-            <SelectItemText>Heading 3</SelectItemText>
-          </SelectItem>
-          <SelectItem value="h4">
-            <SelectItemText>Heading 4</SelectItemText>
-          </SelectItem>
-          <SelectItem value="h5">
-            <SelectItemText>Heading 5</SelectItemText>
-          </SelectItem>
-          <SelectItem value="h6">
-            <SelectItemText>Heading 6</SelectItemText>
-          </SelectItem>
-        </SelectContent>
-      </Select>
+      {editor.isActive("codeBlock") ? (
+        <EditorToolbarCodeblock editor={editor} />
+      ) : (
+        <EditorToolbarTextFormat editor={editor} />
+      )}
+
       <Button
         size="icon"
         variant={editor.isActive("bold") ? "secondary" : "ghost"}

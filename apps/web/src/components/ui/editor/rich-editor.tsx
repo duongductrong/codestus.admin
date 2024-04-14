@@ -4,11 +4,12 @@
 
 import "./rich-editor.css"
 
-import { Editor, EditorContent, EditorOptions, useCurrentEditor } from "@tiptap/react"
+import { BubbleMenu, Editor, EditorContent, EditorOptions, useCurrentEditor } from "@tiptap/react"
 import { CSSProperties, ReactElement, ReactNode, cloneElement, useEffect } from "react"
 import { useElementSize } from "@/hooks/use-element-size"
 import { cn } from "@/libs/utils/tailwind"
 import { useRichEditor } from "./use-rich-editor"
+import RichEditorBubbleMenu from "./rich-editor-bubble-menu"
 
 export interface RichEditorProps {
   editor?: Editor | null
@@ -34,8 +35,6 @@ export const RichEditor = ({
   onCreate,
   onBeforeCreate,
 }: RichEditorProps) => {
-  const externalEditor = _editor || useCurrentEditor()?.editor
-
   const editor = useRichEditor({
     editable,
     placeholder,
@@ -47,17 +46,6 @@ export const RichEditor = ({
   })
 
   const [ref, { width, height, offsetLeft, offsetY }] = useElementSize()
-
-  useEffect(() => {
-    function eventEmitterFromProvider() {
-      if (externalEditor) {
-        if (onChange) externalEditor.on("update", onChange)
-        if (onBlur) externalEditor.on("blur", onBlur)
-      }
-    }
-
-    eventEmitterFromProvider()
-  }, [externalEditor])
 
   return (
     <div
@@ -72,6 +60,8 @@ export const RichEditor = ({
       }
       className="relative"
     >
+      {/* <RichEditorBubbleMenu editor={editor} /> */}
+
       <EditorContent
         editor={editor}
         className={cn(
@@ -81,7 +71,6 @@ export const RichEditor = ({
         placeholder={placeholder}
       />
       {menubar ? cloneElement(menubar as ReactElement, { editor }) : null}
-      {/* <RichEditorMenuBar root={{ width, height }} editor={editor} direction="vertical" /> */}
     </div>
   )
 }

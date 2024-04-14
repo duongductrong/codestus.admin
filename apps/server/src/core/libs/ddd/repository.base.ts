@@ -107,8 +107,10 @@ export class Repository<Model extends ObjectLiteral, Entity extends ObjectLitera
         )
       })) as unknown as Promise<DeepPartial<Model>[] & Model>
 
-      entities.forEach((e: AggregateRoot) => {
-        e?.commit()
+      const _entities = Array.isArray(entities) ? entities : [entities]
+
+      _entities?.forEach((e) => {
+        ;(e as unknown as AggregateRoot)?.commit()
       })
 
       return await r

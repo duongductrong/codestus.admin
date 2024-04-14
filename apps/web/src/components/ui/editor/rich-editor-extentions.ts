@@ -4,6 +4,7 @@ import Image from "@tiptap/extension-image"
 import ListItem from "@tiptap/extension-list-item"
 import Placeholder from "@tiptap/extension-placeholder"
 import TextStyle from "@tiptap/extension-text-style"
+import BubbleMenu from "@tiptap/extension-bubble-menu"
 import StarterKit from "@tiptap/starter-kit"
 // import css from "highlight.js/lib/languages/css"
 // import js from "highlight.js/lib/languages/javascript"
@@ -21,11 +22,6 @@ export interface GetRichEditorExtensionsVariables {
 }
 
 export const takeRichEditorExtensions = (variables?: GetRichEditorExtensionsVariables) => [
-  Color.configure({ types: [TextStyle.name, ListItem.name] }),
-  TextStyle.configure({}),
-  CodeBlockLowlight.configure({
-    lowlight,
-  }),
   StarterKit.configure({
     bulletList: {
       keepMarks: true,
@@ -35,6 +31,13 @@ export const takeRichEditorExtensions = (variables?: GetRichEditorExtensionsVari
       keepMarks: true,
       keepAttributes: false,
     },
+    codeBlock: false,
+  }),
+  BubbleMenu.configure({}),
+  Color.configure({ types: [TextStyle.name, ListItem.name] }),
+  TextStyle.configure({}),
+  CodeBlockLowlight.configure({
+    lowlight,
   }),
   Image.configure({
     inline: true,

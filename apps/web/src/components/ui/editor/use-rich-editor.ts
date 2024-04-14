@@ -13,7 +13,7 @@ export interface UseRichEditorVariables {
 }
 
 export const useRichEditor = ({
-  editable,
+  editable = true,
   placeholder,
   value,
   onBlur,
