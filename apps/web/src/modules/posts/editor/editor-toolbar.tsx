@@ -97,7 +97,6 @@ const EditorToolbar = ({ className }: EditorToolbarProps) => {
       ) : (
         <EditorToolbarTextFormat editor={editor} />
       )}
-      <EditorToolbarLink editor={editor} />
       <Button
         size="icon"
         variant={editor.isActive("bold") ? "secondary" : "ghost"}
@@ -125,6 +124,7 @@ const EditorToolbar = ({ className }: EditorToolbarProps) => {
       >
         <Strikethrough className="h-4 w-4" />
       </Button>
+      <EditorToolbarLink editor={editor} />
       <Button
         size="icon"
         type="button"

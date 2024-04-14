@@ -62,9 +62,11 @@ const EditorToolbarLink = ({ editor }: EditorToolbarLinkProps) => {
         <form onSubmit={handleAddLink} onReset={handleUnlink} className="flex items-center gap-2">
           <Input ref={inputRef} placeholder="Enter your url" type="url" />
           <Button type="submit">Add link</Button>
-          <Button type="reset" variant="outline" size="icon" className="shrink-0">
-            <Unlink className="h-4 w-4" />
-          </Button>
+          {editor.getAttributes("link")?.href ? (
+            <Button type="reset" variant="outline" size="icon" className="shrink-0">
+              <Unlink className="h-4 w-4" />
+            </Button>
+          ) : null}
         </form>
       </PopoverContent>
     </Popover>
