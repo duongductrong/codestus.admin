@@ -12,6 +12,7 @@ import StarterKit from "@tiptap/starter-kit"
 // import html from "highlight.js/lib/languages/xml"
 import { common, createLowlight } from "lowlight"
 import { Markdown } from "tiptap-markdown"
+import Link from "@tiptap/extension-link"
 
 const lowlight = createLowlight(common)
 
@@ -32,6 +33,10 @@ export const takeRichEditorExtensions = (variables?: GetRichEditorExtensionsVari
       keepAttributes: false,
     },
     codeBlock: false,
+  }),
+  Link.configure({
+    autolink: true,
+    openOnClick: "whenNotEditable",
   }),
   BubbleMenu.configure({}),
   Color.configure({ types: [TextStyle.name, ListItem.name] }),

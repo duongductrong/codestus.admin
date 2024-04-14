@@ -25,6 +25,7 @@ import EditorToolbarLoading from "./editor-toolbar-loading"
 import EditorToolbarTextFormat from "./editor-toolbar-text-format"
 import { useCurrentEditorContext } from "./use-editor-context"
 import EditorToolbarCodeblock from "./editor-toolbar-codeblock"
+import EditorToolbarLink from "./editor-toolbar-link"
 
 export const toolbarEditorVariants = cva(
   ["flex [&>*]:flex-shrink-0 items-center gap-2 p-2 border-b"],
@@ -96,7 +97,7 @@ const EditorToolbar = ({ className }: EditorToolbarProps) => {
       ) : (
         <EditorToolbarTextFormat editor={editor} />
       )}
-
+      <EditorToolbarLink editor={editor} />
       <Button
         size="icon"
         variant={editor.isActive("bold") ? "secondary" : "ghost"}
