@@ -10,7 +10,7 @@
     "removeComments": true,
     // "baseUrl": ".",
     // "paths": {
-    //   "@/*": ["./src/*"]
+    //   "@server/*": ["./src/*"]
     // }
     // "emitDecoratorMetadata": true,
     // "experimentalDecorators": true,
