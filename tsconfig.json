@@ -10,6 +10,7 @@
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+    "noUnusedParameters": false,
     "paths": {
       "@server/*": ["./apps/server/src/*"],
       "@web/*": ["./apps/web/*"]

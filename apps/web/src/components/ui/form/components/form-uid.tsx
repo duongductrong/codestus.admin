@@ -38,7 +38,7 @@ const FormUID = forwardRef<HTMLInputElement, FormUIDProps>(
 
     return (
       <div className="relative">
-        <FormInput {...props} ref={ref} className={cn("pr-8", props.className)} />
+        <FormInput {...props} ref={ref} className={cn("pr-8", props.className)} variant="TEXT" />
 
         <div
           className={cn(

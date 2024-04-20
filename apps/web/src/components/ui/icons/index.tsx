@@ -2,7 +2,8 @@ import { ComponentProps, Fragment, lazy, memo, useMemo } from "react"
 import { cn } from "../../../libs/utils/tailwind"
 
 export interface IconsProps extends ComponentProps<"svg"> {
-  name: IconName
+  // name: IconName
+  name: string
 }
 
 const Icons = ({ name, className, ...props }: IconsProps) => {
