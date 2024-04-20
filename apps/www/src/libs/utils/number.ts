@@ -1,1 +1,0 @@
-export const formatNumber = (val: number) => new Intl.NumberFormat().format(val)
