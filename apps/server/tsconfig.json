@@ -11,7 +11,7 @@
     // "baseUrl": ".",
     // "paths": {
     //   "@server/*": ["./src/*"]
-    // }
+    // },
     // "emitDecoratorMetadata": true,
     // "experimentalDecorators": true,
     // "incremental": true,
